@@ -29,6 +29,19 @@
                 font-size: 3.5rem;
             }
         }
+
+        body {
+            background-image: url('{{ asset('img/logo.png') }}');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
     </style>
 
     <!-- Estilos personalizados para esta plantilla -->
@@ -38,6 +51,7 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -53,7 +67,14 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <input class="form-control form-control-dark w-100" type="text" placeholder="Buscar" aria-label="Buscar">
+                {{-- <input class="form-control form-control-dark w-100" type="text" placeholder="Buscar" aria-label="Buscar"> --}}
+                <div class="container-fluid d-flex justify-content-center">
+                    <form class="d-flex" style="height: 40px">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search"
+                            style="border-radius: 5px; width: 400px;">
+                        <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
                 <div class="dropdown" style="height: 49px;">
                     <div class="nav-item dropdown text-nowrap h-100">
                         <a class="nav-link dropdown-toggle px-3 text-light h-100 d-flex align-items-center" href="#"
