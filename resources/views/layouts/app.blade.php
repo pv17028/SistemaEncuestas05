@@ -122,6 +122,50 @@
                                         Encuestas
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                        href="">
+                                        <span data-feather="share-2"></span>
+                                        Encuestas Compartidas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                        href="">
+                                        <span data-feather="bar-chart-2"></span>
+                                        Resultados
+                                    </a>
+                                </li>
+                                @if (Auth::user()->isAdmin())
+                                    <!-- Asegúrate de tener una función que verifique si el usuario es administrador -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <span data-feather="tool"></span>
+                                            Administración
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                                    href="">
+                                                    Gestionar Usuarios
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                                    href="">
+                                                    Gestionar Encuestas
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                        href="">
+                                        <span data-feather="settings"></span>
+                                        Configuración
+                                    </a>
+                                </li>
                                 {{-- <li class="nav-item">
                                     <a class="nav-link {{ Route::currentRouteName() == 'usuarios.index' ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
                                         <span data-feather="users"></span>
