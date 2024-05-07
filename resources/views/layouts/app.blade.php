@@ -224,12 +224,6 @@
                                         Participación social
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span data-feather="file-text"></span>
-                                        Venta de fin de año
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                     </nav>
