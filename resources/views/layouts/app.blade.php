@@ -42,6 +42,25 @@
             margin: 0;
             padding: 0;
         }
+
+        .dropdown-btn {
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .dropdown-container {
+            display: none;
+            padding-left: 8px;
+        }
+
+        .fa-caret-down {
+            float: right;
+            padding-right: 8px;
+        }
     </style>
 
     <!-- Estilos personalizados para esta plantilla -->
@@ -139,24 +158,29 @@
                                 @if (Auth::user()->isAdmin())
                                     <!-- Asegúrate de tener una función que verifique si el usuario es administrador -->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">
+                                        <button class="nav-link dropdown-btn">
                                             <span data-feather="tool"></span>
                                             Administración
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                                    href="">
-                                                    Gestionar Usuarios
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                                    href="">
-                                                    Gestionar Encuestas
-                                                </a>
-                                            </li>
-                                        </ul>
+                                            <i class="fa fa-caret-down"></i>
+                                        </button>
+                                        <div class="dropdown-container">
+                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
+                                                <span data-feather="user"></span>
+                                                Gestionar Usuarios
+                                            </a>
+                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
+                                                <span data-feather="file-text"></span>
+                                                Gestionar Encuestas
+                                            </a>
+                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
+                                                <span data-feather="users"></span>
+                                                Gestionar Roles
+                                            </a>
+                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
+                                                <span data-feather="lock"></span>
+                                                Gestionar Privilegios
+                                            </a>
+                                        </div>
                                     </li>
                                 @endif
                                 <li class="nav-item">
@@ -229,6 +253,22 @@
     <script src="{{ asset('dashboard.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+    </script>
 </body>
 @auth
     <footer class="bg-dark text-white text-center py-2 fixed-bottom">
