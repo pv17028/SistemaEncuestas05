@@ -22,30 +22,36 @@
 
             {{-- Agregar el campo oculto para el idUsuario --}}
             <input type="hidden" name="idUsuario" value="{{ auth()->user()->id }}">
-            
-            <div class="form-group mb-3">
-                <label for="titulo">Título</label>
-                <input type="text" name="titulo" id="titulo" class="form-control" required>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label for="titulo">Título</label>
+                    <input type="text" name="titulo" id="titulo" class="form-control" required>
+                </div>
+
+                <div class="col-md-6 form-group mb-3">
+                    <label for="objetivo">Objetivo</label>
+                    <textarea name="objetivo" id="objetivo" class="form-control" required></textarea>
+                </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label for="objetivo">Objetivo</label>
-                <textarea name="objetivo" id="objetivo" class="form-control" required></textarea>
+            <div class="row">
+                <div class="col-12 form-group mb-3">
+                    <label for="descripcion">Descripción</label>
+                    <textarea name="descripcionEncuesta" id="descripcion" class="form-control" required></textarea>
+                </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label for="descripcion">Descripción</label>
-                <textarea name="descripcionEncuesta" id="descripcion" class="form-control" required></textarea>
-            </div>
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label for="grupoMeta">Grupo Meta</label>
+                    <input type="text" name="grupoMeta" id="grupoMeta" class="form-control" required>
+                </div>
 
-            <div class="form-group mb-3">
-                <label for="grupoMeta">Grupo Meta</label>
-                <input type="text" name="grupoMeta" id="grupoMeta" class="form-control" required>
-            </div>
-
-            <div class="form-group mb-3">
-                <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                <input type="date" name="fechaVencimiento" id="fechaVencimiento" class="form-control" required>
+                <div class="col-md-6 form-group mb-3">
+                    <label for="fechaVencimiento">Fecha de Vencimiento</label>
+                    <input type="date" name="fechaVencimiento" id="fechaVencimiento" class="form-control" required>
+                </div>
             </div>
 
             <div class="text-center">
