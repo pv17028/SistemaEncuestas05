@@ -20,7 +20,8 @@
                 <p><strong>Objetivo:</strong> {{ $encuesta->objetivo }}</p>
                 <p><strong>Descripción:</strong> {{ $encuesta->descripcionEncuesta }}</p>
                 <p><strong>Grupo Meta:</strong> {{ $encuesta->grupoMeta }}</p>
-                <p><strong>Fecha de Vencimiento:</strong> {{ $encuesta->fechaVencimiento }}</p>
+                <p><strong>Fecha de Creación:</strong> {{ \Carbon\Carbon::parse($encuesta->created_at)->format('d-m-Y g:i:s A') }}</p>
+                <p><strong>Fecha de Vencimiento:</strong> {{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y') }}</p>
                 {{-- Aquí puedes agregar cualquier otra información que desees mostrar --}}
             </div>
         </div>

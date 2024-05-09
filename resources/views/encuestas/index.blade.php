@@ -39,8 +39,8 @@
                     @foreach ($encuestas as $encuesta)
                         <tr>
                             <td>{{ $encuesta->titulo }}</td>
-                            <td>{{ $encuesta->created_at }}</td>
-                            <td>{{ $encuesta->fechaVencimiento }}</td>
+                            <td>{{ \Carbon\Carbon::parse($encuesta->created_at)->format('d-m-Y g:i:s A') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y') }}</td>
                             <th></th>
                             {{-- <td>{{ $encuesta->respuestas->count() }}</td> --}}
                             <td>
