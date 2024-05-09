@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Rol;
 use App\Models\BloqueoUsuario;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -96,5 +97,38 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->route('users.index');
+    }
+
+    public function showProfile()
+    {
+        return view('profile.show');
+    }
+
+    public function editProfile()
+    {
+        return view('profile.edit');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'correoElectronico' => 'required|string|email|max:255|unique:users,correoElectronico,' . auth()->id(),
+            'fechaNacimiento' => 'required|date',
+            'username' => 'required|string|max:255|unique:users,username,' . auth()->id(),
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $user = auth()->user();
+        $user->fill($request->except('password'));
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('profile.show')->with('success', 'Perfil actualizado con éxito');
     }
 }

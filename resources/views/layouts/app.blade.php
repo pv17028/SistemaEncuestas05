@@ -101,7 +101,7 @@
                             {{ Auth::user()->nombre }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.show') }}">Perfil</a></li>
                             <li><a class="dropdown-item" href="#">Configuración</a></li>
                             <li>
                                 <hr class="dropdown-divider">
