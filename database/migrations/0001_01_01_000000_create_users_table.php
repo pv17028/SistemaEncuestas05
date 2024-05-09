@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -13,12 +14,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
             $table->foreignId('idRol')->nullable();
+            $table->foreignId('idBloqueUsuario')->nullable();
+            $table->string('nombre', 100);
+            $table->string('apellido', 100);
+            $table->string('correoElectronico', 100)->unique();
+            $table->string('fechaNacimiento', 10);
+            $table->string('username', 50)->unique();
+            $table->string('password', 60); // Aquí he cambiado la longitud a 60
+            $table->integer('intentosFallidos')->nullable();
+            $table->dateTime('ultimaAcceso')->nullable();
             $table->timestamps();
         });
 

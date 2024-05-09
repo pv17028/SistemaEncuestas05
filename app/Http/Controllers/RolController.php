@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rol;
+use App\Models\Privilegio;
 use Illuminate\Http\Request;
 
 class RolController extends Controller
@@ -25,7 +26,8 @@ class RolController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        $privilegios = Privilegio::all();
+        return view('roles.create', compact('privilegios'));
     }
 
     /**
@@ -55,7 +57,8 @@ class RolController extends Controller
      */
     public function edit(Rol $rol)
     {
-        return view('roles.edit', compact('rol'));
+        $privilegios = Privilegio::all();
+        return view('roles.edit', compact('rol', 'privilegios'));
     }
 
     /**
@@ -76,6 +79,19 @@ class RolController extends Controller
 
         return redirect()->route('roles.index')
             ->with('success', 'Rol actualizado exitosamente.');
+    }
+
+    /**
+     * Muestra el rol especificado.
+     *
+     * @param  \App\Models\Rol  $rol
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Rol $rol)
+    {
+        $rol = Rol::find(1); // Encuentra el rol con id 1
+        $privilegios = $rol->privilegios; // Accede a los privilegios del rol
+        return view('roles.show', compact('rol'));
     }
 
     /**

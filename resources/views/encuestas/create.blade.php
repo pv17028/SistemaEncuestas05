@@ -26,31 +26,35 @@
             <div class="row">
                 <div class="col-md-6 form-group mb-3">
                     <label for="titulo">Título</label>
-                    <input type="text" name="titulo" id="titulo" class="form-control" required>
+                    <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Ingresa el título de la encuesta" required>
                 </div>
 
                 <div class="col-md-6 form-group mb-3">
                     <label for="objetivo">Objetivo</label>
-                    <textarea name="objetivo" id="objetivo" class="form-control" required></textarea>
+                    <textarea name="objetivo" id="objetivo" class="form-control" placeholder="Ingresa el objetivo de la encuesta" required></textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12 form-group mb-3">
                     <label for="descripcion">Descripción</label>
-                    <textarea name="descripcionEncuesta" id="descripcion" class="form-control" required></textarea>
+                    <textarea name="descripcionEncuesta" id="descripcion" class="form-control" placeholder="Ingresa la descripción de la encuesta" required></textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 form-group mb-3">
                     <label for="grupoMeta">Grupo Meta</label>
-                    <input type="text" name="grupoMeta" id="grupoMeta" class="form-control" required>
+                    <input type="text" name="grupoMeta" id="grupoMeta" class="form-control" placeholder="Ingresa el grupo meta de la encuesta" required>
                 </div>
 
+                @php
+                    $today = (new DateTime())->format('Y-m-d');
+                @endphp
+                
                 <div class="col-md-6 form-group mb-3">
                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                    <input type="date" name="fechaVencimiento" id="fechaVencimiento" class="form-control" required>
+                    <input type="date" name="fechaVencimiento" id="fechaVencimiento" class="form-control" min="{{ $today }}" required>
                 </div>
             </div>
 

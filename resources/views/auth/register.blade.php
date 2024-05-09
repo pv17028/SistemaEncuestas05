@@ -13,15 +13,13 @@
                                 @csrf
 
                                 <div class="row mb-3">
-                                    <label for="name"
+                                    <label for="nombre"
                                         class="col-md-4 col-form-label text-md-end">{{ __('Nombre') }}</label>
-
                                     <div class="col-md-6">
-                                        <input id="name" type="text"
-                                            class="form-control @error('name') is-invalid @enderror" name="name"
-                                            value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                        @error('name')
+                                        <input id="nombre" type="text"
+                                            class="form-control @error('nombre') is-invalid @enderror" name="nombre"
+                                            value="{{ old('nombre') }}" required autocomplete="nombre" autofocus>
+                                        @error('nombre')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -30,15 +28,62 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="email"
+                                    <label for="apellido"
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Apellido') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="apellido" type="text"
+                                            class="form-control @error('apellido') is-invalid @enderror" name="apellido"
+                                            value="{{ old('apellido') }}" required autocomplete="apellido" autofocus>
+                                        @error('apellido')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="fechaNacimiento"
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Fecha de Nacimiento') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="fechaNacimiento" type="date"
+                                            class="form-control @error('fechaNacimiento') is-invalid @enderror"
+                                            name="fechaNacimiento" value="{{ old('fechaNacimiento') }}" required
+                                            autocomplete="fechaNacimiento" autofocus>
+                                        @error('fechaNacimiento')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="correoElectronico"
                                         class="col-md-4 col-form-label text-md-end">{{ __('Correo Electrónico') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="correoElectronico" type="email"
+                                            class="form-control @error('correoElectronico') is-invalid @enderror"
+                                            name="correoElectronico" value="{{ old('correoElectronico') }}" required
+                                            autocomplete="correoElectronico">
+                                        @error('correoElectronico')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="username"
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Nombre de Usuario') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="email" type="email"
-                                            class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" required autocomplete="email">
+                                        <input id="username" type="text"
+                                            class="form-control @error('username') is-invalid @enderror" name="username"
+                                            value="{{ old('username') }}" required autocomplete="username">
 
-                                        @error('email')
+                                        @error('username')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

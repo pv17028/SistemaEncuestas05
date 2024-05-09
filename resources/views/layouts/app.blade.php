@@ -98,7 +98,7 @@
                     <div class="nav-item dropdown text-nowrap h-100">
                         <a class="nav-link dropdown-toggle px-3 text-light h-100 d-flex align-items-center" href="#"
                             id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ Auth::user()->name }}
+                            {{ Auth::user()->nombre }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Perfil</a></li>
@@ -164,22 +164,25 @@
                                             <i class="fa fa-caret-down"></i>
                                         </button>
                                         <div class="dropdown-container">
-                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
-                                                <span data-feather="user"></span>
-                                                Gestionar Usuarios
-                                            </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
-                                                <span data-feather="file-text"></span>
-                                                Gestionar Encuestas
-                                            </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
+                                            <a class="nav-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}"
+                                                href="{{ route('users.index') }}">
                                                 <span data-feather="users"></span>
-                                                Gestionar Roles
-                                            </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" href="">
-                                                <span data-feather="lock"></span>
-                                                Gestionar Privilegios
-                                            </a>
+                                                Gestionar Usuarios
+                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                                    href="">
+                                                    <span data-feather="file-text"></span>
+                                                    Gestionar Encuestas
+                                                </a>
+                                                <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}"
+                                                    href="{{ route('roles.index') }}">
+                                                    <span data-feather="users"></span>
+                                                    Gestionar Roles
+                                                </a>
+                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                                    href="">
+                                                    <span data-feather="lock"></span>
+                                                    Gestionar Privilegios
+                                                </a>
                                         </div>
                                     </li>
                                 @endif

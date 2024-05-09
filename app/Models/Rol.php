@@ -31,8 +31,9 @@ class Rol extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function privilegios(): HasMany
+
+    public function privilegios()
     {
-        return $this->hasMany(Privilegio::class, 'idRol');
+        return $this->belongsToMany(Privilegio::class, 'rol_privilegio', 'idRol', 'idPrivilegio');
     }
 }

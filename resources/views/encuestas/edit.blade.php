@@ -24,31 +24,35 @@
             <div class="row">
                 <div class="col-md-6 form-group mb-3">
                     <label for="titulo">Título</label>
-                    <input type="text" name="titulo" id="titulo" class="form-control" value="{{ $encuesta->titulo }}" required>
+                    <input type="text" name="titulo" id="titulo" class="form-control" value="{{ $encuesta->titulo }}" placeholder="Ingresa el título de la encuesta" required>
                 </div>
 
                 <div class="col-md-6 form-group mb-3">
                     <label for="objetivo">Objetivo</label>
-                    <textarea name="objetivo" id="objetivo" class="form-control" required>{{ $encuesta->objetivo }}</textarea>
+                    <textarea name="objetivo" id="objetivo" class="form-control" placeholder="Ingresa el objetivo de la encuesta" required>{{ $encuesta->objetivo }}</textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12 form-group mb-3">
                     <label for="descripcion">Descripción</label>
-                    <textarea name="descripcionEncuesta" id="descripcion" class="form-control" required>{{ $encuesta->descripcionEncuesta }}</textarea>
+                    <textarea name="descripcionEncuesta" id="descripcion" class="form-control" placeholder="Ingresa la descripción de la encuesta" required>{{ $encuesta->descripcionEncuesta }}</textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 form-group mb-3">
                     <label for="grupoMeta">Grupo Meta</label>
-                    <input type="text" name="grupoMeta" id="grupoMeta" class="form-control" value="{{ $encuesta->grupoMeta }}" required>
+                    <input type="text" name="grupoMeta" id="grupoMeta" class="form-control" value="{{ $encuesta->grupoMeta }}" placeholder="Ingresa el grupo meta de la encuesta" required>
                 </div>
 
+                @php
+                    $today = (new DateTime())->format('Y-m-d');
+                @endphp
+                
                 <div class="col-md-6 form-group mb-3">
                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                    <input type="date" name="fechaVencimiento" id="fechaVencimiento" class="form-control" value="{{ $encuesta->fechaVencimiento }}" required>
+                    <input type="date" name="fechaVencimiento" id="fechaVencimiento" class="form-control" value="{{ $encuesta->fechaVencimiento }}" min="{{ $today }}" required>
                 </div>
             </div>
 
@@ -57,6 +61,5 @@
                 <button type="submit" class="btn btn-primary btn-sm">Guardar cambios</button>
             </div>
         </form>
-
     </main>
 @endsection

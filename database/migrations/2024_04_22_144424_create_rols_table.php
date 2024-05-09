@@ -23,16 +23,6 @@ class CreateRolsTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreign('idRol')->references('idRol')->on('rol');
         });
-
-        Schema::create('privilegio', function (Blueprint $table) {
-            $table->id('idPrivilegio');
-            $table->unsignedBigInteger('idRol');
-            $table->string('nombrePrivilegio', 50);
-            $table->string('descripcionPrivilegio', 256);
-            $table->timestamps();
-
-            $table->foreign('idRol')->references('idRol')->on('rol');
-        });
     }
 
     /**
@@ -42,7 +32,6 @@ class CreateRolsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('privilegio');
         Schema::dropIfExists('rol');
     }
 }
