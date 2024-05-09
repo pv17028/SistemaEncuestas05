@@ -41,7 +41,7 @@
                             <td>{{ $user->nombre }} {{ $user->apellido }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->correoElectronico }}</td>
-                            <td>{{ $user->rol ? $user->rol->nombreRol : 'N/A' }}</td>
+                            <td>{{ $user->role ? $user->role->nombreRol : 'N/A' }}</td>
                             <td>
                                 <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm">Ver</a>
                                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Editar</a>
