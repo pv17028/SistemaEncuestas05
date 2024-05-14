@@ -69,9 +69,9 @@ class User extends Authenticatable
         return $this->belongsTo(Rol::class, 'idRol');
     }
 
-    public function bloqueoUsuario()
+    public function bloqueosUsuario()
     {
-        return $this->belongsTo(BloqueoUsuario::class, 'idBloqueUsuario');
+        return $this->hasMany(BloqueoUsuario::class, 'user_id', 'id');
     }
 
     public function isAdmin()

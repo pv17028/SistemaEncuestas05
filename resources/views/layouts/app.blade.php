@@ -168,21 +168,27 @@
                                                 href="{{ route('users.index') }}">
                                                 <span data-feather="users"></span>
                                                 Gestionar Usuarios
-                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                                    href="">
-                                                    <span data-feather="file-text"></span>
-                                                    Gestionar Encuestas
-                                                </a>
-                                                <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}"
-                                                    href="{{ route('roles.index') }}">
-                                                    <span data-feather="users"></span>
-                                                    Gestionar Roles
-                                                </a>
-                                                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                                    href="">
-                                                    <span data-feather="lock"></span>
-                                                    Gestionar Privilegios
-                                                </a>
+                                            </a>
+                                            <a class="nav-link {{ Route::currentRouteName() == 'bloqueos.index' ? 'active' : '' }}"
+                                                href="{{ route('bloqueos.index') }}">
+                                                <span data-feather="lock"></span>
+                                                Gestionar Bloqueos
+                                            </a>
+                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                                href="">
+                                                <span data-feather="file-text"></span>
+                                                Gestionar Encuestas
+                                            </a>
+                                            <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}"
+                                                href="{{ route('roles.index') }}">
+                                                <span data-feather="users"></span>
+                                                Gestionar Roles
+                                            </a>
+                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
+                                                href="">
+                                                <span data-feather="lock"></span>
+                                                Gestionar Privilegios
+                                            </a>
                                         </div>
                                     </li>
                                 @endif

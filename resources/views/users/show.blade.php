@@ -20,8 +20,14 @@
                 <p><strong>Fecha de Nacimiento:</strong> {{ $user->fechaNacimiento }}</p>
                 <p><strong>Usuario:</strong> {{ $user->username }}</p>
                 <p><strong>Rol:</strong> {{ $user->role ? $user->role->nombreRol : 'N/A' }}</p>
-                <p><strong>Estado:</strong> {{ $user->estado ? 'Activo' : 'Inactivo' }}</p>
-                <p><strong>Intentos Fallidos:</strong> {{ $user->intentosFallidos }}</p>
+                <p>
+                    <strong>Estado:</strong> 
+                    @if($user->bloqueosUsuario->where('status', 'blocked')->count() > 0)
+                        Bloqueado
+                    @else
+                        Activo
+                    @endif
+                </p>
                 <p><strong>Último Acceso:</strong> {{ $user->ultimaAcceso }}</p>
             </div>
         </div>

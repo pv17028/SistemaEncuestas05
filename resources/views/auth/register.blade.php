@@ -43,13 +43,13 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="fechaNacimiento"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Fecha de Nacimiento') }}</label>
+                                    <label for="fechaNacimiento" class="col-md-4 col-form-label text-md-end">{{ __('Fecha de Nacimiento') }}</label>
                                     <div class="col-md-6">
-                                        <input id="fechaNacimiento" type="date"
-                                            class="form-control @error('fechaNacimiento') is-invalid @enderror"
-                                            name="fechaNacimiento" value="{{ old('fechaNacimiento') }}" required
-                                            autocomplete="fechaNacimiento" autofocus>
+                                        <input id="fechaNacimiento" type="date" 
+                                            class="form-control @error('fechaNacimiento') is-invalid @enderror" 
+                                            name="fechaNacimiento" value="{{ old('fechaNacimiento') }}" required 
+                                            autocomplete="fechaNacimiento" autofocus 
+                                            max="{{ date('Y-m-d', strtotime('-18 years')) }}">
                                         @error('fechaNacimiento')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

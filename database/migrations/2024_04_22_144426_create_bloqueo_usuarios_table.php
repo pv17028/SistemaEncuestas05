@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('bloqueo_usuarios', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->timestamp('blocked_at');
+            $table->timestamp('blocked_until')->nullable();
+            $table->integer('block_duration')->nullable();
+            $table->string('status')->default('active');
+            $table->timestamp('unblocked_at')->nullable();
+            $table->string('reason');
+            $table->integer('temp_blocks')->default(0);
             $table->timestamps();
         });
     }

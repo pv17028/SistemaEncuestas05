@@ -13,6 +13,7 @@ class Kernel extends HttpKernel
     protected $middlewareGroups = [
         'web' => [
             // Aquí se enumeran los middlewares para el grupo 'web'
+            \App\Http\Middleware\CheckUserBlocked::class, // Agregar esto
         ],
 
         'api' => [
