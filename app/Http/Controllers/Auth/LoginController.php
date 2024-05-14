@@ -97,7 +97,7 @@ class LoginController extends Controller
                         'correoElectronico' => [
                             new HtmlString(
                                 trans('auth.account_locked') . ' ' .
-                                '<a href="mailto:pv17028@ues.edu.sv?subject=' . $subject . '&body=' . $bodyIntro . '%0D%0A%0D%0A' . $bodyMain . '%0D%0A%0D%0A' . $bodyLink . '%0D%0A%0D%0A' . $bodyThanks . '%0D%0A%0D%0A' . $bodySalutation . '%0D%0A' . $bodySignature . '">' . $linkText . '</a>'
+                                '<a href="mailto:hr.smartdatasolutions@gmail.com?subject=' . $subject . '&body=' . $bodyIntro . '%0D%0A%0D%0A' . $bodyMain . '%0D%0A%0D%0A' . $bodyLink . '%0D%0A%0D%0A' . $bodyThanks . '%0D%0A%0D%0A' . $bodySalutation . '%0D%0A' . $bodySignature . '">' . $linkText . '</a>'
                             )
                         ],
                     ]);
