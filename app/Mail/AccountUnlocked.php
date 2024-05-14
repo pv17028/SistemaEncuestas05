@@ -20,7 +20,6 @@ class AccountUnlocked extends Mailable
 
     public function build()
     {
-        return $this->from('pv17028@ues.edu.sv')
-            ->view('emails.account_unlocked');
+        return $this->view('emails.account_unlocked');
     }
 }

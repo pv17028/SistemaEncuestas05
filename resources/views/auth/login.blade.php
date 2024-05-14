@@ -84,4 +84,34 @@
                 </div>
             </div>
         </div>
+        <!-- Incluye jQuery y js-cookie -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+        
+        <!-- Script del temporizador -->
+        <script>
+        $(document).ready(function() {
+            var minutes = Cookies.get('minutes') || 3;
+            var seconds = Cookies.get('seconds') || 0;
+        
+            var interval = setInterval(function() {
+                seconds--;
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                }
+        
+                if (minutes < 0) {
+                    clearInterval(interval);
+                    Cookies.remove('minutes');
+                    Cookies.remove('seconds');
+                    $('#timer').text('Tiempo agotado');
+                } else {
+                    Cookies.set('minutes', minutes, { expires: 1/480 }); // expires after 3 minutes
+                    Cookies.set('seconds', seconds, { expires: 1/480 }); // expires after 3 minutes
+                    $('#timer').text(minutes + ' minutos ' + seconds + ' segundos');
+                }
+            }, 1000);
+        });
+        </script>
     @endsection

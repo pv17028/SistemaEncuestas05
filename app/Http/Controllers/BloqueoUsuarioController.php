@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Mail\AccountUnlocked;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use App\Mail\AccountBlocked;
 
 class BloqueoUsuarioController extends Controller
 {
@@ -28,7 +29,9 @@ class BloqueoUsuarioController extends Controller
     {
         $users = User::whereDoesntHave('role', function ($query) {
             $query->where('nombreRol', 'admin');
-        })->whereDoesntHave('bloqueosUsuario')->get();
+        })->whereDoesntHave('bloqueosUsuario', function ($query) {
+            $query->where('status', 'blocked');
+        })->get();
 
         return view('bloqueos.create', compact('users')); // Pasar los usuarios a la vista
     }
@@ -46,6 +49,10 @@ class BloqueoUsuarioController extends Controller
             'blocked_at' => now(),
             'status' => 'blocked',
         ]);
+
+        // Send the email.
+        $user = User::find($request->user_id);
+        Mail::to($user->correoElectronico)->send(new AccountBlocked($user, $bloqueo));
 
         return redirect()->route('bloqueos.index')->with('success', 'Bloqueo creado con éxito');
     }

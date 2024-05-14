@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AccountBlocked;
 
 class LoginController extends Controller
 {
@@ -97,7 +99,7 @@ class LoginController extends Controller
                         'correoElectronico' => [
                             new HtmlString(
                                 trans('auth.account_locked') . ' ' .
-                                '<a href="mailto:hr.smartdatasolutions@gmail.com?subject=' . $subject . '&body=' . $bodyIntro . '%0D%0A%0D%0A' . $bodyMain . '%0D%0A%0D%0A' . $bodyLink . '%0D%0A%0D%0A' . $bodyThanks . '%0D%0A%0D%0A' . $bodySalutation . '%0D%0A' . $bodySignature . '">' . $linkText . '</a>'
+                                '<a href="mailto:surveyprosv@gmail.com?subject=' . $subject . '&body=' . $bodyIntro . '%0D%0A%0D%0A' . $bodyMain . '%0D%0A%0D%0A' . $bodyLink . '%0D%0A%0D%0A' . $bodyThanks . '%0D%0A%0D%0A' . $bodySalutation . '%0D%0A' . $bodySignature . '">' . $linkText . '</a>'
                             )
                         ],
                     ]);
@@ -160,11 +162,14 @@ class LoginController extends Controller
                         // Si los últimos dos bloqueos fueron temporales, bloquear la cuenta
                         $bloqueoUsuario->status = 'blocked'; // bloqueo "permanente"
                         $bloqueoUsuario->temp_blocks = 2; // bloqueo "permanente" 
-                        $bloqueoUsuario->reason = 'Cuenta bloqueada debido a demasiados bloqueos temporales'; // actualizar reason
+                        $bloqueoUsuario->reason = 'Demasiados intentos de inicio de sesión fallidos'; // actualizar reason
                         $bloqueoUsuario->blocked_until = null; // no hay fecha de desbloqueo programada
                         $bloqueoUsuario->unblocked_at = null; // no hay fecha de desbloqueo programada
                         $bloqueoUsuario->block_duration = null; // bloqueo es indefinido
                         $bloqueoUsuario->save();
+
+                        // Send the email.
+                        Mail::to($user->correoElectronico)->send(new AccountBlocked($user, $bloqueoUsuario));
 
                         Log::info('Cuenta de usuario bloqueada debido a demasiados bloqueos temporales', ['user_id' => $user->id]);
 
