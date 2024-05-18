@@ -93,9 +93,34 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+    // public function destroy(User $user)
+    // {
+    //     // Elimina los bloqueos del usuario
+    //     foreach ($user->bloqueosUsuario as $bloqueo) {
+    //         $bloqueo->delete();
+    //     }
+
+    //     // Ahora puedes eliminar el usuario
+    //     $user->delete();
+
+    //     return redirect()->route('users.index');
+    // }
+
     public function destroy(User $user)
     {
+        // Desvincula los bloqueos del usuario
+        foreach ($user->bloqueosUsuario as $bloqueo) {
+            $bloqueo->username_historico = $user->username;
+            $bloqueo->nombre_historico = $user->nombre;
+            $bloqueo->apellido_historico = $user->apellido;
+            $bloqueo->email_historico = $user->correoElectronico;
+            $bloqueo->user_id = null;
+            $bloqueo->save();
+        }
+
+        // Ahora puedes eliminar el usuario
         $user->delete();
+
         return redirect()->route('users.index');
     }
 

@@ -65,6 +65,12 @@ class BloqueoUsuarioController extends Controller
     public function edit($id)
     {
         $bloqueo = BloqueoUsuario::find($id);
+
+        // Si el usuario asociado al bloqueo ya no existe, redirige al índice
+        if ($bloqueo->user === null) {
+            return redirect()->route('bloqueos.index')->with('error', 'El usuario asociado a este bloqueo ya no existe.');
+        }
+
         $razones = BloqueoUsuario::select('reason')->distinct()->get();
         return view('bloqueos.edit', compact('bloqueo', 'razones'));
     }

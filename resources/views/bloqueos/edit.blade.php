@@ -45,7 +45,7 @@
                 <label for="status">{{ __('Estado') }}</label>
                 <select id="status" class="form-control @error('status') is-invalid @enderror" name="status" required>
                     <option value="blocked" @if (old('status', $bloqueo->status) == 'blocked') selected @endif>Bloqueado</option>
-                    <option value="active" @if (old('status', $bloqueo->status) == 'active') selected @endif>Activo</option>
+                    <option value="active" @if (old('status', $bloqueo->status) == 'active') selected @endif>Desbloqueado</option>
                 </select>
 
                 @error('status')

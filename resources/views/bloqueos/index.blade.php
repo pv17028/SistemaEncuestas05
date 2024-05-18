@@ -37,7 +37,13 @@
                     @foreach ($bloqueos as $bloqueo)
                         <tr>
                             <td>{{ $bloqueo->id }}</td>
-                            <td>{{ $bloqueo->user->username }}</td>
+                            <td>
+                                @if ($bloqueo->user)
+                                    {{ $bloqueo->user->username }}
+                                @else
+                                    {{ $bloqueo->username_historico }}
+                                @endif
+                            </td>
                             <td>{{ $bloqueo->blocked_at }}</td>
                             <td>{{ $bloqueo->unblocked_at }}</td>
                             <td style="white-space: nowrap;">
@@ -52,7 +58,9 @@
                                 <!-- Botón de ver -->
                                 <a href="{{ route('bloqueos.show', $bloqueo->id) }}" class="btn btn-info btn-sm">Ver</a>
                                 <!-- Botón de editar -->
-                                <a href="{{ route('bloqueos.edit', $bloqueo->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                @if ($bloqueo->user)
+                                    <a href="{{ route('bloqueos.edit', $bloqueo->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

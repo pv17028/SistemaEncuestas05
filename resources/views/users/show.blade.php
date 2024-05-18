@@ -21,11 +21,11 @@
                 <p><strong>Usuario:</strong> {{ $user->username }}</p>
                 <p><strong>Rol:</strong> {{ $user->role ? $user->role->nombreRol : 'N/A' }}</p>
                 <p>
-                    <strong>Estado:</strong> 
-                    @if($user->bloqueosUsuario->where('status', 'blocked')->count() > 0)
+                    <strong>Estado:</strong>
+                    @if ($user->bloqueosUsuario->where('status', 'blocked')->count() > 0)
                         Bloqueado
                     @else
-                        Activo
+                        Desbloqueado
                     @endif
                 </p>
                 <p><strong>Último Acceso:</strong> {{ $user->ultimaAcceso }}</p>

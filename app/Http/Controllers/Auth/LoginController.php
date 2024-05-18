@@ -68,7 +68,8 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
 
         // Si el inicio de sesión es exitoso, establece ultimaAcceso a la fecha y hora actuales
-        $request->user()->ultimaAcceso = now();
+        $user = $request->user();
+        $user->ultimaAcceso = now();
         $request->user()->intentosFallidos = 0; // resetea los intentos fallidos
         $request->user()->save();
 
@@ -99,7 +100,7 @@ class LoginController extends Controller
                         'correoElectronico' => [
                             new HtmlString(
                                 trans('auth.account_locked') . ' ' .
-                                '<a href="mailto:surveyprosv@gmail.com?subject=' . $subject . '&body=' . $bodyIntro . '%0D%0A%0D%0A' . $bodyMain . '%0D%0A%0D%0A' . $bodyLink . '%0D%0A%0D%0A' . $bodyThanks . '%0D%0A%0D%0A' . $bodySalutation . '%0D%0A' . $bodySignature . '">' . $linkText . '</a>'
+                                    '<a href="mailto:surveyprosv@gmail.com?subject=' . $subject . '&body=' . $bodyIntro . '%0D%0A%0D%0A' . $bodyMain . '%0D%0A%0D%0A' . $bodyLink . '%0D%0A%0D%0A' . $bodyThanks . '%0D%0A%0D%0A' . $bodySalutation . '%0D%0A' . $bodySignature . '">' . $linkText . '</a>'
                             )
                         ],
                     ]);
@@ -119,7 +120,13 @@ class LoginController extends Controller
 
         // Intentar iniciar sesión
         if (Auth::attempt(['correoElectronico' => $request->correoElectronico, 'password' => $request->password])) {
-            // Autenticación exitosa, redirigir al home
+            // Autenticación exitosa, actualizar la última vez que el usuario inició sesión
+            $user = Auth::user();
+            $user->ultimaAcceso = now();
+            $user->intentosFallidos = 0; // resetea los intentos fallidos
+            $user->save();
+
+            // Redirigir al home
             return redirect()->intended('/');
         } else {
             // Si el inicio de sesión falla, incrementa intentosFallidos
