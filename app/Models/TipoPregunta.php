@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class TipoPregunta extends Model
 {
     use HasFactory;
+    protected $table = 'tipo_preguntas';
+
+    protected $primaryKey = 'idTipoPregunta';
+
+    public $incrementing = true;
+
+    protected $keyType = 'int';
+
+    protected $fillable = [
+        'nombreTipoPregunta',
+        'descripcionTipoPregunta',
+    ];
+
 }
