@@ -15,6 +15,9 @@
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -142,8 +145,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                        href="">
+                                    <a class="nav-link {{ Route::currentRouteName() == 'ecompartidas.index' ? 'active' : '' }}"
+                                        href="{{ route('ecompartidas.index') }}">
                                         <span data-feather="share-2"></span>
                                         Encuestas Compartidas
                                     </a>
@@ -174,8 +177,8 @@
                                                 <span data-feather="lock"></span>
                                                 Gestionar Bloqueos
                                             </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                                href="">
+                                            <a class="nav-link {{ Route::currentRouteName() == 'gestionEncuestas.index' ? 'active' : '' }}"
+                                                href="{{ route('gestionEncuestas.index') }}">
                                                 <span data-feather="file-text"></span>
                                                 Gestionar Encuestas
                                             </a>
@@ -272,6 +275,9 @@
             });
         }
     </script>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </body>
 @auth
     <footer class="bg-dark text-white text-center py-2 fixed-bottom">

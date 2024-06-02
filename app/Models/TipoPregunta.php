@@ -21,4 +21,8 @@ class TipoPregunta extends Model
         'descripcionTipoPregunta',
     ];
 
+    public function opciones()
+    {
+        return $this->hasMany(Opcion::class);
+    }
 }

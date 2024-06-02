@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Encuesta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use Carbon\Carbon;
 
 class EncuestaController extends Controller
 {
-    // Mostrar todas las encuestas
     public function index()
     {
         $idUsuario = auth()->user()->id; // Obtener el ID del usuario autenticado
-        $encuestas = Encuesta::where('idUsuario', $idUsuario)->get(); // Filtrar las encuestas por el ID del usuario
+        $encuestas = Encuesta::with('respuestasCount')
+            ->where('idUsuario', $idUsuario)
+            ->orderBy('titulo')
+            ->get();
+
         return view('encuestas.index', compact('encuestas'));
     }
 
@@ -30,7 +36,7 @@ class EncuestaController extends Controller
             'objetivo' => 'required|string',
             'descripcionEncuesta' => 'required|string',
             'grupoMeta' => 'required|string|max:255',
-            'fechaVencimiento' => 'required|date',
+            'fechaVencimiento' => 'required|date_format:Y-m-d\TH:i',
         ]);
 
         // Crear la encuesta con el idUsuario del usuario autenticado
@@ -43,10 +49,10 @@ class EncuestaController extends Controller
         $encuesta->idUsuario = $request->idUsuario; // Asignar el idUsuario del formulario
         $encuesta->save();
 
-        return redirect()->route('encuestas.index')->with('success', 'Encuesta creada correctamente.');
+        // Redirige al usuario a la página de creación de preguntas con el id de la encuesta que acabas de crear
+        return redirect()->route('preguntas.create', ['idEncuesta' => $encuesta->idEncuesta]);
     }
 
-    // Mostrar una encuesta específica
     public function show(Encuesta $encuesta)
     {
         // Verificar si la encuesta pertenece al usuario autenticado
@@ -54,7 +60,21 @@ class EncuestaController extends Controller
             abort(403, 'No tienes permiso para ver esta encuesta.');
         }
 
-        return view('encuestas.show', compact('encuesta'));
+        // Comprueba si la encuesta ha expirado
+        $now = Carbon::now();
+        $expirationDate = Carbon::parse($encuesta->fechaVencimiento);
+        if ($now->greaterThan($expirationDate)) {
+            $encuesta->compartida = false;
+            $encuesta->compartida_con = null; // Borra los IDs de los usuarios a los que se les compartió la encuesta
+            $encuesta->save();
+        }
+
+        $usuarios = User::all(); // Obtén todos los usuarios
+
+        // Cargar la relación respuestasCount
+        $encuesta->load('respuestasCount');
+
+        return view('encuestas.show', compact('encuesta', 'usuarios')); // Pasa los usuarios a la vista
     }
 
     // Mostrar el formulario para editar una encuesta
@@ -77,7 +97,7 @@ class EncuestaController extends Controller
             'objetivo' => 'required|string',
             'descripcionEncuesta' => 'required|string',
             'grupoMeta' => 'required|string|max:255',
-            'fechaVencimiento' => 'required|date',
+            'fechaVencimiento' => 'required|date_format:Y-m-d\TH:i',
         ]);
 
         // Actualizar la encuesta con los datos del formulario
@@ -89,7 +109,9 @@ class EncuestaController extends Controller
             'fechaVencimiento' => $request->fechaVencimiento,
         ]);
 
-        return redirect()->route('encuestas.index')->with('success', 'Encuesta actualizada correctamente.');
+        // Redirigir al usuario a los detalles de la encuesta
+        return redirect()->route('encuestas.show', ['encuesta' => $encuesta->idEncuesta])
+            ->with('success', 'Encuesta actualizada correctamente.');
     }
 
     // Eliminar una encuesta existente
@@ -97,5 +119,53 @@ class EncuestaController extends Controller
     {
         $encuesta->delete();
         return redirect()->route('encuestas.index')->with('success', 'Encuesta eliminada exitosamente.');
+    }
+
+    public function compartir(Request $request, $idEncuesta)
+    {
+        $encuesta = Encuesta::findOrFail($idEncuesta);
+
+        $compartirCon = $request->input('shareOptions');
+        $usuariosSeleccionados = $request->input('users');
+        $fechaVencimiento = Carbon::parse($encuesta->fechaVencimiento);
+
+        if ($fechaVencimiento->isPast()) {
+            // La fecha de vencimiento ha pasado, redirige con un mensaje de error
+            return redirect()->route('encuestas.show', $encuesta)->with('error', 'La encuesta ya venció.');
+        }
+
+        if ($compartirCon == 'todos') {
+            // Si la encuesta se comparte con todos los usuarios, envía un correo electrónico a todos los usuarios
+            $usuarios = User::all();
+            $encuesta->compartida = true;
+            $encuesta->compartida_con = $usuarios->pluck('id')->implode(','); // Almacena los IDs de los usuarios
+        } elseif ($compartirCon == 'algunos' && $usuariosSeleccionados) {
+            // Si la encuesta se comparte con algunos usuarios, envía un correo electrónico solo a los usuarios seleccionados
+            $usuarios = User::whereIn('id', $usuariosSeleccionados)->get();
+            $encuesta->compartida = true;
+            $encuesta->compartida_con = implode(',', $usuariosSeleccionados); // Almacena los IDs de los usuarios
+        } else {
+            // Si no se seleccionó ninguna opción o no se seleccionó ningún usuario, redirige con un mensaje de error
+            return redirect()->route('encuestas.show', $encuesta)->with('error', 'Debes seleccionar una opción de compartir y al menos un usuario.');
+        }
+        $encuesta->save();
+
+        foreach ($usuarios as $usuario) {
+            Mail::send('emails.share', ['encuesta' => $encuesta], function ($message) use ($usuario) {
+                $message->to($usuario->correoElectronico)
+                    ->subject('Se ha compartido una encuesta contigo');
+            });
+        }
+
+        return redirect()->route('encuestas.show', $encuesta)->with('success', 'Encuesta compartida correctamente.');
+    }
+
+    public function unshare($idEncuesta)
+    {
+        $encuesta = Encuesta::findOrFail($idEncuesta);
+        $encuesta->compartida = false;
+        $encuesta->compartida_con = null; // Borra los IDs de los usuarios a los que se les compartió la encuesta
+        $encuesta->save();
+        return redirect()->route('encuestas.show', $encuesta)->with('success', 'Encuesta ya no está compartida.');
     }
 }

@@ -49,18 +49,18 @@
                 </div>
 
                 @php
-                    $today = (new DateTime())->format('Y-m-d');
+                    $today = (new DateTime())->format('Y-m-d\TH:i');
                 @endphp
                 
                 <div class="col-md-6 form-group mb-3">
                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                    <input type="date" name="fechaVencimiento" id="fechaVencimiento" class="form-control" min="{{ $today }}" required>
+                    <input type="datetime-local" name="fechaVencimiento" id="fechaVencimiento" class="form-control" min="{{ $today }}" required>
                 </div>
             </div>
 
             <div class="text-center">
                 <a href="{{ route('encuestas.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
-                <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                <button type="submit" class="btn btn-primary btn-sm">Agregar Preguntas</button>
             </div>
         </form>
     </main>

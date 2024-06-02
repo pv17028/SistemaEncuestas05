@@ -17,6 +17,9 @@ class Encuesta extends Model
         'descripcionEncuesta',
         'grupoMeta',
         'fechaVencimiento',
+        'compartida', // Nuevo campo
+        'compartirConTodos', // Nuevo campo
+        'compartida_con', // Nuevo campo
     ];
 
     // Relación con el modelo Usuario
@@ -31,6 +34,13 @@ class Encuesta extends Model
         return $this->hasOne(ResultadoEncuesta::class, 'idEncuesta');
     }
 
+    public function respuestasCount()
+    {
+        return $this->hasMany(Respuesta::class, 'encuesta_id')
+            ->selectRaw('encuesta_id, count(*) as total')
+            ->groupBy('encuesta_id');
+    }
+
     // Relación con el modelo CorreoNotificacion
     public function correosNotificacion()
     {
@@ -40,6 +50,6 @@ class Encuesta extends Model
     // Relación con el modelo Pregunta
     public function preguntas()
     {
-        return $this->hasMany(Pregunta::class, 'idEncuesta');
+        return $this->hasMany(preguntas::class, 'idEncuesta');
     }
 }

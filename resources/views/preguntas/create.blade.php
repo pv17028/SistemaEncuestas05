@@ -17,49 +17,79 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('preguntas.store') }}">
-            @csrf
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
+        <form method="POST" action="{{ route('preguntas.store', ['idEncuesta' => $idEncuesta]) }}">
+            @csrf
+            <input type="hidden" name="idEncuesta" value="{{ $idEncuesta }}">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label for="nombreRol">Contenido de la pregunta</label>
-                        <input type="text" class="form-control" id="contenidoPregunta" name="contenidoPregunta" placeholder="Ingrese el contenido de la pregunta" required>
+                        <input type="text" class="form-control" id="contenidoPregunta" name="contenidoPregunta"
+                            placeholder="Ingrese el contenido de la pregunta" required>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="descripcionPregunta">Descripción de la pregunta</label>
-                        <input type="text" class="form-control" id="descripcionPregunta" name="descripcionPregunta" placeholder="Ingrese la descripción de la pregunta" required>
+                        <input type="text" class="form-control" id="descripcionPregunta" name="descripcionPregunta"
+                            placeholder="Ingrese la descripción de la pregunta" required>
                     </div>
 
+                    <div class="form-group mb-3">
+                        <label for="criterioValidacion">Criterio de validación</label>
+                        <input type="text" class="form-control" id="criterioValidacion" name="criterioValidacion"
+                            placeholder="Ingrese el criterio de validación" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label for="idTipoPregunta">Tipo de pregunta</label>
                         <select class="form-select" id="idTipoPregunta" name="idTipoPregunta" required>
                             <option value="">Seleccione un tipo de pregunta</option>
                             @foreach ($tiposPreguntas as $tipoPregunta)
-                                <option value="{{ $tipoPregunta->idTipoPregunta }}">{{ $tipoPregunta->nombreTipoPregunta }}</option>
+                                <option value="{{ $tipoPregunta->nombreTipoPregunta }}">{{ $tipoPregunta->nombreTipoPregunta }}</option>
                             @endforeach
                         </select>
                     </div>
-
-                    <div class="form-group mb-3">
-                        <label for="criterioValidacion">Criterio de validación</label>
-                        <input type="text" class="form-control" id="criterioValidacion" name="criterioValidacion" placeholder="Ingrese el criterio de validación" required>
-                    </div>
-
-                    <!--<div class="form-group mb-3">
-                        <label for="posicionPregunta">Posicion de la pregunta</label>
-                        <input type="number" class="form-control" id="posicionPregunta" name="posicionPregunta" placeholder="Ingrese la posición de la pregunta" required>
-                    </div>-->
-
                     
+                    <div id="Preguntas de elección múltiple" style="display: none;">
+                        <div class="form-group mb-3">
+                            <label for="opciones">Opciones de respuesta</label>
+                            <textarea class="form-control" id="opciones" name="opcionesMultiple" rows="3" placeholder="Ingrese las opciones de respuesta, separadas por comas"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div id="Preguntas mixtas" style="display: none;">
+                        <div class="form-group mb-3">
+                            <label for="opcionesMixtas">Opciones de respuesta</label>
+                            <textarea class="form-control" id="opcionesMixtas" name="opcionesMixtas" rows="3" placeholder="Ingrese las opciones de respuesta, separadas por comas"></textarea>
+                            <small class="form-text text-muted">Añade "Otra" al final si quieres permitir una respuesta abierta.</small>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        document.getElementById('idTipoPregunta').addEventListener('change', function() {
+                            // Oculta todos los divs
+                            document.getElementById('Preguntas de elección múltiple').style.display = 'none';
+                            document.getElementById('Preguntas mixtas').style.display = 'none';
+                    
+                            // Muestra el div correspondiente al tipo de pregunta seleccionado
+                            var selectedOption = this.options[this.selectedIndex].value;
+                            document.getElementById(selectedOption).style.display = 'block';
+                        });
+                    </script>
                 </div>
-
             </div>
-
             <div class="text-center">
-                <a href="{{ route('preguntas.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
-                <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                <button type="submit" class="btn btn-primary btn-sm">Guardar Pregunta y Añadir Otra</button>
+                <button type="submit" name="save_and_close" value="1" class="btn btn-success btn-sm">Guardar y Cerrar</button>
+                <a href="{{ route('preguntas.index', ['idEncuesta' => $idEncuesta]) }}" class="btn btn-secondary btn-sm">Cancelar</a>
             </div>
         </form>
     </main>

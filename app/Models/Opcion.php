@@ -22,9 +22,11 @@ class opcion extends Model
 
     public function pregunta()
     {
-        return $this->belongsTo(pregunta::class, 'idPregunta');
+        return $this->belongsTo(preguntas::class, 'idPregunta');
     }
 
-
-
+    public function tipoPregunta()
+    {
+        return $this->belongsTo(TipoPregunta::class);
+    }
 }

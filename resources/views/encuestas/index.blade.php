@@ -40,9 +40,8 @@
                         <tr>
                             <td>{{ $encuesta->titulo }}</td>
                             <td>{{ \Carbon\Carbon::parse($encuesta->created_at)->format('d-m-Y g:i:s A') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y') }}</td>
-                            <th></th>
-                            {{-- <td>{{ $encuesta->respuestas->count() }}</td> --}}
+                            <td>{{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y g:i:s A') }}</td>
+                            <td>{{ $encuesta->respuestasCount->first()->total ?? '0' }}</td>
                             <td>
                                 <a href="{{ route('encuestas.show', $encuesta->idEncuesta) }}"
                                     class="btn btn-sm btn-info">Ver</a>

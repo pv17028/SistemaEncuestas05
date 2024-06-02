@@ -38,15 +38,17 @@
                             <td>{{ $tipoPregunta->nombreTipoPregunta }}</td>
                             <td>{{ $tipoPregunta->descripcionTipoPregunta }}</td>
                             <td>
-                                <a href="{{ route('tiposPreguntas.show', $tipoPregunta->idTipoPregunta) }}" class="btn btn-sm btn-info">Ver</a>
-                                <a href="{{ route('tiposPreguntas.edit', $tipoPregunta->idTipoPregunta) }}" class="btn btn-sm btn-warning">Editar</a>
-                                <form action="{{ route('tiposPreguntas.destroy', $tipoPregunta->idTipoPregunta) }}" method="POST"
-                                    style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('¿Estás seguro de querer eliminar este tipo de pregunta?')">Eliminar</button>
-                                </form>
+                                <div class="d-flex">
+                                    <a href="{{ route('tiposPreguntas.show', $tipoPregunta->idTipoPregunta) }}" class="btn btn-sm btn-info me-1">Ver</a>
+                                    <a href="{{ route('tiposPreguntas.edit', $tipoPregunta->idTipoPregunta) }}" class="btn btn-sm btn-warning me-1">Editar</a>
+                                    <form action="{{ route('tiposPreguntas.destroy', $tipoPregunta->idTipoPregunta) }}" method="POST"
+                                        style="display: inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('¿Estás seguro de querer eliminar este tipo de pregunta?')">Eliminar</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

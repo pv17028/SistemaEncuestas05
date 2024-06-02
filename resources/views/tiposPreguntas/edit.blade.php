@@ -24,15 +24,20 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="nombreRol">Tipo de pregunta</label>
-                        <input type="text" class="form-control" id="tipoPregunta" name="tipoPregunta" value="{{ $tipoPregunta->nombreTipoPregunta }}" placeholder="Ingresa el tipo de pregunta" required>
+                        <label for="nombreRol">Nombre del tipo de pregunta</label>
+                        <input type="text" class="form-control" id="tipoPregunta" name="tipoPregunta"
+                            value="{{ $tipoPregunta->nombreTipoPregunta }}" placeholder="Ingresa el tipo de pregunta"
+                            required>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label for="descripcionRol">Descripción del tipo de pregunta</label>
                         <textarea class="form-control" id="descripcionTipo" name="descripcionTipo" placeholder="Ingresa la descripción del rol">{{ $tipoPregunta->descripcionTipoPregunta }}</textarea>
                     </div>
                 </div>
+            </div>
+            
             <div class="text-center">
                 <a href="{{ route('tiposPreguntas.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>

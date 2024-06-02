@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckUserBlocked;
 use App\Http\Controllers\PreguntasController;
 use App\Http\Controllers\OpcionController;
+use App\Http\Controllers\GestionEncuestasController;
+use App\Http\Controllers\EncuestasCompartidasController;
+
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])
@@ -28,6 +31,8 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::get('/encuestas/{encuesta}/edit', [EncuestaController::class, 'edit'])->name('encuestas.edit');
     Route::put('/encuestas/{encuesta}', [EncuestaController::class, 'update'])->name('encuestas.update');
     Route::delete('/encuestas/{encuesta}', [EncuestaController::class, 'destroy'])->name('encuestas.destroy');
+    Route::post('/encuestas/{idEncuesta}/compartir', [EncuestaController::class, 'compartir'])->name('encuestas.compartir');
+    Route::post('/encuestas/{idEncuesta}/unshare', [EncuestaController::class, 'unshare'])->name('encuestas.unshare');
 });
 
 Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
@@ -67,7 +72,12 @@ Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->gr
     Route::put('/bloqueos/{bloqueo}/desbloquear', [BloqueoUsuarioController::class, 'desbloquear'])->name('bloqueos.desbloquear');
 });
 
+Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+    Route::get('/gestionEncuestas', [GestionEncuestasController::class, 'index'])->name('gestionEncuestas.index');
+    // Agrega más rutas para gestionEncuestas según sea necesario
+});
 
+Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
     Route::get('/tiposPreguntas', [TipoPreguntaController::class, 'index'])->name('tiposPreguntas.index');
     Route::get('/tiposPreguntas/create', [TipoPreguntaController::class, 'create'])->name('tiposPreguntas.create');
     Route::post('/tiposPreguntas', [TipoPreguntaController::class, 'store'])->name('tiposPreguntas.store');
@@ -75,22 +85,28 @@ Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->gr
     Route::get('/tiposPreguntas/{tipoPregunta}/edit', [TipoPreguntaController::class, 'edit'])->name('tiposPreguntas.edit');
     Route::put('/tiposPreguntas/{tipoPregunta}', [TipoPreguntaController::class, 'update'])->name('tiposPreguntas.update');
     Route::delete('/tiposPreguntas/{tipoPregunta}', [TipoPreguntaController::class, 'destroy'])->name('tiposPreguntas.destroy');
+});
 
-    Route::get('/preguntas', [PreguntasController::class, 'index'])->name('preguntas.index');
-    Route::get('/preguntas/create', [PreguntasController::class, 'create'])->name('preguntas.create');
-    Route::post('/preguntas', [PreguntasController::class, 'store'])->name('preguntas.store');
-    Route::get('/preguntas/{preguntas}', [PreguntasController::class, 'show'])->name('preguntas.show');
-    Route::get('/preguntas/{preguntas}/edit', [PreguntasController::class, 'edit'])->name('preguntas.edit');
-    Route::put('/preguntas/{preguntas}', [PreguntasController::class, 'update'])->name('preguntas.update');
-    Route::delete('/preguntas/{preguntas}', [PreguntasController::class, 'destroy'])->name('preguntas.destroy');
+Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+    Route::get('/preguntas/{idEncuesta}', [PreguntasController::class, 'index'])->name('preguntas.index');
+    Route::get('/preguntas/create/{idEncuesta}', [PreguntasController::class, 'create'])->name('preguntas.create');
+    Route::post('/preguntas/{idEncuesta}', [PreguntasController::class, 'store'])->name('preguntas.store');
+    Route::get('/preguntas/{idEncuesta}/{preguntas}', [PreguntasController::class, 'show'])->name('preguntas.show');
+    Route::get('/preguntas/{idEncuesta}/{preguntas}/edit', [PreguntasController::class, 'edit'])->name('preguntas.edit');
+    Route::put('/preguntas/{idEncuesta}/{preguntas}', [PreguntasController::class, 'update'])->name('preguntas.update');
+    Route::delete('/preguntas/{idEncuesta}/{preguntas}', [PreguntasController::class, 'destroy'])->name('preguntas.destroy');
+});
 
-    // Rutas anidadas para opciones dentro de preguntas
-    Route::prefix('preguntas/{preguntas}')->group(function () {
-        Route::get('opciones', [OpcionController::class, 'index'])->name('preguntas.opciones.index');
-        Route::get('opciones/create', [OpcionController::class, 'create'])->name('preguntas.opciones.create');
-        Route::post('opciones', [OpcionController::class, 'store'])->name('preguntas.opciones.store');
-        Route::get('opciones/{opcion}/edit', [OpcionController::class, 'edit'])->name('preguntas.opciones.edit');
-        Route::put('opciones/{opcion}', [OpcionController::class, 'update'])->name('preguntas.opciones.update');
-        Route::delete('opciones/{opcion}', [OpcionController::class, 'destroy'])->name('preguntas.opciones.destroy');
-    });
-    
+// Rutas anidadas para opciones dentro de preguntas
+Route::middleware(['auth', CheckUserBlocked::class])->prefix('preguntas/{preguntas}')->group(function () {
+    Route::post('opciones', [OpcionController::class, 'store'])->name('preguntas.opciones.store');
+    Route::put('opciones/{opcion}', [OpcionController::class, 'update'])->name('preguntas.opciones.update');
+    Route::delete('opciones/{opcion}', [OpcionController::class, 'destroy'])->name('preguntas.opciones.destroy');
+});
+
+// Rutas para las encuestas compartidas
+Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+    Route::get('/encuestas-compartidas', [EncuestasCompartidasController::class, 'index'])->name('ecompartidas.index');
+    Route::get('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'show'])->name('ecompartidas.show');
+    Route::post('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'store'])->name('ecompartidas.store');
+});

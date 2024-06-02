@@ -38,11 +38,11 @@ class TipoPreguntaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'tipoPregunta' => 'required|string|max:50',
-            'descripcionTipo' => 'required|string|max:100',
+            'descripcionTipo' => 'required|string|max:300',
         ]);
 
         $nombreTipoPregunta = $request->input('tipoPregunta');
@@ -93,7 +93,7 @@ class TipoPreguntaController extends Controller
     {
         $request->validate([
             'tipoPregunta' => 'required|string|max:50',
-            'descripcionTipo' => 'required|string|max:100',
+            'descripcionTipo' => 'required|string|max:300',
         ]);
 
         $nombreTipoPregunta = $request->input('tipoPregunta');

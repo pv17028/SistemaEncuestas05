@@ -16,6 +16,7 @@ class preguntas extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
+        'idEncuesta',
         'idTipoPregunta',
         'contenidoPregunta',
         'descripcionPregunta',
