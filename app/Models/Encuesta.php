@@ -52,4 +52,9 @@ class Encuesta extends Model
     {
         return $this->hasMany(preguntas::class, 'idEncuesta');
     }
+
+    public function respuestas()
+    {
+        return $this->hasMany(Respuesta::class, 'encuesta_id');
+    }
 }

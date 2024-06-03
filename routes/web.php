@@ -14,6 +14,7 @@ use App\Http\Controllers\PreguntasController;
 use App\Http\Controllers\OpcionController;
 use App\Http\Controllers\GestionEncuestasController;
 use App\Http\Controllers\EncuestasCompartidasController;
+use App\Http\Controllers\ResultadoEncuestaController;
 
 Auth::routes();
 
@@ -109,4 +110,9 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::get('/encuestas-compartidas', [EncuestasCompartidasController::class, 'index'])->name('ecompartidas.index');
     Route::get('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'show'])->name('ecompartidas.show');
     Route::post('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'store'])->name('ecompartidas.store');
+});
+
+Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+    Route::get('/resultado-encuesta', [ResultadoEncuestaController::class, 'index'])->name('resultadoEncuesta.index');
+    Route::get('/resultado-encuesta/{idEncuesta}', [ResultadoEncuestaController::class, 'show'])->name('resultadoEncuesta.show');
 });

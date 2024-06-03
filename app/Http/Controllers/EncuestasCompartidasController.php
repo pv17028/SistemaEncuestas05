@@ -30,7 +30,7 @@ class EncuestasCompartidasController extends Controller
         $userId = auth()->user()->id; // Obtiene el ID del usuario actual
         $now = Carbon::now(); // Obtiene la fecha y hora actual
 
-        $encuestaCompartida = Encuesta::with('preguntas.opciones')
+        $encuestaCompartida = Encuesta::with('preguntas.opciones', 'preguntas.tipoPregunta')
             ->where('idEncuesta', $idEncuesta)
             ->where('fechaVencimiento', '>', $now)
             ->first();
@@ -47,22 +47,89 @@ class EncuestasCompartidasController extends Controller
             return redirect()->route('ecompartidas.index')->with('error', 'No tienes acceso a esta encuesta.');
         }
 
-        return view('ecompartidas.show', ['encuestaCompartida' => $encuestaCompartida]);
+        // Obtiene las preguntas de la encuesta
+        $preguntas = $encuestaCompartida->preguntas;
+
+        return view('ecompartidas.show', ['encuestaCompartida' => $encuestaCompartida, 'preguntas' => $preguntas]);
     }
 
     public function store(Request $request, $idEncuesta)
     {
         $usuarioId = auth()->user()->id; // Obtén el ID del usuario actualmente autenticado
+        $respuestaIds = []; // Almacena los IDs de las respuestas creadas
 
-        foreach ($request->respuestas as $idPregunta => $idOpcion) {
-            Respuesta::create([
-                'encuesta_id' => $idEncuesta,
-                'pregunta_id' => $idPregunta,
-                'opcion_id' => $idOpcion,
-                'usuario_id' => $usuarioId,
-                // Si tienes una respuesta abierta, puedes guardarla aquí
-                // 'respuesta_abierta' => $request->respuesta_abierta[$idPregunta],
-            ]);
+        foreach ($request->respuestas as $idPregunta => $respuestas) {
+            // Si la pregunta permite múltiples respuestas, $respuestas será un array
+            // En ese caso, necesitamos crear una respuesta para cada opción seleccionada
+            if (is_array($respuestas)) {
+                foreach ($respuestas as $respuesta) {
+                    if (is_numeric($respuesta)) {
+                        // Si la respuesta es numérica, es un ID de opción
+                        $respuestaCreada = Respuesta::create([
+                            'encuesta_id' => $idEncuesta,
+                            'pregunta_id' => $idPregunta,
+                            'opcion_id' => $respuesta,
+                            'usuario_id' => $usuarioId,
+                        ]);
+                        $respuestaIds[] = $respuestaCreada->id; // Guarda el ID de la respuesta
+                    } else {
+                        // Si la respuesta no es numérica, es una respuesta escrita por el usuario
+                        $respuestaCreada = Respuesta::create([
+                            'encuesta_id' => $idEncuesta,
+                            'pregunta_id' => $idPregunta,
+                            'respuesta_abierta' => $respuesta,
+                            'usuario_id' => $usuarioId,
+                        ]);
+                        $respuestaIds[] = $respuestaCreada->id; // Guarda el ID de la respuesta
+                    }
+                }
+            } else {
+                // Si la pregunta solo permite una respuesta, $respuestas será el ID de la opción seleccionada
+                // o una respuesta escrita por el usuario
+                if (is_numeric($respuestas)) {
+                    // Si la respuesta es numérica, es un ID de opción
+                    $respuestaCreada = Respuesta::create([
+                        'encuesta_id' => $idEncuesta,
+                        'pregunta_id' => $idPregunta,
+                        'opcion_id' => $respuestas,
+                        'usuario_id' => $usuarioId,
+                    ]);
+                    $respuestaIds[] = $respuestaCreada->id; // Guarda el ID de la respuesta
+                } else {
+                    // Si la respuesta no es numérica, es una respuesta escrita por el usuario
+                    $respuestaCreada = Respuesta::create([
+                        'encuesta_id' => $idEncuesta,
+                        'pregunta_id' => $idPregunta,
+                        'respuesta_abierta' => $respuestas,
+                        'usuario_id' => $usuarioId,
+                    ]);
+                    $respuestaIds[] = $respuestaCreada->id; // Guarda el ID de la respuesta
+                }
+            }
+        }
+
+        // Aquí manejamos las respuestas de texto abiertas
+        if ($request->has('otra')) {
+            foreach ($request->otra as $idPregunta => $respuesta) {
+                if (!empty($respuesta)) {
+                    // Busca la respuesta con la opción "Otra" seleccionada y actualiza la respuesta abierta
+                    $respuestaOtra = Respuesta::whereIn('id', $respuestaIds) // Solo busca entre las respuestas creadas en esta solicitud
+                        ->where('encuesta_id', $idEncuesta)
+                        ->where('pregunta_id', $idPregunta)
+                        ->where('opcion_id', function($query) {
+                            $query->select('idOpcion')
+                                ->from('opcions')
+                                ->where('contenidoOpcion', 'Otra')
+                                ->limit(1);
+                        })
+                        ->first();
+
+                    if ($respuestaOtra) {
+                        $respuestaOtra->respuesta_abierta = $respuesta;
+                        $respuestaOtra->save();
+                    }
+                }
+            }
         }
 
         return redirect()->route('ecompartidas.index')->with('success', 'Tus respuestas han sido enviadas con éxito.');

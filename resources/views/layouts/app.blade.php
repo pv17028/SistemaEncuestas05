@@ -152,8 +152,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                        href="">
+                                    <a class="nav-link {{ Route::currentRouteName() == 'resultadoEncuesta.index' ? 'active' : '' }}"
+                                        href="{{ route('resultadoEncuesta.index') }}">
                                         <span data-feather="bar-chart-2"></span>
                                         Resultados
                                     </a>

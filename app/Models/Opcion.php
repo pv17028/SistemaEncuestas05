@@ -29,4 +29,9 @@ class opcion extends Model
     {
         return $this->belongsTo(TipoPregunta::class);
     }
+
+    public function respuestas()
+    {
+        return $this->hasMany('App\Models\Respuesta', 'opcion_id');
+    }
 }

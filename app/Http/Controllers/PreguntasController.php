@@ -8,6 +8,7 @@ use App\Models\TipoPregunta;
 use App\Models\Encuesta;
 use App\Models\Opcion;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class PreguntasController extends Controller
 {
@@ -68,50 +69,170 @@ class PreguntasController extends Controller
         $pregunta->descripcionPregunta = $request->input('descripcionPregunta');
         $pregunta->criterioValidacion = $request->input('criterioValidacion');
         $pregunta->posicionPregunta = 1;
-        $pregunta->save();
 
-        // Si el tipo de pregunta es "Preguntas de elección múltiple"
-        if ($request->input('idTipoPregunta') == 'Preguntas de elección múltiple') {
-            $posicion = 1; // Inicializa la posición de la opción
-            $opciones = explode(',', $request->input('opcionesMultiple')); // Divide las opciones proporcionadas por el usuario en un array
-
-            // Para cada opción proporcionada por el usuario
-            foreach ($opciones as $contenidoOpcion) {
-                // Crea una nueva opción en la base de datos
-                Opcion::create([
-                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
-                    'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
-                    'posicionOpcion' => $posicion, // Establece la posición de la opción
-                ]);
-                $posicion++; // Incrementa la posición para la siguiente opción
+        // Valida que solo se proporcionen dos opciones para "Preguntas dicotómicas"
+        if ($request->input('idTipoPregunta') == 'Preguntas dicotómicas') {
+            $opciones = $request->input('opcionesDicotomicas');
+            if (count($opciones) != 2) {
+                return back()->withErrors(['opcionesDicotomicas' => 'Debe proporcionar exactamente dos opciones para las preguntas dicotómicas.']);
             }
         }
 
-        // Si el tipo de pregunta es "Preguntas mixtas"
-        if ($request->input('idTipoPregunta') == 'Preguntas mixtas') {
-            $posicion = 1; // Inicializa la posición de la opción
-            $opciones = explode(',', $request->input('opcionesMixtas')); // Divide las opciones proporcionadas por el usuario en un array
+        // Valida que solo se proporcionen 4 o 5 opciones para "Preguntas de tipo ranking"
+        if ($request->input('idTipoPregunta') == 'Preguntas de tipo ranking') {
+            $opciones = explode(',', $request->input('opcionesRanking'));
+            if (count($opciones) < 4 || count($opciones) > 5) {
+                return back()->withErrors(['opcionesRanking' => 'Debe proporcionar 4 o 5 opciones para las preguntas de tipo ranking.']);
+            }
+        }
 
-            // Para cada opción proporcionada por el usuario
-            foreach ($opciones as $contenidoOpcion) {
-                // Crea una nueva opción en la base de datos
-                Opcion::create([
-                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
-                    'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
-                    'posicionOpcion' => $posicion, // Establece la posición de la opción
-                ]);
-                $posicion++; // Incrementa la posición para la siguiente opción
+        // Valida que el rango máximo sea válido para "Escala numérica"
+        if ($request->input('idTipoPregunta') == 'Escala numérica') {
+            $rangoMaximo = $request->input('escalaNumerica');
+            if (!is_numeric($rangoMaximo) || $rangoMaximo < 1) {
+                return back()->withErrors(['escalaNumerica' => 'Debe proporcionar un rango máximo válido para la escala numérica.']);
+            }
+        }
+
+        DB::beginTransaction(); // Inicia una nueva transacción
+
+        try {
+            $pregunta->save(); // Intenta guardar la pregunta
+
+            // Si el tipo de pregunta es "Preguntas dicotómicas"
+            if ($request->input('idTipoPregunta') == 'Preguntas dicotómicas') {
+                $opciones = $request->input('opcionesDicotomicas'); // Obtiene las opciones proporcionadas por el usuario
+
+                $posicion = 1; // Inicializa la posición de la opción
+
+                // Para cada opción proporcionada por el usuario
+                foreach ($opciones as $contenidoOpcion) {
+                    // Crea una nueva opción en la base de datos
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                    $posicion++; // Incrementa la posición para la siguiente opción
+                }
             }
 
-            // Verifica si la última opción ingresada por el usuario es "Otra"
-            if (end($opciones) != 'Otra') {
-                // Si no es "Otra", crea una opción adicional llamada "Otra"
-                Opcion::create([
-                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
-                    'contenidoOpcion' => 'Otra', // Establece el contenido de la opción
-                    'posicionOpcion' => $posicion, // Establece la posición de la opción
-                ]);
+            // Si el tipo de pregunta es "Preguntas politómicas"
+            if ($request->input('idTipoPregunta') == 'Preguntas politómicas') {
+                $posicion = 1; // Inicializa la posición de la opción
+                $opciones = explode(',', $request->input('opcionesPolitomicas')); // Divide las opciones proporcionadas por el usuario en un array
+
+                // Para cada opción proporcionada por el usuario
+                foreach ($opciones as $contenidoOpcion) {
+                    // Crea una nueva opción en la base de datos
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                    $posicion++; // Incrementa la posición para la siguiente opción
+                }
             }
+
+            // Si el tipo de pregunta es "Preguntas de elección múltiple"
+            if ($request->input('idTipoPregunta') == 'Preguntas de elección múltiple') {
+                $posicion = 1; // Inicializa la posición de la opción
+                $opciones = explode(',', $request->input('opcionesMultiple')); // Divide las opciones proporcionadas por el usuario en un array
+
+                // Para cada opción proporcionada por el usuario
+                foreach ($opciones as $contenidoOpcion) {
+                    // Crea una nueva opción en la base de datos
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                    $posicion++; // Incrementa la posición para la siguiente opción
+                }
+            }
+
+            // Si el tipo de pregunta es "Preguntas de tipo ranking"
+            if ($request->input('idTipoPregunta') == 'Preguntas de tipo ranking') {
+                $posicion = 1; // Inicializa la posición de la opción
+                $opciones = explode(',', $request->input('opcionesRanking')); // Divide las opciones proporcionadas por el usuario en un array
+
+                // Para cada opción proporcionada por el usuario
+                foreach ($opciones as $contenidoOpcion) {
+                    // Crea una nueva opción en la base de datos
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                    $posicion++; // Incrementa la posición para la siguiente opción
+                }
+            }
+
+            // Si el tipo de pregunta es "Escala de Likert"
+            if ($request->input('idTipoPregunta') == 'Escala de Likert') {
+                $posicion = 1; // Inicializa la posición de la opción
+                $opciones = explode(',', $request->input('opcionesLikert')); // Divide las opciones proporcionadas por el usuario en un array
+
+                // Para cada opción proporcionada por el usuario
+                foreach ($opciones as $contenidoOpcion) {
+                    // Crea una nueva opción en la base de datos
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                    $posicion++; // Incrementa la posición para la siguiente opción
+                }
+            }
+
+            // Si el tipo de pregunta es "Escala numérica"
+            if ($request->input('idTipoPregunta') == 'Escala numérica') {
+                $rangoMaximo = $request->input('escalaNumerica'); // Obtiene el rango máximo proporcionado por el usuario
+
+                // Para cada número en el rango
+                for ($i = 1; $i <= $rangoMaximo; $i++) {
+                    // Crea una nueva opción en la base de datos
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => $i, // Establece el contenido de la opción
+                        'posicionOpcion' => $i, // Establece la posición de la opción
+                    ]);
+                }
+            }
+
+            // Si el tipo de pregunta es "Preguntas mixtas"
+            if ($request->input('idTipoPregunta') == 'Preguntas mixtas') {
+                $posicion = 1; // Inicializa la posición de la opción
+                $opciones = explode(',', $request->input('opcionesMixtas')); // Divide las opciones proporcionadas por el usuario en un array
+
+                // Para cada opción proporcionada por el usuario
+                foreach ($opciones as $contenidoOpcion) {
+                    // Crea una nueva opción en la base de datos
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                    $posicion++; // Incrementa la posición para la siguiente opción
+                }
+
+                // Verifica si la última opción ingresada por el usuario es "Otra"
+                if (end($opciones) != 'Otra') {
+                    // Si no es "Otra", crea una opción adicional llamada "Otra"
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => 'Otra', // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                }
+            }
+
+            DB::commit(); // Si todo salió bien, confirma la transacción
+        } catch (\Exception $e) {
+            DB::rollback(); // Si algo salió mal, revierte la transacción
+
+            // Redirige al usuario de vuelta al formulario con un mensaje de error
+            return back()->withErrors(['opciones' => 'Hubo un error al validar las opciones.']);
         }
 
         if ($request->input('save_and_close')) {
@@ -190,6 +311,53 @@ class PreguntasController extends Controller
         $pregunta->posicionPregunta = 1;
         $pregunta->save();
 
+        // Si el tipo de pregunta es "Preguntas dicotómicas"
+        if ($request->input('idTipoPregunta') == 'Preguntas dicotómicas') {
+            $opciones = $request->input('opcionesDicotomicas'); // Obtiene las opciones proporcionadas por el usuario
+
+            // Valida que solo se proporcionen dos opciones
+            if (count($opciones) != 2) {
+                return back()->withErrors(['opcionesDicotomicas' => 'Debe proporcionar exactamente dos opciones para las preguntas dicotómicas.']);
+            }
+
+            // Elimina las opciones existentes
+            Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
+
+            $posicion = 1; // Inicializa la posición de la opción
+
+            // Para cada opción proporcionada por el usuario
+            foreach ($opciones as $contenidoOpcion) {
+                // Crea una nueva opción en la base de datos
+                Opcion::create([
+                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                    'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                    'posicionOpcion' => $posicion, // Establece la posición de la opción
+                ]);
+                $posicion++; // Incrementa la posición para la siguiente opción
+            }
+        }
+
+        // Si el tipo de pregunta es "Preguntas politómicas"
+        if ($request->input('idTipoPregunta') == 'Preguntas politómicas') {
+            $opciones = explode(',', $request->input('opcionesPolitomicas')); // Divide las opciones proporcionadas por el usuario en un array
+
+            // Elimina las opciones existentes
+            Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
+
+            $posicion = 1; // Inicializa la posición de la opción
+
+            // Para cada opción proporcionada por el usuario
+            foreach ($opciones as $contenidoOpcion) {
+                // Crea una nueva opción en la base de datos
+                Opcion::create([
+                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                    'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                    'posicionOpcion' => $posicion, // Establece la posición de la opción
+                ]);
+                $posicion++; // Incrementa la posición para la siguiente opción
+            }
+        }
+
         // Si el tipo de pregunta es "Preguntas de elección múltiple"
         if ($request->input('idTipoPregunta') == 'Preguntas de elección múltiple') {
             // Elimina las opciones existentes
@@ -207,6 +375,76 @@ class PreguntasController extends Controller
                     'posicionOpcion' => $posicion, // Establece la posición de la opción
                 ]);
                 $posicion++; // Incrementa la posición para la siguiente opción
+            }
+        }
+
+        // Si el tipo de pregunta es "Preguntas de tipo ranking"
+        if ($request->input('idTipoPregunta') == 'Preguntas de tipo ranking') {
+            $opciones = explode(',', $request->input('opcionesRanking')); // Divide las opciones proporcionadas por el usuario en un array
+
+            // Valida que solo se proporcionen 4 o 5 opciones
+            if (count($opciones) < 4 || count($opciones) > 5) {
+                return back()->withErrors(['opcionesRanking' => 'Debe proporcionar 4 o 5 opciones para las preguntas de tipo ranking.']);
+            }
+
+            // Elimina las opciones existentes
+            Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
+
+            $posicion = 1; // Inicializa la posición de la opción
+
+            // Para cada opción proporcionada por el usuario
+            foreach ($opciones as $contenidoOpcion) {
+                // Crea una nueva opción en la base de datos
+                Opcion::create([
+                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                    'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                    'posicionOpcion' => $posicion, // Establece la posición de la opción
+                ]);
+                $posicion++; // Incrementa la posición para la siguiente opción
+            }
+        }
+
+        // Si el tipo de pregunta es "Escala de Likert"
+        if ($request->input('idTipoPregunta') == 'Escala de Likert') {
+            $opciones = explode(',', $request->input('opcionesLikert')); // Divide las opciones proporcionadas por el usuario en un array
+
+            // Elimina las opciones existentes
+            Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
+
+            $posicion = 1; // Inicializa la posición de la opción
+
+            // Para cada opción proporcionada por el usuario
+            foreach ($opciones as $contenidoOpcion) {
+                // Crea una nueva opción en la base de datos
+                Opcion::create([
+                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                    'contenidoOpcion' => $contenidoOpcion, // Establece el contenido de la opción
+                    'posicionOpcion' => $posicion, // Establece la posición de la opción
+                ]);
+                $posicion++; // Incrementa la posición para la siguiente opción
+            }
+        }
+
+        // Si el tipo de pregunta es "Escala numérica"
+        if ($request->input('idTipoPregunta') == 'Escala numérica') {
+            $rangoMaximo = $request->input('escalaNumerica'); // Obtiene el rango máximo proporcionado por el usuario
+
+            // Valida que el rango máximo sea válido
+            if (!is_numeric($rangoMaximo) || $rangoMaximo < 1) {
+                return back()->withErrors(['escalaNumerica' => 'Debe proporcionar un rango máximo válido para la escala numérica.']);
+            }
+
+            // Elimina las opciones existentes
+            Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
+
+            // Para cada número en el rango
+            for ($i = 1; $i <= $rangoMaximo; $i++) {
+                // Crea una nueva opción en la base de datos
+                Opcion::create([
+                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                    'contenidoOpcion' => $i, // Establece el contenido de la opción
+                    'posicionOpcion' => $i, // Establece la posición de la opción
+                ]);
             }
         }
 

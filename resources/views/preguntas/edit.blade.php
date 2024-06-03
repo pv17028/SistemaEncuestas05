@@ -54,11 +54,58 @@
                         </select>
                     </div>
 
+                    <div id="Preguntas dicotómicas"
+                        style="display: {{ $preguntas->idTipoPregunta == 'Preguntas dicotómicas' ? 'block' : 'none' }};">
+                        <div class="form-group mb-3">
+                            <label for="opcion1">Opción 1</label>
+                            <input type="text" class="form-control" id="opcion1" name="opcionesDicotomicas[]"
+                                value="{{ $preguntas->opciones[0]->contenidoOpcion ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="opcion2">Opción 2</label>
+                            <input type="text" class="form-control" id="opcion2" name="opcionesDicotomicas[]"
+                                value="{{ $preguntas->opciones[1]->contenidoOpcion ?? '' }}">
+                        </div>
+                    </div>
+
+                    <div id="Preguntas politómicas"
+                        style="display: {{ $preguntas->idTipoPregunta == 'Preguntas politómicas' ? 'block' : 'none' }};">
+                        <div class="form-group">
+                            <label for="opcionesPolitomicas">Opciones de respuesta</label>
+                            <textarea class="form-control" id="opcionesPolitomicas" name="opcionesPolitomicas" rows="3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                        </div>
+                    </div>
+
                     <div id="Preguntas de elección múltiple"
                         style="display: {{ $preguntas->idTipoPregunta == 'Preguntas de elección múltiple' ? 'block' : 'none' }};">
                         <div class="form-group mb-3">
                             <label for="opciones">Opciones de respuesta</label>
                             <textarea class="form-control" id="opciones" name="opcionesMultiple" rows="3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                        </div>
+                    </div>
+
+                    <div id="Preguntas de tipo ranking"
+                        style="display: {{ $preguntas->idTipoPregunta == 'Preguntas de tipo ranking' ? 'block' : 'none' }};">
+                        <div class="form-group">
+                            <label for="opcionesRanking">Opciones de respuesta</label>
+                            <textarea class="form-control" id="opcionesRanking" name="opcionesRanking" rows="3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                        </div>
+                    </div>
+
+                    <div id="Escala de Likert"
+                        style="display: {{ $preguntas->idTipoPregunta == 'Escala de Likert' ? 'block' : 'none' }};">
+                        <div class="form-group">
+                            <label for="opcionesLikert">Opciones de respuesta</label>
+                            <textarea class="form-control" id="opcionesLikert" name="opcionesLikert" rows="3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                        </div>
+                    </div>
+
+                    <div id="Escala numérica"
+                        style="display: {{ $preguntas->idTipoPregunta == 'Escala numérica' ? 'block' : 'none' }};">
+                        <div class="form-group">
+                            <label for="escalaNumerica">Rango máximo de la escala</label>
+                            <input type="number" min="1" max="100" class="form-control" id="escalaNumerica"
+                                name="escalaNumerica" value="{{ $preguntas->opciones->count() }}" style="width: 80px;">
                         </div>
                     </div>
 
@@ -75,7 +122,12 @@
                     <script>
                         document.getElementById('idTipoPregunta').addEventListener('change', function() {
                             // Oculta todos los divs
+                            document.getElementById('Preguntas dicotómicas').style.display = 'none';
+                            document.getElementById('Preguntas politómicas').style.display = 'none';
                             document.getElementById('Preguntas de elección múltiple').style.display = 'none';
+                            document.getElementById('Preguntas de tipo ranking').style.display = 'none';
+                            document.getElementById('Escala de Likert').style.display = 'none';
+                            document.getElementById('Escala numérica').style.display = 'none';
                             document.getElementById('Preguntas mixtas').style.display = 'none';
 
                             // Muestra el div correspondiente al tipo de pregunta seleccionado

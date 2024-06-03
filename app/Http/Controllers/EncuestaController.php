@@ -13,10 +13,17 @@ class EncuestaController extends Controller
     public function index()
     {
         $idUsuario = auth()->user()->id; // Obtener el ID del usuario autenticado
-        $encuestas = Encuesta::with('respuestasCount')
-            ->where('idUsuario', $idUsuario)
+        $encuestas = Encuesta::where('idUsuario', $idUsuario)
             ->orderBy('titulo')
             ->get();
+
+        foreach ($encuestas as $encuesta) {
+            $encuesta->respuestas_agrupadas = $encuesta->respuestas()
+                ->selectRaw("DATE_TRUNC('second', created_at) as fecha_hora")
+                ->groupBy('fecha_hora')
+                ->get()
+                ->count();
+        }
 
         return view('encuestas.index', compact('encuestas'));
     }
