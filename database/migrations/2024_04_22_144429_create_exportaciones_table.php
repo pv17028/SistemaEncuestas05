@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('exportaciones', function (Blueprint $table) {
-            $table->id();
+            $table->id('idExportar'); //PK
+            $table->unsignedBigInteger('idGrafico');
+            $table->unsignedBigInteger('idResultadoEncuesta'); // FK
+            $table->string('tipoExportacion', 15); // CHAR(15)
             $table->timestamps();
+
+            //FK constraints
+            $table->foreign('idGrafico')->references('idGrafico')->on('graficos')->onDelete('cascade');
+            $table->foreign('idResultadoEncuesta')->references('idResultadoEncuesta')->on('resultado_encuesta')->onDelete('cascade');
         });
     }
 

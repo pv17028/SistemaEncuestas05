@@ -68,7 +68,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         // Obtén el ID del rol de usuario de la base de datos
-        $roleId = Rol::where('nombreRol', 'usuario')->first()->idRol;
+        $roleId = Rol::where('nombreRol', 'admin')->first()->idRol;
 
         $user = User::create([
             'idRol' => $roleId,

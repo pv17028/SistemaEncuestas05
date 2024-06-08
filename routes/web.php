@@ -15,7 +15,7 @@ use App\Http\Controllers\OpcionController;
 use App\Http\Controllers\GestionEncuestasController;
 use App\Http\Controllers\EncuestasCompartidasController;
 use App\Http\Controllers\ResultadoEncuestaController;
-
+use App\Http\Controllers\ExportacionController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])
@@ -97,7 +97,6 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::put('/preguntas/{idEncuesta}/{preguntas}', [PreguntasController::class, 'update'])->name('preguntas.update');
     Route::delete('/preguntas/{idEncuesta}/{preguntas}', [PreguntasController::class, 'destroy'])->name('preguntas.destroy');
 });
-
 // Rutas anidadas para opciones dentro de preguntas
 Route::middleware(['auth', CheckUserBlocked::class])->prefix('preguntas/{preguntas}')->group(function () {
     Route::post('opciones', [OpcionController::class, 'store'])->name('preguntas.opciones.store');
@@ -112,7 +111,13 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::post('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'store'])->name('ecompartidas.store');
 });
 
+
 Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::get('/resultado-encuesta', [ResultadoEncuestaController::class, 'index'])->name('resultadoEncuesta.index');
     Route::get('/resultado-encuesta/{idEncuesta}', [ResultadoEncuestaController::class, 'show'])->name('resultadoEncuesta.show');
-});
+});    
+//Rutas para la exportación de encuestas
+    Route::get('/exportacion', [ExportacionController::class, 'index'])->name('exportacion.index');
+    Route::get('/exportacion/excel',[ExportacionController::class, 'exportToExcel'])->name('exportacion.excel');
+    Route::get('/exportacion/pdf',[ExportacionController::class, 'exportToPDF'])->name('exportacion.pdf');
+    

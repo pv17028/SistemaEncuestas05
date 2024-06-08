@@ -80,7 +80,7 @@
     <div id="app">
         @auth
             <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="height: 49px">
-                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-4" href="#">
+                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-4" href="/">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
                     SurveyPro
                 </a>

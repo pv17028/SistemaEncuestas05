@@ -7,7 +7,7 @@
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
+                    <a href="{{ route('exportacion.index') }}" class="btn btn-sm btn-outline-secondary role="button" aria-pressed="true">Exportar</a>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle unique-dropdown"
