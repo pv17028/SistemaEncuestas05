@@ -44,6 +44,9 @@ class EncuestaController extends Controller
             'descripcionEncuesta' => 'required|string',
             'grupoMeta' => 'required|string|max:255',
             'fechaVencimiento' => 'required|date_format:Y-m-d\TH:i',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'color_principal' => 'nullable|string|max:7',
+            'color_secundario' => 'nullable|string|max:7',
         ]);
 
         // Crear la encuesta con el idUsuario del usuario autenticado
@@ -54,6 +57,22 @@ class EncuestaController extends Controller
         $encuesta->grupoMeta = $request->grupoMeta;
         $encuesta->fechaVencimiento = $request->fechaVencimiento;
         $encuesta->idUsuario = $request->idUsuario; // Asignar el idUsuario del formulario
+
+        // Subir el logo de la encuesta
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            $logoNombre = time() . '.' . $logo->getClientOriginalExtension();
+            $logo->move(public_path('images'), $logoNombre);
+            $encuesta->logo = $logoNombre;
+        }
+
+        // Asignar los colores de la encuesta
+        $encuesta->color_principal = $request->color_principal;
+        $encuesta->color_secundario = $request->color_secundario;
+        $encuesta->color_terciario = $request->color_terciario;
+        $encuesta->color_cuarto = $request->color_cuarto;
+        $encuesta->color_quinto = $request->color_quinto;
+
         $encuesta->save();
 
         // Redirige al usuario a la página de creación de preguntas con el id de la encuesta que acabas de crear

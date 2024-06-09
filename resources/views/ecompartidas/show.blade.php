@@ -1,13 +1,29 @@
 @extends('layouts.app')
-
 @section('content')
+<style>
+        /* Aplicar color de fondo y color de texto 
+        main {
+          
+            color: {{ $encuestaCompartida->color_secundario ?? 'default_color' }};
+        }
+        #preguntas{
+            background-color: {{ $encuestaCompartida->color_principal ?? 'default_color' }};
+            color: {{ $encuestaCompartida->color_texto ?? 'default_color' }};
+        }*/
+    </style>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4 mb-5">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2>{{ $encuestaCompartida->titulo }}</h2>
+    <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                @if($encuestaCompartida->logo)
+                    <img src="/images/{{ $encuestaCompartida->logo }}" alt="Logo de la Encuesta" height="50" class="me-2">
+                @endif
+                <h2 class="mb-0">{{ $encuestaCompartida->titulo }}</h2>
+            </div>
             <div>
                 <a href="{{ route('ecompartidas.index') }}" class="btn btn-secondary btn-sm">Volver a las encuestas compartidas</a>
             </div>
         </div>
+
         <hr>
 
         <form action="{{ route('ecompartidas.store', $encuestaCompartida->idEncuesta) }}" method="POST">
@@ -25,10 +41,8 @@
             </div>
 
             <div class="card">
-                <div class="card-header">
-                    Preguntas
-                </div>
-                <div class="card-body">
+
+                <div class="card-body" id="preguntas">
                     @foreach ($encuestaCompartida->preguntas as $pregunta)
                         <div class="card mt-2">
                             <div class="card-header">

@@ -20,6 +20,12 @@ class Encuesta extends Model
         'compartida', // Nuevo campo
         'compartirConTodos', // Nuevo campo
         'compartida_con', // Nuevo campo
+        'logo', // Nuevo campo
+        'color_principal', // Nuevo campo
+        'color_secundario', // Nuevo campo
+        'color_terciario', // Nuevo campo
+        'color_cuarto', // Nuevo campo
+        'color_quinto', // Nuevo campo
     ];
 
     // Relación con el modelo Usuario

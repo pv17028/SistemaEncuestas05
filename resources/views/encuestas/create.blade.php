@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('encuestas.store') }}">
+        <form method="POST" action="{{ route('encuestas.store') }}" enctype="multipart/form-data">
             @csrf
 
             {{-- Agregar el campo oculto para el idUsuario --}}
@@ -55,6 +55,39 @@
                 <div class="col-md-6 form-group mb-3">
                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
                     <input type="datetime-local" name="fechaVencimiento" id="fechaVencimiento" class="form-control" min="{{ $today }}" required>
+                </div>
+            </div>
+
+            {{-- Campos de personalización --}}
+            <div class="row">
+                <div class="col-md-4 form-group mb-3">
+                    <label for="logo">Logo</label>
+                    <input type="file" name="logo" id="logo" class="form-control-file">
+                </div>
+
+                <div class="col-md-4 form-group mb-3">
+                    <label for="color_principal">Color Principal</label>
+                    <input type="color" name="color_principal" id="color_principal" class="form-control" value="#ffffff">
+                </div>
+
+                <div class="col-md-4 form-group mb-3">
+                    <label for="color_secundario">Color Secundario</label>
+                    <input type="color" name="color_secundario" id="color_secundario" class="form-control" value="#000000">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 form-group mb-3">
+                    <label for="color_terciario">Color Tercero</label>
+                    <input type="color" name="color_terciario" id="color_terciario" class="form-control" value="#000000">
+                </div>
+                <div class="col-md-4 form-group mb-3">
+                    <label for="color_cuarto">Color cuarto</label>
+                    <input type="color" name="color_cuarto" id="color_cuarto" class="form-control" value="#000000">
+                </div>
+                <div class="col-md-4 form-group mb-3">
+                    <label for="color_quinto">Color Quinto</label>
+                    <input type="color" name="color_quinto" id="color_quinto" class="form-control" value="#000000">
                 </div>
             </div>
 
