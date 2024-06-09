@@ -66,14 +66,14 @@ class EncuestaExport implements FromCollection, WithHeadings
             ->select('R.fechaResultados', 'U.nombre', 'U.apellido', 'U.username', 'U.correoElectronico', 'E.titulo', 'E.descripcionEncuesta')
             ->get();*/
 
-        $encuestas = DB::table('encuestas')
+            $encuestas = DB::table('encuestas')
             ->join('users', 'users.id', '=', 'encuestas.idUsuario')
             ->join('preguntas', 'preguntas.idEncuesta', '=', 'encuestas.idEncuesta')
             ->join('opcions', 'opcions.idPregunta', '=', 'preguntas.idPregunta')
-            ->select('users.nombre', 'users.apellido', 'users.username', 'users.correoElectronico',
-                    'encuestas.titulo', 'encuestas.descripcionEncuesta',
-                    'preguntas.contenidoPregunta', 'opcions.contenidoOpcion')
-            ->distinct()
+            ->selectRaw('DISTINCT ON (preguntas."contenidoPregunta") 
+                         users."nombre", users."apellido", users."username", users."correoElectronico",
+                         encuestas."titulo", encuestas."descripcionEncuesta",
+                         preguntas."contenidoPregunta", opcions."contenidoOpcion"')
             ->orderBy('preguntas.contenidoPregunta')
             ->get();
         // Generar el PDF

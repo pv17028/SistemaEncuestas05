@@ -9,25 +9,27 @@
         <table class="table ">
             <thead>
                 <tr>
-                    <th>Fecha de Resultados </th>
                     <th>Nombre del encuestado</th>
                     <th>Apellido del encuestado </th>
                     <th>Nombre de Usuario </th>
                     <th>Correo Electrónico </th>
                     <th>Título de la encuesta </th>
                     <th>Descripción de la encuesta </th>
+                    <th>Contenido de la pregunta </th>
+                    <th>Respuesta seleccionada </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($encuestas as $encuesta)
                     <tr>
-                        <td>{{ \Carbon\Carbon::parse($encuesta->fechaResultados)->format('d-m-Y') }}</td>
                         <td>{{ $encuesta->nombre }} </td>
                         <td>{{ $encuesta->apellido }} </td>
                         <td>{{ $encuesta->username }} </td>
                         <td>{{ $encuesta->correoElectronico }} </td>
                         <td>{{ $encuesta->titulo }} </td>
                         <td>{{ $encuesta->descripcionEncuesta }} </td>
+                        <td>{{ $encuesta->contenidoPregunta }} </td>
+                        <td>{{ $encuesta->contenidoOpcion }} </td>
                     </tr>
                 @endforeach
             </tbody>
