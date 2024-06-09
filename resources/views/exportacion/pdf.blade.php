@@ -1,12 +1,49 @@
 
 <html>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<head>
-    <title>Reporte encuesta</title>
-</head>
+    <head>
+        <title>Reporte encuesta</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+        body {
+                font-family: 'Times New Roman', sans-serif;
+            }
+            .container {
+                width: 100%;
+                margin: 0 auto;
+            }
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+                font-size: 11px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 1rem;
+                background-color: transparent;
+            }
+            th, td {
+                border: 1px solid #dee2e6;
+                padding: 0.75rem;
+                vertical-align: top;
+            }
+            th {
+                background-color: #f8f9fa;
+                text-align: left;
+            }
+            thead th {
+                vertical-align: bottom;
+                border-bottom: 2px solid #dee2e6;
+            }
+            tbody + tbody {
+                border-top: 2px solid #dee2e6;
+            }
+        </style>
+    </head>
 <body>
 <h2>Reporte de Encuesta</h2>
-        <table class="table ">
+    <div>
+        <table class="table-responsive">
             <thead>
                 <tr>
                     <th>Nombre del encuestado</th>
@@ -34,5 +71,6 @@
                 @endforeach
             </tbody>
     </table>
+    </div>
 </body>
 </html>
