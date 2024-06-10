@@ -23,7 +23,7 @@
         @if ($users->isEmpty())
             <p>No hay usuarios.</p>
         @else
-            <table class="table table-striped">
+            <table class="table table-striped" id="users">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -57,6 +57,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <script>
+                $(document).ready(function() {
+                    $('#users').DataTable();
+                });
+            </script>
         @endif
     </main>
 @endsection

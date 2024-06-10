@@ -124,6 +124,12 @@ class EncuestaController extends Controller
             'descripcionEncuesta' => 'required|string',
             'grupoMeta' => 'required|string|max:255',
             'fechaVencimiento' => 'required|date_format:Y-m-d\TH:i',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'color_principal' => 'nullable|string|max:7',
+            'color_secundario' => 'nullable|string|max:7',
+            'color_terciario' => 'nullable|string|max:7',
+            'color_cuarto' => 'nullable|string|max:7',
+            'color_quinto' => 'nullable|string|max:7',
         ]);
 
         // Actualizar la encuesta con los datos del formulario
@@ -133,7 +139,21 @@ class EncuestaController extends Controller
             'descripcionEncuesta' => $request->descripcionEncuesta,
             'grupoMeta' => $request->grupoMeta,
             'fechaVencimiento' => $request->fechaVencimiento,
+            'color_principal' => $request->color_principal,
+            'color_secundario' => $request->color_secundario,
+            'color_terciario' => $request->color_terciario,
+            'color_cuarto' => $request->color_cuarto,
+            'color_quinto' => $request->color_quinto,
         ]);
+
+        // Subir el logo de la encuesta
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            $logoNombre = time() . '.' . $logo->getClientOriginalExtension();
+            $logo->move(public_path('images'), $logoNombre);
+            $encuesta->logo = $logoNombre;
+            $encuesta->save();
+        }
 
         // Redirigir al usuario a los detalles de la encuesta
         return redirect()->route('encuestas.show', ['encuesta' => $encuesta->idEncuesta])

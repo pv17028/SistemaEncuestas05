@@ -22,7 +22,7 @@
         @if ($encuestasCompartidas->isEmpty())
             <p>No hay encuestas compartidas.</p>
         @else
-            <table class="table">
+            <table class="table" id="encuestasCompartidas">
                 <thead>
                     <tr>
                         <th>Título</th>
@@ -47,6 +47,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <script>
+                $(document).ready(function() {
+            $('#encuestasCompartidas').DataTable();
+        });
+                </script>
         @endif
     </main>
 @endsection

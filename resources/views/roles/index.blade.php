@@ -25,7 +25,7 @@
         @if ($roles->isEmpty())
             <p>No hay roles.</p>
         @else
-            <table class="table">
+            <table class="table" id="roles">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -53,6 +53,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <script>
+                $(document).ready(function() {
+                    $('#roles').DataTable();
+                });
+            </script>
         @endif
     </main>
 @endsection

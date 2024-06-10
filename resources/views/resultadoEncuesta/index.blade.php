@@ -22,7 +22,7 @@
         @if ($encuestas->isEmpty())
             <p>No hay encuestas.</p>
         @else
-            <table class="table">
+            <table class="table" id="resultados">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -45,6 +45,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <script>
+                $(document).ready(function() {
+                    $('#resultados').DataTable();
+                });
+            </script>
         @endif
     </main>
 @endsection

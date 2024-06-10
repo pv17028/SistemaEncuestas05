@@ -23,7 +23,7 @@
         @if ($bloqueos->isEmpty())
             <p>No hay bloqueos.</p>
         @else
-            <table class="table">
+            <table class="table" id="bloqueos">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -66,6 +66,12 @@
                     @endforeach
                 </tbody>
             </table>
+            <script>
+                $(document).ready(function() {
+                    $('#bloqueos').DataTable();
+                });
+            </script>
+            
         @endif
     </main>
 @endsection
