@@ -118,6 +118,7 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
 });    
 //Rutas para la exportación de encuestas
     Route::get('/exportacion', [ExportacionController::class, 'index'])->name('exportacion.index');
-    Route::get('/exportacion/excel',[ExportacionController::class, 'exportToExcel'])->name('exportacion.excel');
-    Route::get('/exportacion/pdf',[ExportacionController::class, 'exportToPDF'])->name('exportacion.pdf');
+    Route::get('/exportacion/excel/{idEncuesta}',[ExportacionController::class, 'exportToExcel'])->name('exportacion.excel');
+    Route::get('/exportacion/pdf/{idEncuesta}',[ExportacionController::class, 'exportToPDF'])->name('exportacion.pdf');
+    Route::get('/exportacion/reporteGeneralPdf',[ExportacionController::class, 'reporteGeneralPdf'])->name('exportacion.reporteGeneralPdf');
     

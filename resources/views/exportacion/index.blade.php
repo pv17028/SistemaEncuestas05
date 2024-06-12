@@ -8,6 +8,8 @@
         <p>Seleccione la encuesta y el formato para exportarla</p>
 
         <h2>Lista de Encuestas</h2>
+        <a class="btn btn-primary" href="{{ route('exportacion.reporteGeneralPdf') }}">Generar reporte general</a>
+
         <table class="table">
             <thead>
                 <tr>
@@ -24,14 +26,14 @@
                         <td>{{ \Carbon\Carbon::parse($encuesta->created_at)->format('d-m-Y g:i:s A') }}</td>
                         <td>{{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('exportacion.excel') }}"
+                            <a href="{{ route('exportacion.excel', $encuesta->idEncuesta) }}"
                                 class="btn btn-sm btn-success">EXCEL</a>
-                            <a href="{{ route('exportacion.pdf') }}"
+                            <a href="{{ route('exportacion.pdf', $encuesta->idEncuesta) }}"
                                 class="btn btn-sm btn-danger">PDF</a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
-    </div>
+            </div>
 </main>
 @endsection
