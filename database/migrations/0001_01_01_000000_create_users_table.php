@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('idBloqueUsuario')->nullable();
             $table->string('nombre', 100);
             $table->string('apellido', 100);
+            $table->string('imagenPerfil')->nullable();
             $table->string('correoElectronico', 100)->unique();
             $table->string('fechaNacimiento', 10);
             $table->string('username', 50)->unique();

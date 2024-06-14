@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('color_terciario')->nullable()->after('color_secundario');
             $table->string('color_cuarto')->nullable()->after('color_terciario');
             $table->string('color_quinto')->nullable()->after('color_cuarto');
+            $table->string('color_sexto')->nullable()->after('color_quinto');
+            $table->string('color_septimo')->nullable()->after('color_sexto');
         });
     }
 
@@ -33,6 +35,8 @@ return new class extends Migration
             $table->dropColumn('color_terciario');
             $table->dropColumn('color_cuarto');
             $table->dropColumn('color_quinto');
+            $table->dropColumn('color_sexto');
+            $table->dropColumn('color_septimo');
         });
     }
 };

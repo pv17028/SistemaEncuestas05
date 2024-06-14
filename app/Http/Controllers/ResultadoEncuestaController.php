@@ -11,15 +11,15 @@ class ResultadoEncuestaController extends Controller
     public function index()
     {
         $encuestas = Encuesta::orderBy('titulo', 'asc')->get();
-
+    
         foreach ($encuestas as $encuesta) {
-            $encuesta->respuestas_agrupadas = $encuesta->respuestas()
+            $encuesta->respuestas_agrupadas = $encuesta->encuesta_usuario()
                 ->selectRaw("DATE_TRUNC('second', created_at) as fecha_hora")
                 ->groupBy('fecha_hora')
                 ->get()
                 ->count();
         }
-
+    
         return view('resultadoEncuesta.index', ['encuestas' => $encuestas]);
     }
 

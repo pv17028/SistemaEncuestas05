@@ -16,15 +16,12 @@ class EncuestaController extends Controller
         $encuestas = Encuesta::where('idUsuario', $idUsuario)
             ->orderBy('titulo')
             ->get();
-
+    
         foreach ($encuestas as $encuesta) {
-            $encuesta->respuestas_agrupadas = $encuesta->respuestas()
-                ->selectRaw("DATE_TRUNC('second', created_at) as fecha_hora")
-                ->groupBy('fecha_hora')
-                ->get()
+            $encuesta->respuestas_agrupadas = $encuesta->encuesta_usuario()
                 ->count();
         }
-
+    
         return view('encuestas.index', compact('encuestas'));
     }
 
@@ -47,6 +44,11 @@ class EncuestaController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'color_principal' => 'nullable|string|max:7',
             'color_secundario' => 'nullable|string|max:7',
+            'color_terciario' => 'nullable|string|max:7',
+            'color_cuarto' => 'nullable|string|max:7',
+            'color_quinto' => 'nullable|string|max:7',
+            'color_sexto' => 'nullable|string|max:7',
+            'color_septimo' => 'nullable|string|max:7',
         ]);
 
         // Crear la encuesta con el idUsuario del usuario autenticado
@@ -57,6 +59,7 @@ class EncuestaController extends Controller
         $encuesta->grupoMeta = $request->grupoMeta;
         $encuesta->fechaVencimiento = $request->fechaVencimiento;
         $encuesta->idUsuario = $request->idUsuario; // Asignar el idUsuario del formulario
+        $encuesta->es_anonima = $request->es_anonima;
 
         // Subir el logo de la encuesta
         if ($request->hasFile('logo')) {
@@ -72,6 +75,8 @@ class EncuestaController extends Controller
         $encuesta->color_terciario = $request->color_terciario;
         $encuesta->color_cuarto = $request->color_cuarto;
         $encuesta->color_quinto = $request->color_quinto;
+        $encuesta->color_sexto = $request->color_sexto;
+        $encuesta->color_septimo = $request->color_septimo;
 
         $encuesta->save();
 
@@ -124,12 +129,15 @@ class EncuestaController extends Controller
             'descripcionEncuesta' => 'required|string',
             'grupoMeta' => 'required|string|max:255',
             'fechaVencimiento' => 'required|date_format:Y-m-d\TH:i',
+            'es_anonima' => 'required|boolean',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'color_principal' => 'nullable|string|max:7',
             'color_secundario' => 'nullable|string|max:7',
             'color_terciario' => 'nullable|string|max:7',
             'color_cuarto' => 'nullable|string|max:7',
             'color_quinto' => 'nullable|string|max:7',
+            'color_sexto' => 'nullable|string|max:7',
+            'color_septimo' => 'nullable|string|max:7',
         ]);
 
         // Actualizar la encuesta con los datos del formulario
@@ -139,11 +147,14 @@ class EncuestaController extends Controller
             'descripcionEncuesta' => $request->descripcionEncuesta,
             'grupoMeta' => $request->grupoMeta,
             'fechaVencimiento' => $request->fechaVencimiento,
+            'es_anonima' => $request->es_anonima,
             'color_principal' => $request->color_principal,
             'color_secundario' => $request->color_secundario,
             'color_terciario' => $request->color_terciario,
             'color_cuarto' => $request->color_cuarto,
             'color_quinto' => $request->color_quinto,
+            'color_sexto' => $request->color_sexto,
+            'color_septimo' => $request->color_septimo,
         ]);
 
         // Subir el logo de la encuesta

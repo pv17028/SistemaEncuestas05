@@ -107,16 +107,25 @@
                 {{ $encuesta->titulo }}
             </div>
             <div class="card-body">
-                <p><strong>Objetivo:</strong> {{ $encuesta->objetivo }}</p>
-                <p><strong>Descripción:</strong> {{ $encuesta->descripcionEncuesta }}</p>
-                <p><strong>Grupo Meta:</strong> {{ $encuesta->grupoMeta }}</p>
-                <p><strong>Fecha de Creación:</strong>
-                    {{ \Carbon\Carbon::parse($encuesta->created_at)->format('d-m-Y g:i:s A') }}</p>
-                <p><strong>Fecha de Vencimiento:</strong>
-                    {{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y g:i:s A') }}</p>
-                <p><strong>Número de Preguntas:</strong> {{ $encuesta->preguntas->count() }}</p>
-                <p><strong>Total de Respuestas:</strong> {{ $encuesta->respuestasCount->first()->total ?? '0' }}</p>
-                {{-- Aquí puedes agregar cualquier otra información que desees mostrar --}}
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Logo:</strong></p>
+                        <img src="{{ asset('images/' . $encuesta->logo) }}" alt="Logo de la encuesta" style="max-width: 60%;">
+                    </div>
+                    <div class="col-md-8">
+                        <p><strong>Objetivo:</strong> {{ $encuesta->objetivo }}</p>
+                        <p><strong>Descripción:</strong> {{ $encuesta->descripcionEncuesta }}</p>
+                        <p><strong>Grupo Meta:</strong> {{ $encuesta->grupoMeta }}</p>
+                        <p><strong>Encuesta Anónima:</strong> {{ $encuesta->es_anonima ? 'Sí' : 'No' }}</p>
+                        <p><strong>Fecha de Creación:</strong>
+                            {{ \Carbon\Carbon::parse($encuesta->created_at)->format('d-m-Y g:i:s A') }}</p>
+                        <p><strong>Fecha de Vencimiento:</strong>
+                            {{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y g:i:s A') }}</p>
+                        <p><strong>Número de Preguntas:</strong> {{ $encuesta->preguntas->count() }}</p>
+                        <p><strong>Total de Respuestas:</strong> {{ $encuesta->respuestasCount->first()->total ?? '0' }}</p>
+                        {{-- Aquí puedes agregar cualquier otra información que desees mostrar --}}
+                    </div>
+                </div>
             </div>
         </div>
     </main>

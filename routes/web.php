@@ -109,6 +109,8 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::get('/encuestas-compartidas', [EncuestasCompartidasController::class, 'index'])->name('ecompartidas.index');
     Route::get('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'show'])->name('ecompartidas.show');
     Route::post('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'store'])->name('ecompartidas.store');
+    Route::get('/encuestas-compartidas/{idEncuesta}/edit', [EncuestasCompartidasController::class, 'edit'])->name('ecompartidas.edit');
+    Route::put('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'update'])->name('ecompartidas.update');
 });
 
 

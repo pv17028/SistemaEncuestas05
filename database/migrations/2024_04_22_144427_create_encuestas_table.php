@@ -21,9 +21,10 @@ class CreateEncuestasTable extends Migration
             $table->text('descripcionEncuesta');
             $table->string('grupoMeta');
             $table->dateTime('fechaVencimiento');
-            $table->boolean('compartida')->default(false); // Campo existente
-            $table->boolean('compartirConTodos')->default(false); // Nuevo campo
-            $table->text('compartida_con')->nullable(); // Nuevo campo
+            $table->boolean('compartida')->default(false); 
+            $table->boolean('compartirConTodos')->default(false); 
+            $table->text('compartida_con')->nullable(); 
+            $table->boolean('es_anonima')->default(false); 
             $table->timestamps();
             
             // Foreign key constraint

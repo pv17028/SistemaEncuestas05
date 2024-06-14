@@ -30,6 +30,7 @@ class User extends Authenticatable
         'idBloqueUsuario',
         'nombre',
         'apellido',
+        'imagenPerfil',
         'correoElectronico',
         'fechaNacimiento',
         'username',

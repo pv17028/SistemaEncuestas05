@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('profile.update') }}">
+        <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -41,10 +41,21 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="correoElectronico">Correo electrónico</label>
-                        <input type="email" class="form-control" id="correoElectronico" name="correoElectronico"
-                            value="{{ auth()->user()->correoElectronico }}">
+                        <label for="imagenPerfil">Imagen de perfil</label>
+                        <input type="file" class="form-control" id="imagenPerfil" name="imagenPerfil" onchange="previewImage(event)">
+                        <img id="preview" src="{{ asset('imagenPerfil/' . $user->imagenPerfil) }}" style="margin-top: 10px; max-width: 25%; height: auto;">
                     </div>
+                    
+                    <script>
+                        function previewImage(event) {
+                            var reader = new FileReader();
+                            reader.onload = function(){
+                                var output = document.getElementById('preview');
+                                output.src = reader.result;
+                            };
+                            reader.readAsDataURL(event.target.files[0]);
+                        }
+                    </script>
                 </div>
 
                 <div class="col-md-6">
@@ -52,6 +63,12 @@
                         <label for="username">Nombre de usuario</label>
                         <input type="text" class="form-control" id="username" name="username"
                             value="{{ auth()->user()->username }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="correoElectronico">Correo electrónico</label>
+                        <input type="email" class="form-control" id="correoElectronico" name="correoElectronico"
+                            value="{{ auth()->user()->correoElectronico }}">
                     </div>
 
                     <div class="form-group mb-3">

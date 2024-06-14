@@ -10,12 +10,25 @@
         </div>
         <hr>
 
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label><strong>Imagen de perfil</strong></label>
                     <br>
-                    <img src="{{ auth()->user()->profile_image }}" alt="Imagen de perfil" class="img-thumbnail">
+                    <img src="{{ asset('imagenPerfil/' . auth()->user()->imagenPerfil) }}" alt="Imagen de perfil"
+                        class="img-thumbnail" style="max-width: 60%;">
                 </div>
             </div>
 

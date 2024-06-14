@@ -7,6 +7,7 @@ use App\Models\Rol;
 use App\Models\BloqueoUsuario;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -131,7 +132,9 @@ class UserController extends Controller
 
     public function editProfile()
     {
-        return view('profile.edit');
+        $user = Auth::user();
+    
+        return view('profile.edit', ['user' => $user]);
     }
 
     public function updateProfile(Request $request)
@@ -139,21 +142,29 @@ class UserController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
+            'imagenPerfil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // 'max:2048' es 2MB
             'correoElectronico' => 'required|string|email|max:255|unique:users,correoElectronico,' . auth()->id(),
             'fechaNacimiento' => 'required|date',
             'username' => 'required|string|max:255|unique:users,username,' . auth()->id(),
             'password' => 'nullable|string|min:8|confirmed',
         ]);
-
+    
         $user = auth()->user();
+ 
         $user->fill($request->except('password'));
-
+    
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 
-        $user->save();
-
+        if ($request->hasFile('imagenPerfil')) {
+            $imagenPerfil = $request->file('imagenPerfil');
+            $nombreImagen = time() . '.' . $imagenPerfil->getClientOriginalExtension();
+            $imagenPerfil->move(public_path('imagenPerfil'), $nombreImagen);
+            $user->imagenPerfil = $nombreImagen;
+            $user->save();
+        }
+    
         return redirect()->route('profile.show')->with('success', 'Perfil actualizado con éxito');
     }
 }

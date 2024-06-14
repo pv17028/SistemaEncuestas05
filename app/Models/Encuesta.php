@@ -17,15 +17,18 @@ class Encuesta extends Model
         'descripcionEncuesta',
         'grupoMeta',
         'fechaVencimiento',
-        'compartida', // Nuevo campo
-        'compartirConTodos', // Nuevo campo
-        'compartida_con', // Nuevo campo
-        'logo', // Nuevo campo
-        'color_principal', // Nuevo campo
-        'color_secundario', // Nuevo campo
-        'color_terciario', // Nuevo campo
-        'color_cuarto', // Nuevo campo
-        'color_quinto', // Nuevo campo
+        'compartida',
+        'compartirConTodos',
+        'compartida_con',
+        'es_anonima',
+        'logo',
+        'color_principal',
+        'color_secundario',
+        'color_terciario',
+        'color_cuarto',
+        'color_quinto',
+        'color_sexto',
+        'color_septimo',
     ];
 
     // Relación con el modelo Usuario
@@ -61,6 +64,11 @@ class Encuesta extends Model
 
     public function respuestas()
     {
-        return $this->hasMany(Respuesta::class, 'encuesta_id');
+        return $this->hasMany(Respuesta::class, 'encuesta_id', 'idEncuesta');
+    }
+
+    public function encuesta_usuario()
+    {
+        return $this->hasOne(EncuestaUsuario::class, 'encuesta_id');
     }
 }

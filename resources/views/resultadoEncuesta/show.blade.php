@@ -23,7 +23,7 @@
             </div>
         @endif
 
-        @foreach ($encuesta->preguntas as $pregunta)
+        @forelse ($encuesta->preguntas as $pregunta)
             @if ($pregunta->opciones->count() > 0)
                 <h3>{{ $pregunta->contenidoPregunta }}</h3>
                 <p><strong>Tipo de pregunta:</strong> {{ $pregunta->tipoPregunta->nombreTipoPregunta }}</p>
@@ -53,6 +53,8 @@
                     @endforeach
                 </ul>
             @endif
-        @endforeach
+        @empty
+            <p>No hay resultados para mostrar.</p>
+        @endforelse
     </main>
 @endsection

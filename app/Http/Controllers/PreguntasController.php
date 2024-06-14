@@ -45,11 +45,13 @@ class PreguntasController extends Controller
             'posicionPregunta' => 'integer',
         ]);
 
-        $pregunta = preguntas::where('contenidoPregunta', $request->input('contenidoPregunta'))->first();
+        $pregunta = preguntas::where('idEncuesta', $request->input('idEncuesta'))
+                             ->where('contenidoPregunta', $request->input('contenidoPregunta'))
+                             ->first();
 
         if ($pregunta) {
             return redirect()->route('preguntas.create', ['idEncuesta' => $request->idEncuesta])
-                ->with('error', 'La pregunta ya existe.');
+                    ->with('error', 'La pregunta ya existe en esta encuesta.');
         }
 
         // Obtener el ID del tipo de pregunta basado en su nombre
@@ -287,11 +289,21 @@ class PreguntasController extends Controller
             'posicionPregunta' => 'integer',
         ]);
 
-        $pregunta = preguntas::find($id);
-
+        $preguntaExistente = Preguntas::where('idEncuesta', $request->input('idEncuesta'))
+                                      ->where('contenidoPregunta', $request->input('contenidoPregunta'))
+                                      ->where('id', '!=', $id)
+                                      ->first();
+        
+        if ($preguntaExistente) {
+            return redirect()->route('preguntas.edit', ['id' => $id, 'idEncuesta' => $request->idEncuesta])
+                    ->with('error', 'La pregunta ya existe en esta encuesta.');
+        }
+        
+        $pregunta = Preguntas::find($id);
+        
         if (!$pregunta) {
             return redirect()->route('preguntas.index', ['idEncuesta' => $request->idEncuesta])
-                ->with('error', 'La pregunta no existe.');
+                    ->with('error', 'La pregunta no existe.');
         }
 
         $tipoPregunta = TipoPregunta::where('nombreTipoPregunta', $request->input('idTipoPregunta'))->first();

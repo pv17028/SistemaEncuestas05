@@ -23,6 +23,12 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('preguntas.store', ['idEncuesta' => $idEncuesta]) }}">
             @csrf
             <input type="hidden" name="idEncuesta" value="{{ $idEncuesta }}">

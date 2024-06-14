@@ -90,17 +90,22 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 {{-- <input class="form-control form-control-dark w-100" type="text" placeholder="Buscar" aria-label="Buscar"> --}}
-                <div class="container-fluid d-flex justify-content-center">
+                {{-- <div class="container-fluid d-flex justify-content-center">
                     <form class="d-flex" style="height: 40px">
                         <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search"
                             style="border-radius: 5px; width: 400px;">
                         <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
                     </form>
-                </div>
+                </div> --}}
                 <div class="dropdown" style="height: 49px;">
                     <div class="nav-item dropdown text-nowrap h-100">
                         <a class="nav-link dropdown-toggle px-3 text-light h-100 d-flex align-items-center" href="#"
                             id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @if(Auth::user()->imagenPerfil)
+                                <img src="{{ asset('imagenPerfil/' . Auth::user()->imagenPerfil) }}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                            @else
+                                <i class="fas fa-user-circle text-white" style="font-size: 30px; margin-right: 10px;"></i>
+                            @endif
                             {{ Auth::user()->nombre }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu" aria-labelledby="navbarDropdown">
@@ -285,6 +290,9 @@
 @auth
     <footer class="bg-dark text-white text-center py-2 fixed-bottom">
         Sistema de encuestas - SurveyPro - Grupo 05 &copy; {{ date('Y') }}
+        <div style="color: white;">
+            Hora del sistema: {{ now()->format('h:i A') }}
+        </div>
     </footer>
 @endauth
 

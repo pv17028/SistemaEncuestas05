@@ -26,9 +26,8 @@
                 <thead>
                     <tr>
                         <th>Título</th>
-                        <th>Objetivo</th>
-                        <th>Descripción</th>
-                        <th>Grupo Meta</th>
+                        <th>Fecha de Vencimiento</th>
+                        <th>Anonima</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -36,12 +35,20 @@
                     @foreach ($encuestasCompartidas as $encuesta)
                         <tr>
                             <td>{{ $encuesta->titulo }}</td>
-                            <td>{{ $encuesta->objetivo }}</td>
-                            <td>{{ $encuesta->descripcionEncuesta }}</td>
-                            <td>{{ $encuesta->grupoMeta }}</td>
+                            <td>{{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y g:i:s A') }}</td>
+                            <td>{{ $encuesta->es_anonima ? 'Sí' : 'No' }}</td>
                             <td>
-                                <a href="{{ route('ecompartidas.show', $encuesta->idEncuesta) }}"
-                                    class="btn btn-sm btn-info">Responder</a>
+                                @if($encuesta->encuesta_usuario)
+                                    @if($encuesta->encuesta_usuario->completa)
+                                        <span>Ya respondí la encuesta</span>
+                                    @elseif($encuesta->encuesta_usuario->preguntas_no_respondidas)
+                                        <a href="{{ route('ecompartidas.edit', $encuesta->idEncuesta) }}" class="btn btn-sm btn-info">Continuar respondiendo</a>
+                                    @else
+                                        <a href="{{ route('ecompartidas.show', $encuesta->idEncuesta) }}" class="btn btn-sm btn-info">Responder</a>
+                                    @endif
+                                @else
+                                    <a href="{{ route('ecompartidas.show', $encuesta->idEncuesta) }}" class="btn btn-sm btn-info">Responder</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pregunta_id');
             $table->unsignedBigInteger('opcion_id')->nullable();
             $table->text('respuesta_abierta')->nullable();
-            $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('usuario_id')->nullable();
             $table->timestamps();
 
             $table->foreign('encuesta_id')->references('idEncuesta')->on('encuestas')->onDelete('cascade');
