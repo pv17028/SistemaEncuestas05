@@ -22,6 +22,12 @@
             </div>
         @endif
 
+        @if (session('warning'))
+            <div class="alert alert-warning">
+                {{ session('warning') }}
+            </div>
+        @endif
+
         @if ($roles->isEmpty())
             <p>No hay roles.</p>
         @else

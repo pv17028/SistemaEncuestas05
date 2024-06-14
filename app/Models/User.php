@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class User extends Authenticatable
 {
@@ -64,10 +65,32 @@ class User extends Authenticatable
     }
 
     // Definición de las relaciones con los otros modelos
-
     public function role()
     {
         return $this->belongsTo(Rol::class, 'idRol');
+    }
+    
+    public function hasPrivilege($routeName)
+    {
+        // Obtiene los privilegios del rol del usuario
+        if ($this->role) {
+            $privileges = $this->role->privilegios->pluck('url');
+    
+            // Lanza una excepción si $privileges está vacío
+            if ($privileges->isEmpty()) {
+                throw new AuthorizationException('Este rol no tiene privilegios asociados.');
+            }
+        } else {
+            // Lanza una excepción si $this->role es null
+            throw new AuthorizationException('No tienes permiso para acceder a esta página.');
+        }
+        
+        // Comprueba si alguno de los privilegios coincide con la ruta dada
+        if (!$privileges->contains($routeName)) {
+            throw new AuthorizationException('No tienes permiso para acceder a esta página.');
+        }
+    
+        return true;
     }
 
     public function bloqueosUsuario()

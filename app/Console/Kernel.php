@@ -22,4 +22,9 @@ class Kernel extends ConsoleKernel
         Log::info('Scheduling commands');
         $schedule->command('surveys:unshare-expired')->everyMinute();
     }
+
+    protected $routeMiddleware = [
+        // ...
+        'privileges' => \App\Http\Middleware\CheckUserPrivileges::class,
+    ];
 }

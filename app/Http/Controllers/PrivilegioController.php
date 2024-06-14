@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Privilegio;
+use Illuminate\Support\Facades\DB;
 
 class PrivilegioController extends Controller
 {
@@ -14,8 +15,8 @@ class PrivilegioController extends Controller
      */
     public function index()
     {
-        $privilegios = Privilegio::all();
-        return view('privilegio.index', compact('privilegios'));
+        $privilegios = Privilegio::orderBy('idPrivilegio')->get();
+        return view('privilegios.index', compact('privilegios'));
     }
 
     /**
@@ -25,7 +26,7 @@ class PrivilegioController extends Controller
      */
     public function create()
     {
-        return view('privilegio.create');
+        return view('privilegios.create');
     }
 
     /**
@@ -39,12 +40,12 @@ class PrivilegioController extends Controller
         $request->validate([
             'nombrePrivilegio' => 'required|string|max:50',
             'descripcionPrivilegio' => 'nullable|string|max:256',
-            'idRol' => 'required|exists:App\Models\Rol,idRol',
+            'url' => 'required|string|max:256',
         ]);
-
+    
         Privilegio::create($request->all());
-        
-        return redirect()->route('privilegio.index')->with('success', 'Privilegio creado correctamente.');
+    
+        return redirect()->route('privilegios.index')->with('success', 'Privilegio creado correctamente.');
     }
 
     /**
@@ -55,7 +56,7 @@ class PrivilegioController extends Controller
      */
     public function show(Privilegio $privilegio)
     {
-        return view('privilegio.show', compact('privilegio'));
+        return view('privilegios.show', compact('privilegio'));
     }
 
     /**
@@ -66,7 +67,7 @@ class PrivilegioController extends Controller
      */
     public function edit(Privilegio $privilegio)
     {
-        return view('privilegio.edit', compact('privilegio'));
+        return view('privilegios.edit', compact('privilegio'));
     }
 
     /**
@@ -81,12 +82,12 @@ class PrivilegioController extends Controller
         $request->validate([
             'nombrePrivilegio' => 'required|string|max:50',
             'descripcionPrivilegio' => 'nullable|string|max:256',
-            'idRol' => 'required|exists:App\Models\Rol,idRol',
+            'url' => 'required|string|max:256',
         ]);
-
+    
         $privilegio->update($request->all());
-
-        return redirect()->route('privilegio.index')->with('success', 'Privilegio actualizado correctamente.');
+    
+        return redirect()->route('privilegios.index')->with('success', 'Privilegio actualizado correctamente.');
     }
 
     /**
@@ -97,8 +98,12 @@ class PrivilegioController extends Controller
      */
     public function destroy(Privilegio $privilegio)
     {
+        // Elimina todas las referencias al privilegio en la tabla rol_privilegio
+        DB::table('rol_privilegio')->where('idPrivilegio', $privilegio->idPrivilegio)->delete();
+    
+        // Ahora puedes eliminar el privilegio
         $privilegio->delete();
-
-        return redirect()->route('privilegio.index')->with('success', 'Privilegio eliminado correctamente.');
+    
+        return redirect()->route('privilegios.index')->with('success', 'Privilegio eliminado correctamente.');
     }
 }

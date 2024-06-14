@@ -27,8 +27,12 @@
                 <div class="form-group">
                     <label><strong>Imagen de perfil</strong></label>
                     <br>
-                    <img src="{{ asset('imagenPerfil/' . auth()->user()->imagenPerfil) }}" alt="Imagen de perfil"
-                        class="img-thumbnail" style="max-width: 60%;">
+                    @if(auth()->user()->imagenPerfil)
+                        <img src="{{ asset('imagenPerfil/' . auth()->user()->imagenPerfil) }}" alt="Imagen de perfil"
+                            class="img-thumbnail" style="max-width: 60%;">
+                    @else
+                        <i class="fas fa-user fa-10x img-thumbnail"></i>
+                    @endif
                 </div>
             </div>
 

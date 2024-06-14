@@ -10,12 +10,15 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckUserBlocked;
+use App\Http\Middleware\CheckUserPrivileges;
 use App\Http\Controllers\PreguntasController;
 use App\Http\Controllers\OpcionController;
 use App\Http\Controllers\GestionEncuestasController;
 use App\Http\Controllers\EncuestasCompartidasController;
 use App\Http\Controllers\ResultadoEncuestaController;
 use App\Http\Controllers\ExportacionController;
+use App\Http\Controllers\PrivilegioController;
+
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])
@@ -24,7 +27,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])
 
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->group(function () {
     Route::get('/encuestas', [EncuestaController::class, 'index'])->name('encuestas.index');
     Route::get('/encuestas/create', [EncuestaController::class, 'create'])->name('encuestas.create');
     Route::post('/encuestas', [EncuestaController::class, 'store'])->name('encuestas.store');
@@ -36,7 +39,7 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::post('/encuestas/{idEncuesta}/unshare', [EncuestaController::class, 'unshare'])->name('encuestas.unshare');
 });
 
-Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
     Route::get('/roles', [RolController::class, 'index'])->name('roles.index');
     Route::get('/roles/create', [RolController::class, 'create'])->name('roles.create');
     Route::post('/roles', [RolController::class, 'store'])->name('roles.store');
@@ -46,7 +49,17 @@ Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->gr
     Route::delete('/roles/{rol}', [RolController::class, 'destroy'])->name('roles.destroy');
 });
 
-Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
+    Route::get('/privilegios', [PrivilegioController::class, 'index'])->name('privilegios.index');
+    Route::get('/privilegios/create', [PrivilegioController::class, 'create'])->name('privilegios.create');
+    Route::post('/privilegios', [PrivilegioController::class, 'store'])->name('privilegios.store');
+    Route::get('/privilegios/{privilegio}', [PrivilegioController::class, 'show'])->name('privilegios.show');
+    Route::get('/privilegios/{privilegio}/edit', [PrivilegioController::class, 'edit'])->name('privilegios.edit');
+    Route::put('/privilegios/{privilegio}', [PrivilegioController::class, 'update'])->name('privilegios.update');
+    Route::delete('/privilegios/{privilegio}', [PrivilegioController::class, 'destroy'])->name('privilegios.destroy');
+});
+
+Route::middleware(['auth', CheckUserPrivileges::class, AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
@@ -56,13 +69,13 @@ Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->gr
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
-Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->group(function () {
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 });
 
-Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
     Route::get('/bloqueos', [BloqueoUsuarioController::class, 'index'])->name('bloqueos.index');
     Route::get('/bloqueos/create', [BloqueoUsuarioController::class, 'create'])->name('bloqueos.create');
     Route::post('/bloqueos', [BloqueoUsuarioController::class, 'store'])->name('bloqueos.store');
@@ -73,12 +86,12 @@ Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->gr
     Route::put('/bloqueos/{bloqueo}/desbloquear', [BloqueoUsuarioController::class, 'desbloquear'])->name('bloqueos.desbloquear');
 });
 
-Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->group(function () {
     Route::get('/gestionEncuestas', [GestionEncuestasController::class, 'index'])->name('gestionEncuestas.index');
     // Agrega más rutas para gestionEncuestas según sea necesario
 });
 
-Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, AdminMiddleware::class, CheckUserBlocked::class])->group(function () {
     Route::get('/tiposPreguntas', [TipoPreguntaController::class, 'index'])->name('tiposPreguntas.index');
     Route::get('/tiposPreguntas/create', [TipoPreguntaController::class, 'create'])->name('tiposPreguntas.create');
     Route::post('/tiposPreguntas', [TipoPreguntaController::class, 'store'])->name('tiposPreguntas.store');
@@ -88,7 +101,7 @@ Route::middleware(['auth', AdminMiddleware::class, CheckUserBlocked::class])->gr
     Route::delete('/tiposPreguntas/{tipoPregunta}', [TipoPreguntaController::class, 'destroy'])->name('tiposPreguntas.destroy');
 });
 
-Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->group(function () {
     Route::get('/preguntas/{idEncuesta}', [PreguntasController::class, 'index'])->name('preguntas.index');
     Route::get('/preguntas/create/{idEncuesta}', [PreguntasController::class, 'create'])->name('preguntas.create');
     Route::post('/preguntas/{idEncuesta}', [PreguntasController::class, 'store'])->name('preguntas.store');
@@ -97,15 +110,16 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::put('/preguntas/{idEncuesta}/{preguntas}', [PreguntasController::class, 'update'])->name('preguntas.update');
     Route::delete('/preguntas/{idEncuesta}/{preguntas}', [PreguntasController::class, 'destroy'])->name('preguntas.destroy');
 });
+
 // Rutas anidadas para opciones dentro de preguntas
-Route::middleware(['auth', CheckUserBlocked::class])->prefix('preguntas/{preguntas}')->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->prefix('preguntas/{preguntas}')->group(function () {
     Route::post('opciones', [OpcionController::class, 'store'])->name('preguntas.opciones.store');
     Route::put('opciones/{opcion}', [OpcionController::class, 'update'])->name('preguntas.opciones.update');
     Route::delete('opciones/{opcion}', [OpcionController::class, 'destroy'])->name('preguntas.opciones.destroy');
 });
 
 // Rutas para las encuestas compartidas
-Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->group(function () {
     Route::get('/encuestas-compartidas', [EncuestasCompartidasController::class, 'index'])->name('ecompartidas.index');
     Route::get('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'show'])->name('ecompartidas.show');
     Route::post('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'store'])->name('ecompartidas.store');
@@ -113,16 +127,16 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::put('/encuestas-compartidas/{idEncuesta}', [EncuestasCompartidasController::class, 'update'])->name('ecompartidas.update');
 });
 
-
-Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->group(function () {
     Route::get('/resultado-encuesta', [ResultadoEncuestaController::class, 'index'])->name('resultadoEncuesta.index');
     Route::get('/resultado-encuesta/{idEncuesta}', [ResultadoEncuestaController::class, 'show'])->name('resultadoEncuesta.show');
-});    
-//Rutas para la exportación de encuestas
-    Route::get('/exportacion', [ExportacionController::class, 'index'])->name('exportacion.index');
-    Route::get('/exportacion/excel/{idEncuesta}',[ExportacionController::class, 'exportToExcel'])->name('exportacion.excel');
-    Route::get('/exportacion/pdf/{idEncuesta}',[ExportacionController::class, 'exportToPDF'])->name('exportacion.pdf');
-    Route::get('/exportacion/reporteGeneralPdf',[ExportacionController::class, 'reporteGeneralPdf'])->name('exportacion.reporteGeneralPdf');
-    Route::get('/exportacion/grafico',[ExportacionController::class, 'generarGrafico'])->name('exportacion.grafico');
+});
 
-    
+//Rutas para la exportación de encuestas
+Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])->group(function () {
+    Route::get('/exportacion', [ExportacionController::class, 'index'])->name('exportacion.index');
+    Route::get('/exportacion/excel/{idEncuesta}', [ExportacionController::class, 'exportToExcel'])->name('exportacion.excel');
+    Route::get('/exportacion/pdf/{idEncuesta}', [ExportacionController::class, 'exportToPDF'])->name('exportacion.pdf');
+    Route::get('/exportacion/reporteGeneralPdf', [ExportacionController::class, 'reporteGeneralPdf'])->name('exportacion.reporteGeneralPdf');
+    Route::get('/exportacion/grafico', [ExportacionController::class, 'generarGrafico'])->name('exportacion.grafico');
+});

@@ -17,9 +17,10 @@ class CreatePrivilegiosTable extends Migration
             $table->id('idPrivilegio');
             $table->string('nombrePrivilegio', 50);
             $table->string('descripcionPrivilegio', 256)->nullable();
+            $table->string('url');
             $table->timestamps();
         });
-
+    
         Schema::create('rol_privilegio', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idRol')->constrained('rol', 'idRol');

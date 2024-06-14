@@ -198,8 +198,8 @@
                                                 <span data-feather="users"></span>
                                                 Gestionar Roles
                                             </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                                href="">
+                                            <a class="nav-link {{ Route::currentRouteName() == 'privilegios.index' ? 'active' : '' }}"
+                                                href="{{ route('privilegios.index') }}">
                                                 <span data-feather="lock"></span>
                                                 Gestionar Privilegios
                                             </a>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rol;
 use App\Models\Privilegio;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class RolController extends Controller
 {
@@ -26,8 +27,26 @@ class RolController extends Controller
      */
     public function create()
     {
-        $privilegios = Privilegio::all();
-        return view('roles.create', compact('privilegios'));
+        $privilegios = Privilegio::all()->groupBy(function($privilegio) {
+            return explode('.', $privilegio->url)[0];
+        });
+    
+        $nombresModulos = [
+            'encuestas' => 'Encuestas',
+            'roles' => 'Generación de Roles',
+            'privilegios' => 'Generación de Privilegios',
+            'users' => 'Gestión de Usuarios',
+            'profile' => 'Perfil',
+            'bloqueos' => 'Gestión de Bloqueos',
+            'gestionEncuestas' => 'Gestión de Encuestas',
+            'tiposPreguntas' => 'Gestión de Encuestas - Tipos de Preguntas',
+            'preguntas' => 'Preguntas',
+            'ecompartidas' => 'Encuestas Compartidas',
+            'resultadoEncuesta' => 'Resultados de Encuestas',
+            'exportacion' => 'Exportación de Datos',
+        ];
+    
+        return view('roles.create', ['privilegios' => $privilegios, 'nombresModulos' => $nombresModulos]);
     }
 
     /**
@@ -41,10 +60,13 @@ class RolController extends Controller
         $request->validate([
             'nombreRol' => 'required',
             'descripcionRol' => 'required',
+            'privilegios' => 'required|array', // Asegúrate de que se proporcionen privilegios
         ]);
-
-        Rol::create($request->all());
-
+    
+        $rol = Rol::create($request->only(['nombreRol', 'descripcionRol'])); // Crea el rol
+    
+        $rol->privilegios()->sync($request->privilegios); // Asigna los privilegios al rol
+    
         return redirect()->route('roles.index')
             ->with('success', 'Rol creado exitosamente.');
     }
@@ -55,10 +77,29 @@ class RolController extends Controller
      * @param  \App\Models\Rol  $rol
      * @return \Illuminate\Http\Response
      */
+
     public function edit(Rol $rol)
     {
-        $privilegios = Privilegio::all();
-        return view('roles.edit', compact('rol', 'privilegios'));
+        $privilegios = Privilegio::all()->groupBy(function($privilegio) {
+            return explode('.', $privilegio->url)[0];
+        });
+    
+        $nombresModulos = [
+            'encuestas' => 'Encuestas',
+            'roles' => 'Generación de Roles',
+            'privilegios' => 'Generación de Privilegios',
+            'users' => 'Gestión de Usuarios',
+            'profile' => 'Perfil',
+            'bloqueos' => 'Gestión de Bloqueos',
+            'gestionEncuestas' => 'Gestión de Encuestas',
+            'tiposPreguntas' => 'Gestión de Encuestas - Tipos de Preguntas',
+            'preguntas' => 'Preguntas',
+            'ecompartidas' => 'Encuestas Compartidas',
+            'resultadoEncuesta' => 'Resultados de Encuestas',
+            'exportacion' => 'Exportación de Datos',
+        ];
+    
+        return view('roles.edit', ['rol' => $rol, 'privilegios' => $privilegios, 'nombresModulos' => $nombresModulos]);
     }
 
     /**
@@ -73,10 +114,14 @@ class RolController extends Controller
         $request->validate([
             'nombreRol' => 'required',
             'descripcionRol' => 'required',
+            'privilegios' => 'required|array',
         ]);
-
-        $rol->update($request->all());
-
+    
+        $rol->update($request->only('nombreRol', 'descripcionRol'));
+    
+        // Actualiza los privilegios del rol
+        $rol->privilegios()->sync($request->privilegios);
+    
         return redirect()->route('roles.index')
             ->with('success', 'Rol actualizado exitosamente.');
     }
@@ -89,9 +134,8 @@ class RolController extends Controller
      */
     public function show(Rol $rol)
     {
-        $rol = Rol::find(1); // Encuentra el rol con id 1
         $privilegios = $rol->privilegios; // Accede a los privilegios del rol
-        return view('roles.show', compact('rol'));
+        return view('roles.show', compact('rol', 'privilegios'));
     }
 
     /**
@@ -102,9 +146,24 @@ class RolController extends Controller
      */
     public function destroy(Rol $rol)
     {
+        try {
+        // Desasociar todos los privilegios antes de eliminar el rol
+        $rol->privilegios()->detach();
+    
         $rol->delete();
-
+    
         return redirect()->route('roles.index')
             ->with('success', 'Rol eliminado exitosamente.');
+        } catch (QueryException $e) {
+        // Código de error para violación de restricción de clave foránea en PostgreSQL
+        $foreignKeyViolationCode = '23503';
+    
+        if ($e->getCode() === $foreignKeyViolationCode) {
+            return redirect()->route('roles.index')
+            ->with('warning', 'No se puede eliminar el rol porque está asociado a uno o más usuarios.');
+        }
+    
+        throw $e;
+        }
     }
 }

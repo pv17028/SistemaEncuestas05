@@ -15,11 +15,17 @@
             <div class="card-body">
                 <p><strong>Descripción: </strong>{{ $rol->descripcionRol }}</p>
                 <p><strong>Privilegios: </strong></p>
-                <ul>
-                    @foreach ($rol->privilegios as $privilegio)
-                        <li>{{ $privilegio->nombrePrivilegio }}</li>
-                    @endforeach
-                </ul>
+                <div
+                    style="max-height: 350px; overflow-y: auto; border: 1px solid #ccc; border-radius: 5px; padding: 0px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);">
+                    <ul
+                        style="column-count: 3; -moz-column-count: 3; -webkit-column-count: 3; list-style-type: none; padding-left: 0px; padding-bottom: 0px; column-gap: 0px; display: flex; flex-wrap: wrap; margin-bottom: 0;">
+                        @foreach ($rol->privilegios as $index => $privilegio)
+                            <li
+                                style="padding: 10px 15px; background-color: {{ $index % 2 == 0 ? '#f2f2f2' : 'transparent' }}; line-height: 1.5; word-wrap: break-word; flex: 1 0 calc(33.333% - 20px); box-sizing: border-box; display: flex; align-items: center;">
+                                {{ $privilegio->nombrePrivilegio }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
     </main>

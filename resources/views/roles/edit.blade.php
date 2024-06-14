@@ -37,17 +37,55 @@
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label>Privilegios</label>
-                        @foreach ($privilegios as $privilegio)
+                        <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ $privilegio->idPrivilegio }}"
-                                    id="privilegio{{ $privilegio->idPrivilegio }}" name="privilegios[]"
-                                    @if ($rol->privilegios->contains($privilegio)) checked @endif>
-                                <label class="form-check-label" for="privilegio{{ $privilegio->idPrivilegio }}">
-                                    {{ $privilegio->nombrePrivilegio }}
+                                <input class="form-check-input" type="checkbox" id="selectAll">
+                                <label class="form-check-label" for="selectAll">
+                                    Seleccionar todos
                                 </label>
                             </div>
-                        @endforeach
-                    </div>
+                            <hr>
+                            @foreach ($privilegios as $modulo => $privilegiosModulo)
+                                <div class="form-check">
+                                    <input class="form-check-input modulo-checkbox" type="checkbox" id="modulo{{ $modulo }}">
+                                    <label class="form-check-label" for="modulo{{ $modulo }}">
+                                        {{ $nombresModulos[$modulo] ?? $modulo }}
+                                    </label>
+                                    <div class="ml-4">
+                                        @foreach ($privilegiosModulo as $privilegio)
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="{{ $privilegio->idPrivilegio }}"
+                                                    id="privilegio{{ $privilegio->idPrivilegio }}" name="privilegios[]"
+                                                    @if ($rol->privilegios->contains($privilegio)) checked @endif>
+                                                <label class="form-check-label" for="privilegio{{ $privilegio->idPrivilegio }}">
+                                                    {{ $privilegio->nombrePrivilegio }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        
+                        <script>
+                            document.getElementById('selectAll').addEventListener('change', function(e) {
+                                var state = this.checked;
+                                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                                checkboxes.forEach(function(checkbox) {
+                                    checkbox.checked = state;
+                                });
+                            });
+                        
+                            document.querySelectorAll('.modulo-checkbox').forEach(function(checkbox) {
+                                checkbox.addEventListener('change', function(e) {
+                                    var state = this.checked;
+                                    var childCheckboxes = this.parentNode.querySelectorAll('input[type="checkbox"]');
+                                    childCheckboxes.forEach(function(childCheckbox) {
+                                        childCheckbox.checked = state;
+                                    });
+                                });
+                            });
+                        </script>
                 </div>
             </div>
 

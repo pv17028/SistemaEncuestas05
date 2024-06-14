@@ -11,11 +11,10 @@ class Privilegio extends Model
 
     protected $table = 'privilegios';
     protected $primaryKey = 'idPrivilegio';
-    protected $fillable = ['idRol', 'nombrePrivilegio', 'descripcionPrivilegio'];
+    protected $fillable = ['nombrePrivilegio', 'descripcionPrivilegio', 'url'];
 
-    // Relación con el modelo Rol
-    public function rol()
+    public function roles()
     {
-        return $this->belongsTo(Rol::class, 'idRol', 'idRol');
+        return $this->belongsToMany(Rol::class, 'rol_privilegio', 'idPrivilegio', 'idRol');
     }
 }
