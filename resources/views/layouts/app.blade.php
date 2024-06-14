@@ -148,28 +148,34 @@
                                         Panel
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == 'encuestas.index' ? 'active' : '' }}"
-                                        href="{{ route('encuestas.index') }}">
-                                        <span data-feather="file-text"></span>
-                                        Encuestas
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == 'ecompartidas.index' ? 'active' : '' }}"
-                                        href="{{ route('ecompartidas.index') }}">
-                                        <span data-feather="share-2"></span>
-                                        Encuestas Compartidas
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == 'resultadoEncuesta.index' ? 'active' : '' }}"
-                                        href="{{ route('resultadoEncuesta.index') }}">
-                                        <span data-feather="bar-chart-2"></span>
-                                        Resultados
-                                    </a>
-                                </li>
-                                @if (Auth::user()->isAdmin())
+                                @if (Auth::user()->hasPrivilege('encuestas.index'))
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ Route::currentRouteName() == 'encuestas.index' ? 'active' : '' }}"
+                                            href="{{ route('encuestas.index') }}">
+                                            <span data-feather="file-text"></span>
+                                            Encuestas
+                                        </a>
+                                    </li>
+                                @endif
+                                @if (Auth::user()->hasPrivilege('ecompartidas.index'))
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ Route::currentRouteName() == 'ecompartidas.index' ? 'active' : '' }}"
+                                            href="{{ route('ecompartidas.index') }}">
+                                            <span data-feather="share-2"></span>
+                                            Encuestas Compartidas
+                                        </a>
+                                    </li>
+                                @endif
+                                @if (Auth::user()->hasPrivilege('resultadoEncuesta.index'))
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ Route::currentRouteName() == 'resultadoEncuesta.index' ? 'active' : '' }}"
+                                            href="{{ route('resultadoEncuesta.index') }}">
+                                            <span data-feather="bar-chart-2"></span>
+                                            Resultados
+                                        </a>
+                                    </li>
+                                @endif
+                                @if (Auth::user()->hasPrivilege('roles.index') || Auth::user()->hasPrivilege('privilegios.index') || Auth::user()->hasPrivilege('bloqueos.index') || Auth::user()->hasPrivilege('gestionEncuestas.index') || Auth::user()->hasPrivilege('users.index'))
                                     <!-- Asegúrate de tener una función que verifique si el usuario es administrador -->
                                     <li class="nav-item">
                                         <button class="nav-link dropdown-btn">
@@ -178,31 +184,41 @@
                                             <i class="fa fa-caret-down"></i>
                                         </button>
                                         <div class="dropdown-container">
-                                            <a class="nav-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}"
-                                                href="{{ route('users.index') }}">
-                                                <span data-feather="users"></span>
-                                                Gestionar Usuarios
-                                            </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == 'bloqueos.index' ? 'active' : '' }}"
-                                                href="{{ route('bloqueos.index') }}">
-                                                <span data-feather="lock"></span>
-                                                Gestionar Bloqueos
-                                            </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == 'gestionEncuestas.index' ? 'active' : '' }}"
-                                                href="{{ route('gestionEncuestas.index') }}">
-                                                <span data-feather="file-text"></span>
-                                                Gestionar Encuestas
-                                            </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}"
-                                                href="{{ route('roles.index') }}">
-                                                <span data-feather="users"></span>
-                                                Gestionar Roles
-                                            </a>
-                                            <a class="nav-link {{ Route::currentRouteName() == 'privilegios.index' ? 'active' : '' }}"
-                                                href="{{ route('privilegios.index') }}">
-                                                <span data-feather="lock"></span>
-                                                Gestionar Privilegios
-                                            </a>
+                                            @if (Auth::user()->hasPrivilege('users.index'))
+                                                <a class="nav-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}"
+                                                    href="{{ route('users.index') }}">
+                                                    <span data-feather="users"></span>
+                                                    Gestionar Usuarios
+                                                </a>
+                                            @endif
+                                            @if (Auth::user()->hasPrivilege('bloqueos.index'))
+                                                <a class="nav-link {{ Route::currentRouteName() == 'bloqueos.index' ? 'active' : '' }}"
+                                                    href="{{ route('bloqueos.index') }}">
+                                                    <span data-feather="lock"></span>
+                                                    Gestionar Bloqueos
+                                                </a>
+                                            @endif
+                                            @if (Auth::user()->hasPrivilege('gestionEncuestas.index'))
+                                                <a class="nav-link {{ Route::currentRouteName() == 'gestionEncuestas.index' ? 'active' : '' }}"
+                                                    href="{{ route('gestionEncuestas.index') }}">
+                                                    <span data-feather="file-text"></span>
+                                                    Gestionar Encuestas
+                                                </a>
+                                            @endif
+                                            @if (Auth::user()->hasPrivilege('roles.index'))
+                                                <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}"
+                                                    href="{{ route('roles.index') }}">
+                                                    <span data-feather="users"></span>
+                                                    Gestionar Roles
+                                                </a>
+                                            @endif
+                                            @if (Auth::user()->hasPrivilege('privilegios.index'))
+                                                <a class="nav-link {{ Route::currentRouteName() == 'privilegios.index' ? 'active' : '' }}"
+                                                    href="{{ route('privilegios.index') }}">
+                                                    <span data-feather="lock"></span>
+                                                    Gestionar Privilegios
+                                                </a>
+                                            @endif
                                         </div>
                                     </li>
                                 @endif
@@ -221,7 +237,7 @@
                                 </li> --}}
                             </ul>
 
-                            <h6
+                            {{-- <h6
                                 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                                 <span>Informes guardados</span>
                                 <a class="link-secondary" href="#" aria-label="Agregar un nuevo informe">
@@ -247,7 +263,7 @@
                                         Participación social
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> --}}
                         </div>
                     </nav>
                 </div>

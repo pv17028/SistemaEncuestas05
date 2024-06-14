@@ -76,18 +76,18 @@ class User extends Authenticatable
         if ($this->role) {
             $privileges = $this->role->privilegios->pluck('url');
     
-            // Lanza una excepción si $privileges está vacío
+            // Devuelve false si $privileges está vacío
             if ($privileges->isEmpty()) {
-                throw new AuthorizationException('Este rol no tiene privilegios asociados.');
+                return false;
             }
         } else {
-            // Lanza una excepción si $this->role es null
-            throw new AuthorizationException('No tienes permiso para acceder a esta página.');
+            // Devuelve false si $this->role es null
+            return false;
         }
-        
+    
         // Comprueba si alguno de los privilegios coincide con la ruta dada
         if (!$privileges->contains($routeName)) {
-            throw new AuthorizationException('No tienes permiso para acceder a esta página.');
+            return false;
         }
     
         return true;

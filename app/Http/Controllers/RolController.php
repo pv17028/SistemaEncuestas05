@@ -33,8 +33,8 @@ class RolController extends Controller
     
         $nombresModulos = [
             'encuestas' => 'Encuestas',
-            'roles' => 'Generación de Roles',
-            'privilegios' => 'Generación de Privilegios',
+            'roles' => 'Gestión de Roles',
+            'privilegios' => 'Gestión de Privilegios',
             'users' => 'Gestión de Usuarios',
             'profile' => 'Perfil',
             'bloqueos' => 'Gestión de Bloqueos',
@@ -86,8 +86,8 @@ class RolController extends Controller
     
         $nombresModulos = [
             'encuestas' => 'Encuestas',
-            'roles' => 'Generación de Roles',
-            'privilegios' => 'Generación de Privilegios',
+            'roles' => 'Gestión de Roles',
+            'privilegios' => 'Gestión de Privilegios',
             'users' => 'Gestión de Usuarios',
             'profile' => 'Perfil',
             'bloqueos' => 'Gestión de Bloqueos',
