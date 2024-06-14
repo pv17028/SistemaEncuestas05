@@ -9,7 +9,7 @@
 
         <h2>Lista de Encuestas</h2>
         <a class="btn btn-primary" href="{{ route('exportacion.reporteGeneralPdf') }}">Generar reporte general</a>
-
+        <a class="btn btn-primary" href="{{ route('exportacion.grafico') }}">Generar gráfico</a>
         <table class="table">
             <thead>
                 <tr>
@@ -19,7 +19,7 @@
                     <th>Exportar</th>
                 </tr>
             </thead>
-            <tbody>
+           <tbody>
                 @foreach ($encuestas as $encuesta)
                     <tr>
                         <td>{{ $encuesta->titulo }}</td>

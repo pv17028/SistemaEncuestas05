@@ -6,7 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\UnshareExpiredSurveys' => $baseDir . '/app/Console/Commands/UnshareExpiredSurveys.php',
+    'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exports\\EncuestaExport' => $baseDir . '/app/Exports/EncuestaExport.php',
+    'App\\Exports\\EncuestaGeneralExport' => $baseDir . '/app/Exports/EncuestaGeneralExport.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -17,7 +20,9 @@ return array(
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\CorreoNotificacionController' => $baseDir . '/app/Http/Controllers/CorreoNotificacionController.php',
     'App\\Http\\Controllers\\EncuestaController' => $baseDir . '/app/Http/Controllers/EncuestaController.php',
+    'App\\Http\\Controllers\\EncuestasCompartidasController' => $baseDir . '/app/Http/Controllers/EncuestasCompartidasController.php',
     'App\\Http\\Controllers\\ExportacionController' => $baseDir . '/app/Http/Controllers/ExportacionController.php',
+    'App\\Http\\Controllers\\GestionEncuestasController' => $baseDir . '/app/Http/Controllers/GestionEncuestasController.php',
     'App\\Http\\Controllers\\GraficoController' => $baseDir . '/app/Http/Controllers/GraficoController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\OpcionController' => $baseDir . '/app/Http/Controllers/OpcionController.php',

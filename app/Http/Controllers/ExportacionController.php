@@ -11,8 +11,8 @@ use App\Exports\EncuestaGeneralExport;
 
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\PDF;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-
 class ExportacionController extends Controller
 {
        // Mostrar todas las encuestas
@@ -21,6 +21,7 @@ class ExportacionController extends Controller
         $idUsuario = auth()->user()->id; // Obtener el ID del usuario autenticado
         $encuestas = Encuesta::where('idUsuario', $idUsuario)->get();
         return view('exportacion.index', compact('encuestas'));
+
     }
 
     /*public function store(Request $request)
@@ -86,9 +87,60 @@ class ExportacionController extends Controller
         ->where('encuestas.created_at', '>=', Carbon::now()->subDays(30))
         ->groupBy('encuestas.idEncuesta', 'users.username', 'encuestas.titulo')
         ->get();
+        
+        foreach ($preguntas as $encuesta) {
+            $titulos[] = $encuesta->titulo;
+            $totalPreguntas[] = $encuesta->total_preguntas;
+        }
 
-        $pdf = PDF::loadView('exportacion.reporte', compact('encuestas','preguntas'));
+        //Datos de configuración para el gráfico en el PDF
+        $configGrafico = [
+            'type'=> 'bar',
+            'data'=> [
+                'labels'=> $titulos,
+                'datasets' => [[
+                    'label' => 'Preguntas',
+                    'data' => $totalPreguntas,
+                    'borderWidth' => 1
+                ]
+            ]
+            ],
+            'options' => [
+                'scales' => [
+                        'y'=> [
+                        'beginAtZero' => true
+                    ]
+                ]
+            ]
+        ];
+
+        //Convertir la configuración a JSON
+        $chartConfigStr = json_encode($configGrafico);
+
+        //Construir la URL para QuickChart
+        $chartUrl = 'https://quickchart.io/chart?c=' . urlencode($chartConfigStr) . '&width=300&height=250';
+
+        $pdf = PDF::loadView('exportacion.reporte', compact('encuestas','preguntas','titulos','totalPreguntas', 'chartUrl'));
 
         return $pdf->stream('Reporte_General.pdf');
+    }
+
+    public function generarGrafico()
+    {
+        $data = DB::table('encuestas')
+            ->join('preguntas', 'preguntas.idEncuesta', '=', 'encuestas.idEncuesta')
+            ->select(
+                'encuestas.titulo',
+                DB::raw('count(preguntas."idPregunta") as total_preguntas')
+            )
+            ->groupBy('encuestas.titulo')
+            ->get();
+        
+        foreach ($data as $encuesta) {
+            $titulos[] = $encuesta->titulo;
+            $totalPreguntas[] = $encuesta->total_preguntas;
+        }
+        
+        return view('exportacion.show', compact('titulos', 'totalPreguntas'));
     }
 }

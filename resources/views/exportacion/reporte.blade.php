@@ -86,5 +86,11 @@
             </tbody>
         </table>
     </div>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="row justify-content-center">Gráfico de las encuestas 2</h2>
+            <img id="chart" src="{{ $chartUrl }}" alt="Gráfico 2">
+        </div>
+    </div>
 </body>
 </html>

@@ -121,4 +121,6 @@ Route::middleware(['auth', CheckUserBlocked::class])->group(function () {
     Route::get('/exportacion/excel/{idEncuesta}',[ExportacionController::class, 'exportToExcel'])->name('exportacion.excel');
     Route::get('/exportacion/pdf/{idEncuesta}',[ExportacionController::class, 'exportToPDF'])->name('exportacion.pdf');
     Route::get('/exportacion/reporteGeneralPdf',[ExportacionController::class, 'reporteGeneralPdf'])->name('exportacion.reporteGeneralPdf');
+    Route::get('/exportacion/grafico',[ExportacionController::class, 'generarGrafico'])->name('exportacion.grafico');
+
     

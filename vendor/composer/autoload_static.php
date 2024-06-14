@@ -614,7 +614,10 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\UnshareExpiredSurveys' => __DIR__ . '/../..' . '/app/Console/Commands/UnshareExpiredSurveys.php',
+        'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exports\\EncuestaExport' => __DIR__ . '/../..' . '/app/Exports/EncuestaExport.php',
+        'App\\Exports\\EncuestaGeneralExport' => __DIR__ . '/../..' . '/app/Exports/EncuestaGeneralExport.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -625,7 +628,9 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CorreoNotificacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/CorreoNotificacionController.php',
         'App\\Http\\Controllers\\EncuestaController' => __DIR__ . '/../..' . '/app/Http/Controllers/EncuestaController.php',
+        'App\\Http\\Controllers\\EncuestasCompartidasController' => __DIR__ . '/../..' . '/app/Http/Controllers/EncuestasCompartidasController.php',
         'App\\Http\\Controllers\\ExportacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExportacionController.php',
+        'App\\Http\\Controllers\\GestionEncuestasController' => __DIR__ . '/../..' . '/app/Http/Controllers/GestionEncuestasController.php',
         'App\\Http\\Controllers\\GraficoController' => __DIR__ . '/../..' . '/app/Http/Controllers/GraficoController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\OpcionController' => __DIR__ . '/../..' . '/app/Http/Controllers/OpcionController.php',

@@ -40,6 +40,10 @@
                             <td>
                                 <a href="{{ route('resultadoEncuesta.show', $encuesta->idEncuesta) }}"
                                     class="btn btn-sm btn-info">Ver Resultados</a>
+                                <a href="{{ route('exportacion.excel', $encuesta->idEncuesta) }}"
+                                    class="btn btn-sm btn-success">Exportar EXCEL</a>
+                                <a href="{{ route('exportacion.pdf', $encuesta->idEncuesta) }}"
+                                    class="btn btn-sm btn-danger">Exportar PDF</a>
                             </td>
                         </tr>
                     @endforeach

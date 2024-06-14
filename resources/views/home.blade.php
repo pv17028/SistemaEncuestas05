@@ -23,8 +23,12 @@
                 </div>
             </div>
         </div>
-
-        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="row justify-content-center">Gráfico de las encuestas</h2>
+                <canvas id="graficoPrincipal" width="600" height="200"></canvas>
+            </div>
+        </div>
 
         <h2>Título de la sección</h2>
         <div class="table-responsive">
@@ -51,12 +55,52 @@
             </table>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        
         $(document).ready(function() {
             $(".unique-dropdown-menu a").click(function() {
                 var selected = $(this).text();
                 $(".unique-dropdown").text(selected);
             });
         });
+
+        // Gráfico
+        // Elementos para el gráfico
+        var encuestas = {!! json_encode($encuestas) !!};
+        
+        var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        var data = [];
+        var labels = [];
+
+        encuestas.forEach(function(encuesta) {
+            labels.push(encuesta.mes);
+            data.push(encuesta.cantidad_encuestas);
+        });
+
+
+console.log(data);
+        const ctx = document.getElementById('graficoPrincipal');
+        new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Encuestas totales',
+                data: data,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            }
+            },
+            //responsive: false,  // Asegúrate de que el gráfico no se redimensione automáticamente
+            //maintainAspectRatio: false  // Desactiva el mantenimiento de la relación de aspecto
+        }
+        });
+
     </script>
 @endsection
