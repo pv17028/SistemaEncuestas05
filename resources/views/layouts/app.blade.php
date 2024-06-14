@@ -64,6 +64,11 @@
             float: right;
             padding-right: 8px;
         }
+
+        .main-content {
+            margin-bottom: 100px;
+            /* Ajusta este valor según la altura de tu pie de página */
+        }
     </style>
 
     <!-- Estilos personalizados para esta plantilla -->
@@ -101,8 +106,9 @@
                     <div class="nav-item dropdown text-nowrap h-100">
                         <a class="nav-link dropdown-toggle px-3 text-light h-100 d-flex align-items-center" href="#"
                             id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @if(Auth::user()->imagenPerfil)
-                                <img src="{{ asset('imagenPerfil/' . Auth::user()->imagenPerfil) }}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                            @if (Auth::user()->imagenPerfil)
+                                <img src="{{ asset('imagenPerfil/' . Auth::user()->imagenPerfil) }}"
+                                    style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
                             @else
                                 <i class="fas fa-user-circle text-white" style="font-size: 30px; margin-right: 10px;"></i>
                             @endif
@@ -110,7 +116,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{{ route('profile.show') }}">Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            {{-- <li><a class="dropdown-item" href="#">Configuración</a></li> --}}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -200,13 +206,13 @@
                                         </div>
                                     </li>
                                 @endif
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
                                         href="">
                                         <span data-feather="settings"></span>
                                         Configuración
                                     </a>
-                                </li>
+                                </li> --}}
                                 {{-- <li class="nav-item">
                                     <a class="nav-link {{ Route::currentRouteName() == 'usuarios.index' ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
                                         <span data-feather="users"></span>
@@ -247,7 +253,9 @@
                 </div>
             </div>
         @endauth
-        @yield('content')
+        <div class="main-content">
+            @yield('content')
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
