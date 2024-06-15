@@ -6,10 +6,11 @@
             <h1 class="h2">Panel</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
-                    <a href="{{ route('exportacion.index') }}" class="btn btn-sm btn-outline-secondary role="button" aria-pressed="true">Exportar</a>
+                    {{-- <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button> --}}
+                    <a href="{{ route('exportacion.index') }}" class="btn btn-sm btn-outline-secondary role="button"
+                        aria-pressed="true">Generar reportes</a>
                 </div>
-                <div class="btn-group">
+                {{-- <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle unique-dropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <span data-feather="calendar"></span>
@@ -20,44 +21,43 @@
                         <li><a class="dropdown-item" href="#">Opción 2</a></li>
                         <li><a class="dropdown-item" href="#">Opción 3</a></li>
                     </ul>
-                </div>
+                </div> --}}
             </div>
         </div>
-        <div class="card">
+        <div class="card mb-2">
             <div class="card-body">
-                <h2 class="row justify-content-center">Gráfico de las encuestas</h2>
+                <h2 class="row justify-content-center">Número de Encuestas Creadas por Mes</h2>
                 <canvas id="graficoPrincipal" width="600" height="200"></canvas>
             </div>
         </div>
 
-        <h2>Título de la sección</h2>
+        <h2>Top 10 Usuarios con Más Encuestas</h2>
         <div class="table-responsive">
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Encabezado</th>
-                        <th scope="col">Encabezado</th>
-                        <th scope="col">Encabezado</th>
-                        <th scope="col">Encabezado</th>
+                        <th scope="col">Nombre de Usuario</th>
+                        <th scope="col">Número de Encuestas</th>
+                        <th scope="col">Encuesta con Más Respuestas</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1,001</td>
-                        <td>aleatorio</td>
-                        <td>datos</td>
-                        <td>espacio reservado</td>
-                        <td>texto</td>
-                    </tr>
-                    <!-- Puedes agregar más filas de datos aquí -->
+                    @foreach ($usuarios as $usuario)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $usuario->nombre }}</td>
+                            <td>{{ $usuario->encuestas_count }}</td>
+                            <td>{{ $usuario->encuesta_mas_respondida->titulo ?? 'N/A' }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        
         $(document).ready(function() {
             $(".unique-dropdown-menu a").click(function() {
                 var selected = $(this).text();
@@ -68,8 +68,11 @@
         // Gráfico
         // Elementos para el gráfico
         var encuestas = {!! json_encode($encuestas) !!};
+
+        var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+            'Noviembre', 'Diciembre'
+        ];
         
-        var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         var data = [];
         var labels = [];
 
@@ -78,29 +81,42 @@
             data.push(encuesta.cantidad_encuestas);
         });
 
-
-console.log(data);
+        console.log(data);
         const ctx = document.getElementById('graficoPrincipal');
         new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Encuestas totales',
-                data: data,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-            y: {
-                beginAtZero: true
-            }
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Encuestas totales',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Color de fondo de las barras
+                    borderColor: 'rgba(75, 192, 192, 1)', // Color del borde de las barras
+                    borderWidth: 1
+                }]
             },
-            //responsive: false,  // Asegúrate de que el gráfico no se redimensione automáticamente
-            //maintainAspectRatio: false  // Desactiva el mantenimiento de la relación de aspecto
-        }
+            options: {
+                title: {
+                    display: true,
+                    text: 'Número de Encuestas Creadas por Mes', // Título del gráfico
+                    fontSize: 20
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Número de Encuestas' // Leyenda del eje Y
+                        }
+                    },
+                    x: {
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Mes' // Leyenda del eje X
+                        }
+                    }
+                }
+            }
         });
-
     </script>
 @endsection

@@ -102,4 +102,9 @@ class User extends Authenticatable
     {
         return $this->role && $this->role->nombreRol === 'admin';
     }
+
+    public function encuestas()
+    {
+        return $this->hasMany(Encuesta::class, 'idUsuario');
+    }
 }
