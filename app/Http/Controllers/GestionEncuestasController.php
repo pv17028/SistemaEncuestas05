@@ -13,6 +13,8 @@ class GestionEncuestasController extends Controller
         $encuestas = Encuesta::all();
         $tiposPreguntas = TipoPregunta::all();
         $cantidadTiposPreguntas = $tiposPreguntas->count();
-        return view('gestionEncuestas.index', compact('encuestas', 'tiposPreguntas', 'cantidadTiposPreguntas'));
+        $cantidadTiposPreguntasHabilitadas = TipoPregunta::where('habilitado', 1)->count();
+        $cantidadTiposPreguntasDeshabilitadas = TipoPregunta::where('habilitado', 0)->count();
+        return view('gestionEncuestas.index', compact('encuestas', 'tiposPreguntas', 'cantidadTiposPreguntas', 'cantidadTiposPreguntasHabilitadas', 'cantidadTiposPreguntasDeshabilitadas'));
     }
 }

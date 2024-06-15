@@ -19,6 +19,7 @@ class TipoPregunta extends Model
     protected $fillable = [
         'nombreTipoPregunta',
         'descripcionTipoPregunta',
+        'habilitado',
     ];
 
     public function opciones()

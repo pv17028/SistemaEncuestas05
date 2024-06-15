@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="nombreRol">Nombre del tipo de pregunta</label>
+                        <label for="tipoPregunta">Nombre del tipo de pregunta</label>
                         <input type="text" class="form-control" id="tipoPregunta" name="tipoPregunta"
                             value="{{ $tipoPregunta->nombreTipoPregunta }}" placeholder="Ingresa el tipo de pregunta"
                             required>
@@ -32,8 +32,17 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="descripcionRol">Descripción del tipo de pregunta</label>
+                        <label for="descripcionTipo">Descripción del tipo de pregunta</label>
                         <textarea class="form-control" id="descripcionTipo" name="descripcionTipo" placeholder="Ingresa la descripción del rol">{{ $tipoPregunta->descripcionTipoPregunta }}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-6"> <!-- Agrega este bloque -->
+                    <div class="form-group mb-3">
+                        <label for="habilitado">Habilitado</label>
+                        <select class="form-control" id="habilitado" name="habilitado">
+                            <option value="1" {{ $tipoPregunta->habilitado ? 'selected' : '' }}>Sí</option>
+                            <option value="0" {{ !$tipoPregunta->habilitado ? 'selected' : '' }}>No</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -43,6 +52,5 @@
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
             </div>
         </form>
-
     </main>
 @endsection

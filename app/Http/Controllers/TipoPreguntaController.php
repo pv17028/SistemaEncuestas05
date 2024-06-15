@@ -43,10 +43,12 @@ class TipoPreguntaController extends Controller
         $request->validate([
             'tipoPregunta' => 'required|string|max:50',
             'descripcionTipo' => 'required|string|max:300',
+            'habilitado' => 'required|boolean', // Agrega esta línea
         ]);
 
         $nombreTipoPregunta = $request->input('tipoPregunta');
         $descripcionTipoPregunta = $request->input('descripcionTipo');
+        $habilitado = $request->input('habilitado'); // Agrega esta línea
 
         //validar que no exista un tipo de pregunta con el mismo nombre
         $tipoPregunta = DB::table('tipo_preguntas')
@@ -61,6 +63,7 @@ class TipoPreguntaController extends Controller
         DB::table('tipo_preguntas')->insert([
             'nombreTipoPregunta' => $nombreTipoPregunta,
             'descripcionTipoPregunta' => $descripcionTipoPregunta,
+            'habilitado' => $habilitado, // Agrega esta línea
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -94,19 +97,22 @@ class TipoPreguntaController extends Controller
         $request->validate([
             'tipoPregunta' => 'required|string|max:50',
             'descripcionTipo' => 'required|string|max:300',
+            'habilitado' => 'required|boolean', // Agrega esta línea
         ]);
-
+    
         $nombreTipoPregunta = $request->input('tipoPregunta');
         $descripcionTipoPregunta = $request->input('descripcionTipo');
-
+        $habilitado = $request->input('habilitado'); // Agrega esta línea
+    
         DB::table('tipo_preguntas')
             ->where('idTipoPregunta', $tipoPregunta->idTipoPregunta)
             ->update([
                 'nombreTipoPregunta' => $nombreTipoPregunta,
                 'descripcionTipoPregunta' => $descripcionTipoPregunta,
+                'habilitado' => $habilitado, // Agrega esta línea
                 'updated_at' => now(),
             ]);
-
+    
         return redirect()->route('tiposPreguntas.index')
             ->with('success', 'Tipo de pregunta actualizado exitosamente.');
     }

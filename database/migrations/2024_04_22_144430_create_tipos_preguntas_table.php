@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('idTipoPregunta');
             $table->string('nombreTipoPregunta', 50);
             $table->string('descripcionTipoPregunta', 300);
+            $table->boolean('habilitado')->default(true);
             $table->timestamps();
         });
     }

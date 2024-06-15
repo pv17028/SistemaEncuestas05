@@ -34,14 +34,23 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="nombreRol">Nombre del tipo de pregunta</label>
+                        <label for="tipoPregunta">Nombre del tipo de pregunta</label>
                         <input type="text" class="form-control" id="tipoPregunta" name="tipoPregunta" placeholder="Ingresa el tipo de pregunta" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="descripcionRol">Descripción del tipo de pregunta</label>
+                        <label for="descripcionTipo">Descripción del tipo de pregunta</label>
                         <textarea class="form-control" id="descripcionTipo" name="descripcionTipo" placeholder="Ingresa la descripción del tipo de pregunta"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6"> <!-- Agrega este bloque -->
+                    <div class="form-group mb-3">
+                        <label for="habilitado">Habilitado</label>
+                        <select class="form-control" id="habilitado" name="habilitado">
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
                     </div>
                 </div>
             </div>

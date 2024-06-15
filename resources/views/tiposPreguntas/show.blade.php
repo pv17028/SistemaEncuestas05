@@ -14,7 +14,8 @@
         <div class="card">
             <div class="card-header">{{ $tipoPregunta->nombreTipoPregunta }}</div>
             <div class="card-body">
-                <p><strong>Descripción: </strong>{{ $tipoPregunta-> descripcionTipoPregunta }}</p>
+                <p><strong>Descripción: </strong>{{ $tipoPregunta->descripcionTipoPregunta }}</p>
+                <p><strong>Habilitado: </strong>{{ $tipoPregunta->habilitado ? 'Sí' : 'No' }}</p> <!-- Agrega esta línea -->
             </div>
         </div>
     </main>

@@ -56,14 +56,36 @@
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label for="idTipoPregunta">Tipo de pregunta</label>
-                        <select class="form-select" id="idTipoPregunta" name="idTipoPregunta" required>
+                        <select class="form-select" id="idTipoPregunta" name="idTipoPregunta" required onchange="updateMessage(this)">
                             <option value="">Seleccione un tipo de pregunta</option>
                             @foreach ($tiposPreguntas as $tipoPregunta)
-                                <option value="{{ $tipoPregunta->nombreTipoPregunta }}">
-                                    {{ $tipoPregunta->nombreTipoPregunta }}</option>
+                                @if ($tipoPregunta->habilitado) <!-- Agrega esta línea -->
+                                    <option value="{{ $tipoPregunta->nombreTipoPregunta }}" data-description="{{ $tipoPregunta->descripcionTipoPregunta }}">
+                                        {{ $tipoPregunta->nombreTipoPregunta }}
+                                    </option>
+                                @endif <!-- Agrega esta línea -->
                             @endforeach
                         </select>
+                        <p id="tipoPreguntaMessage"></p>
                     </div>
+                    
+                    <script>
+                    function updateMessage(selectElement) {
+                        var messageElement = document.getElementById('tipoPreguntaMessage');
+                    
+                        if (selectElement.value) {
+                            var selectedOption = selectElement.options[selectElement.selectedIndex];
+                            messageElement.textContent = selectedOption.getAttribute('data-description');
+                        } else {
+                            messageElement.textContent = '';
+                        }
+                    }
+                    
+                    // Actualiza el mensaje inicialmente al cargar la página
+                    window.onload = function() {
+                        updateMessage(document.getElementById('idTipoPregunta'));
+                    };
+                    </script>
 
                     <div id="Preguntas dicotómicas" style="display: none;">
                         <div class="form-group mb-3">
@@ -141,7 +163,7 @@
                     </script>
                 </div>
             </div>
-            <div class="text-center">
+            <div class="text-center mt-3">
                 <button type="submit" class="btn btn-primary btn-sm">Guardar Pregunta y Añadir Otra</button>
                 <button type="submit" name="save_and_close" value="1" class="btn btn-success btn-sm">Guardar y
                     Cerrar</button>

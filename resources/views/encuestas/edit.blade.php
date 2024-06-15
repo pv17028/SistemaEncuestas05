@@ -61,11 +61,29 @@
 
                 <div class="col-md-4 form-group mb-3">
                     <label for="es_anonima">¿Es una encuesta anónima?</label>
-                    <select class="form-control" id="es_anonima" name="es_anonima">
+                    <select class="form-control" id="es_anonima" name="es_anonima" onchange="updateMessage(this)">
                         <option value="0" {{ $encuesta->es_anonima == 0 ? 'selected' : '' }}>No</option>
                         <option value="1" {{ $encuesta->es_anonima == 1 ? 'selected' : '' }}>Sí</option>
                     </select>
+                    <p id="anonimaMessage"></p>
                 </div>
+                
+                <script>
+                function updateMessage(selectElement) {
+                    var messageElement = document.getElementById('anonimaMessage');
+                
+                    if (selectElement.value == '1') {
+                        messageElement.textContent = 'Si eliges que la encuesta sea anónima, se podrá responder muchas veces mientras esté compartida.';
+                    } else {
+                        messageElement.textContent = 'Si la encuesta no es anónima, los usuarios solo podrán responder una vez.';
+                    }
+                }
+                
+                // Actualiza el mensaje inicialmente al cargar la página
+                window.onload = function() {
+                    updateMessage(document.getElementById('es_anonima'));
+                };
+                </script>
             </div>
 
             <div class="card mb-3">

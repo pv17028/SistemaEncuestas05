@@ -2,10 +2,14 @@
 
 @section('content')
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4">
         <div class="d-flex justify-content-between align-items-center">
             <h2>Tipo de Preguntas</h2>
-            <a href="{{ route('tiposPreguntas.create') }}" class="btn btn-primary btn-sm">Crear Tipo de Pregunta</a>
+            <div>
+                <a href="{{ route('tiposPreguntas.create') }}" class="btn btn-primary btn-sm">Crear Tipo de Pregunta</a>
+                <a href="{{ route('gestionEncuestas.index') }}" class="btn btn-secondary btn-sm">Volver a Gestion de
+                    Encuestas</a>
+            </div>
         </div>
         <hr>
 
@@ -39,10 +43,12 @@
                             <td>{{ $tipoPregunta->descripcionTipoPregunta }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="{{ route('tiposPreguntas.show', $tipoPregunta->idTipoPregunta) }}" class="btn btn-sm btn-info me-1">Ver</a>
-                                    <a href="{{ route('tiposPreguntas.edit', $tipoPregunta->idTipoPregunta) }}" class="btn btn-sm btn-warning me-1">Editar</a>
-                                    <form action="{{ route('tiposPreguntas.destroy', $tipoPregunta->idTipoPregunta) }}" method="POST"
-                                        style="display: inline-block;">
+                                    <a href="{{ route('tiposPreguntas.show', $tipoPregunta->idTipoPregunta) }}"
+                                        class="btn btn-sm btn-info me-1">Ver</a>
+                                    <a href="{{ route('tiposPreguntas.edit', $tipoPregunta->idTipoPregunta) }}"
+                                        class="btn btn-sm btn-warning me-1">Editar</a>
+                                    <form action="{{ route('tiposPreguntas.destroy', $tipoPregunta->idTipoPregunta) }}"
+                                        method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger"
