@@ -37,7 +37,7 @@
                     <option value="Spam">Spam</option>
                     <option value="Comportamiento abusivo">Comportamiento abusivo</option>
                     <option value="Cuenta falsa">Cuenta falsa</option>
-                    <!-- Agrega más opciones según sea necesario -->
+                    <option value="Cuenta desactivada">Cuenta desactivada</option>
                 </select>
             </div>
 
