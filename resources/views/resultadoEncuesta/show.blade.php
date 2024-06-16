@@ -23,87 +23,87 @@
             </div>
         @endif
 
-        @forelse ($encuesta->preguntas as $key => $pregunta)
-            <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; height: 100%;">
-                <div style="display: flex; justify-content: center; align-items: center; width: 500px; height: 200px;">
-                    <canvas id="lineChart"></canvas>
-                </div>
-
-                <div style="display: flex; justify-content: center; align-items: center; width: 500px; height: 200px;">
-                    <canvas id="completeIncompleteChart"></canvas>
-                </div>
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; height: 100%;">
+            <div style="display: flex; justify-content: center; align-items: center; width: 500px; height: 200px;">
+                <canvas id="lineChart"></canvas>
             </div>
 
-            <script>
-                var ctx = document.getElementById('lineChart').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: {!! json_encode(array_keys($respuestasPorFecha)) !!},
-                        datasets: [{
-                            label: 'Número de respuestas',
-                            data: {!! json_encode(array_values($respuestasPorFecha)) !!},
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
+            <div style="display: flex; justify-content: center; align-items: center; width: 500px; height: 200px;">
+                <canvas id="completeIncompleteChart"></canvas>
+            </div>
+        </div>
+
+        <script>
+            var ctx = document.getElementById('lineChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {!! json_encode(array_keys($respuestasPorFecha)) !!},
+                    datasets: [{
+                        label: 'Número de respuestas',
+                        data: {!! json_encode(array_values($respuestasPorFecha)) !!},
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Número de respuestas a lo largo del tiempo'
+                        }
                     },
-                    options: {
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Número de respuestas a lo largo del tiempo'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    stepSize: 1
-                                }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
                             }
                         }
                     }
-                });
+                }
+            });
 
-                var ctx2 = document.getElementById('completeIncompleteChart').getContext('2d');
-                var myChart2 = new Chart(ctx2, {
-                    type: 'bar',
-                    data: {
-                        labels: {!! json_encode(array_keys($respuestasCompletasPorFecha)) !!},
-                        datasets: [{
-                            label: 'Respuestas completas',
-                            data: {!! json_encode(array_values($respuestasCompletasPorFecha)) !!},
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }, {
-                            label: 'Respuestas incompletas',
-                            data: {!! json_encode(array_values($respuestasIncompletasPorFecha)) !!},
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
-                        }]
+            var ctx2 = document.getElementById('completeIncompleteChart').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: {!! json_encode(array_keys($respuestasCompletasPorFecha)) !!},
+                    datasets: [{
+                        label: 'Respuestas completas',
+                        data: {!! json_encode(array_values($respuestasCompletasPorFecha)) !!},
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Respuestas incompletas',
+                        data: {!! json_encode(array_values($respuestasIncompletasPorFecha)) !!},
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Respuestas completas e incompletas a lo largo del tiempo'
+                        }
                     },
-                    options: {
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Respuestas completas e incompletas a lo largo del tiempo'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    stepSize: 1
-                                }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
                             }
                         }
                     }
-                });
-            </script>
+                }
+            });
+        </script>
 
+        @forelse ($encuesta->preguntas as $key => $pregunta)
             @if ($pregunta->opciones->count() > 0)
                 <h3>{{ $pregunta->contenidoPregunta }}</h3>
                 <p><strong>Tipo de pregunta:</strong> {{ $pregunta->tipoPregunta->nombreTipoPregunta }}</p>
