@@ -12,7 +12,7 @@
                 <div>
                     <a class="btn btn-primary btn-sm" href="{{ route('exportacion.reporteGeneralPdf') }}">Generar reporte
                         general</a>
-                    <a class="btn btn-primary btn-sm" href="{{ route('exportacion.grafico') }}">Generar gráfico</a>
+                    <a class="btn btn-primary btn-sm" href="{{ route('exportacion.grafico') }}">Graficos generales</a>
                 </div>
             </div>
             <hr>

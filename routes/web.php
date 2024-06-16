@@ -139,4 +139,6 @@ Route::middleware(['auth', CheckUserPrivileges::class, CheckUserBlocked::class])
     Route::get('/exportacion/pdf/{idEncuesta}', [ExportacionController::class, 'exportToPDF'])->name('exportacion.pdf');
     Route::get('/exportacion/reporteGeneralPdf', [ExportacionController::class, 'reporteGeneralPdf'])->name('exportacion.reporteGeneralPdf');
     Route::get('/exportacion/grafico', [ExportacionController::class, 'generarGrafico'])->name('exportacion.grafico');
+    Route::get('/exportacion/graficoPregunta/{idPregunta}', [ExportacionController::class, 'graficoPregunta'])->name('exportacion.graficoPregunta');
+    Route::get('/exportacion/seleccionarPregunta', [ExportacionController::class, 'seleccionarPregunta'])->name('exportacion.seleccionarPregunta');
 });

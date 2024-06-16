@@ -21,11 +21,13 @@
                 border-collapse: collapse;
                 margin-bottom: 1rem;
                 background-color: transparent;
+                table-layout: fixed; /* Ajusta la tabla al contenido */
             }
             th, td {
                 border: 1px solid #dee2e6;
                 padding: 0.75rem;
                 vertical-align: top;
+                word-wrap: break-word; /* Ajusta las palabras largas */
             }
             th {
                 background-color: #f8f9fa;
@@ -41,8 +43,9 @@
         </style>
     </head>
 <body>
-<h2>Reporte general de encuestas</h2>
+<h1>Reporte general de encuestas</h1>
     <div>
+        <h2>Encuestas realizadas</h2>
         <table class="table-responsive">
             <thead>
                 <tr>
@@ -65,6 +68,7 @@
                 @endforeach
             </tbody>
         </table>
+        <h2>Encuestas respondidas</h2>
         <table class="table-responsive">
             <thead>
                 <tr>
@@ -72,6 +76,7 @@
                     <th>Título de la encuesta</th>
                     <th>Desripción de la encuesta</th>
                     <th>Cantidad de preguntas</th>
+                    <th>Cantidad de respuestas</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,6 +86,7 @@
                         <td>{{ $pregunta->titulo }} </td>
                         <td>{{ $pregunta->descripcionEncuesta }} </td>
                         <td>{{ $pregunta->total_preguntas }} </td>
+                        <td> {{$pregunta->total_respuestas }} </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -88,7 +94,7 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <h2 class="row justify-content-center">Gráfico de las encuestas 2</h2>
+            <h2 class="row justify-content-center">Cantidad de encuestas respondidas</h2>
             <img id="chart" src="{{ $chartUrl }}" alt="Gráfico 2">
         </div>
     </div>

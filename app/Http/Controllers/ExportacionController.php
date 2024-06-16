@@ -7,7 +7,6 @@ use App\Models\Exportacion;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EncuestaExport;
-use App\Exports\EncuestaGeneralExport;
 
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\PDF;
@@ -38,11 +37,6 @@ class ExportacionController extends Controller
     // Método para exportar a Excel
     public function exportToExcel($idEncuesta)
     {
-        /*$exportacion = new Exportacion;
-        $exportacion->idGrafico = 1;
-        $exportacion->idResultadoEncuesta = $request->idResultadoEncuesta;
-        $exportacion->tipoExportacion = "Excel";
-        $exportacion->save();*/
         return Excel::download(new EncuestaExport($idEncuesta), 'Reporte.xlsx');
     }
 
@@ -77,11 +71,13 @@ class ExportacionController extends Controller
         $preguntas = DB::table('encuestas')
         ->join('preguntas', 'preguntas.idEncuesta', '=', 'encuestas.idEncuesta')
         ->join('users', 'users.id', '=', 'encuestas.idUsuario')
+        ->join('encuesta_usuario', 'encuesta_usuario.encuesta_id', '=', 'encuestas.idEncuesta')
         ->select(
             'users.username',
             'encuestas.titulo',
             'encuestas.descripcionEncuesta',
-            DB::raw('count(preguntas."idPregunta") as total_preguntas')
+            DB::raw('count(preguntas."idPregunta") as total_preguntas'),
+            DB::raw('count(DISTINCT encuesta_usuario."id") as total_respuestas')
         )
         //Filtrar por encuestas creadas en los últimos 30 días
         ->where('encuestas.created_at', '>=', Carbon::now()->subDays(30))
@@ -90,6 +86,7 @@ class ExportacionController extends Controller
         
         foreach ($preguntas as $encuesta) {
             $titulos[] = $encuesta->titulo;
+            $totalRespuestas[] = $encuesta->total_respuestas;
             $totalPreguntas[] = $encuesta->total_preguntas;
         }
 
@@ -99,8 +96,8 @@ class ExportacionController extends Controller
             'data'=> [
                 'labels'=> $titulos,
                 'datasets' => [[
-                    'label' => 'Preguntas',
-                    'data' => $totalPreguntas,
+                    'label' => 'Respuestas',
+                    'data' => $totalRespuestas,
                     'borderWidth' => 1
                 ]
             ]
@@ -108,7 +105,10 @@ class ExportacionController extends Controller
             'options' => [
                 'scales' => [
                         'y'=> [
-                        'beginAtZero' => true
+                        'beginAtZero' => true,
+                        'ticks' => [
+                            'stepSize' => 1
+                        ]
                     ]
                 ]
             ]
@@ -127,6 +127,7 @@ class ExportacionController extends Controller
 
     public function generarGrafico()
     {
+        //Consulta del total de preguntas por encuesta
         $data = DB::table('encuestas')
             ->join('preguntas', 'preguntas.idEncuesta', '=', 'encuestas.idEncuesta')
             ->select(
@@ -135,12 +136,50 @@ class ExportacionController extends Controller
             )
             ->groupBy('encuestas.titulo')
             ->get();
-        
+
         foreach ($data as $encuesta) {
             $titulos[] = $encuesta->titulo;
             $totalPreguntas[] = $encuesta->total_preguntas;
         }
+
+        //Total de respuestas por encuesta en los últimos 30 días
+        $respuestasEncuesta = DB::table('encuestas')
+            ->join('encuesta_usuario', 'encuesta_usuario.encuesta_id', '=', 'encuestas.idEncuesta')
+            ->select(
+                'encuestas.titulo',
+                DB::raw('count(DISTINCT encuesta_usuario."id") as total_respuestas')
+            )
+            ->groupBy('encuestas.titulo')
+            ->get();
+            
+        foreach ($respuestasEncuesta as $encuesta) {
+            $totalRespuestas[] = $encuesta->total_respuestas;
+        }
+
+        //Consulta SQL para obtener la cantidad de respuestas seleccionadas por cada opción de cada pregunta
+        /*$cantidadOpcionesSeleccionadas = DB::table('opcions')
+            ->leftjoin('respuestas', 'respuestas.opcion_id', '=', 'opcions.idOpcion')
+            ->join('preguntas','preguntas.idPregunta','=','opcions.idPregunta')
+            ->select(
+                'preguntas.idPregunta',
+                'preguntas.contenidoPregunta',
+                'opcions.contenidoOpcion',
+                DB::raw('count(respuestas."id") as cant_seleccionadas')
+
+            )
+            ->where('preguntas.idPregunta', 37)
+            ->groupBy('preguntas.idPregunta','preguntas.contenidoPregunta','opcions.contenidoOpcion')
+            ->orderBy('preguntas.idPregunta')
+            ->get();
         
-        return view('exportacion.show', compact('titulos', 'totalPreguntas'));
+        foreach ($cantidadOpcionesSeleccionadas as $opcion) {
+            $opciones[] = $opcion->contenidoOpcion;
+            $cantidadSeleccionadas[] = $opcion->cant_seleccionadas;
+        }
+
+        // Obtener la pregunta específica para $contPregunta
+        $contPregunta = isset($cantidadOpcionesSeleccionadas[0]) ? $cantidadOpcionesSeleccionadas[0]->contenidoPregunta : '';*/
+        return view('exportacion.show', compact('titulos', 'totalPreguntas', 'totalRespuestas'));
     }
+
 }

@@ -9,7 +9,7 @@
             }
             .container {
                 width: 100%;
-                margin: 0 auto;
+                margin: 1 auto;
             }
             .table-responsive {
                 width: 100%;
@@ -21,11 +21,13 @@
                 border-collapse: collapse;
                 margin-bottom: 1rem;
                 background-color: transparent;
+                table-layout: fixed; /* Ajusta la tabla al contenido */
             }
             th, td {
                 border: 1px solid #dee2e6;
                 padding: 0.75rem;
                 vertical-align: top;
+                word-wrap: break-word; /* Ajusta las palabras largas */
             }
             th {
                 background-color: #f8f9fa;
