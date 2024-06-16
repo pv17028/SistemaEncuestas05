@@ -18,7 +18,9 @@ class PreguntasController extends Controller
     public function index($idEncuesta)
     {
         $encuesta = Encuesta::find($idEncuesta);
-        $preguntas = preguntas::where('idEncuesta', $idEncuesta)->get();
+        $preguntas = Preguntas::where('idEncuesta', $idEncuesta)
+            ->orderBy('contenidoPregunta', 'asc') // Ordena las preguntas por 'contenidoPregunta' en orden ascendente
+            ->get();
         return view('preguntas.index', ['preguntas' => $preguntas, 'encuesta' => $encuesta, 'idEncuesta' => $idEncuesta]);
     }
 
@@ -46,12 +48,12 @@ class PreguntasController extends Controller
         ]);
 
         $pregunta = preguntas::where('idEncuesta', $request->input('idEncuesta'))
-                             ->where('contenidoPregunta', $request->input('contenidoPregunta'))
-                             ->first();
+            ->where('contenidoPregunta', $request->input('contenidoPregunta'))
+            ->first();
 
         if ($pregunta) {
             return redirect()->route('preguntas.create', ['idEncuesta' => $request->idEncuesta])
-                    ->with('error', 'La pregunta ya existe en esta encuesta.');
+                ->with('error', 'La pregunta ya existe en esta encuesta.');
         }
 
         // Obtener el ID del tipo de pregunta basado en su nombre
@@ -122,7 +124,10 @@ class PreguntasController extends Controller
             // Si el tipo de pregunta es "Preguntas politómicas"
             if ($request->input('idTipoPregunta') == 'Preguntas politómicas') {
                 $posicion = 1; // Inicializa la posición de la opción
-                $opciones = explode(',', $request->input('opcionesPolitomicas')); // Divide las opciones proporcionadas por el usuario en un array
+                $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesPolitomicas'));
+                $opciones = array_map(function($opcion) {
+                    return str_replace(['(', ')'], '', $opcion);
+                }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -139,7 +144,10 @@ class PreguntasController extends Controller
             // Si el tipo de pregunta es "Preguntas de elección múltiple"
             if ($request->input('idTipoPregunta') == 'Preguntas de elección múltiple') {
                 $posicion = 1; // Inicializa la posición de la opción
-                $opciones = explode(',', $request->input('opcionesMultiple')); // Divide las opciones proporcionadas por el usuario en un array
+                $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMultiple'));
+                $opciones = array_map(function($opcion) {
+                    return str_replace(['(', ')'], '', $opcion);
+                }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -156,7 +164,10 @@ class PreguntasController extends Controller
             // Si el tipo de pregunta es "Preguntas de tipo ranking"
             if ($request->input('idTipoPregunta') == 'Preguntas de tipo ranking') {
                 $posicion = 1; // Inicializa la posición de la opción
-                $opciones = explode(',', $request->input('opcionesRanking')); // Divide las opciones proporcionadas por el usuario en un array
+                $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesRanking'));
+                $opciones = array_map(function($opcion) {
+                    return str_replace(['(', ')'], '', $opcion);
+                }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -173,7 +184,10 @@ class PreguntasController extends Controller
             // Si el tipo de pregunta es "Escala de Likert"
             if ($request->input('idTipoPregunta') == 'Escala de Likert') {
                 $posicion = 1; // Inicializa la posición de la opción
-                $opciones = explode(',', $request->input('opcionesLikert')); // Divide las opciones proporcionadas por el usuario en un array
+                $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesLikert'));
+                $opciones = array_map(function($opcion) {
+                    return str_replace(['(', ')'], '', $opcion);
+                }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -205,7 +219,10 @@ class PreguntasController extends Controller
             // Si el tipo de pregunta es "Preguntas mixtas"
             if ($request->input('idTipoPregunta') == 'Preguntas mixtas') {
                 $posicion = 1; // Inicializa la posición de la opción
-                $opciones = explode(',', $request->input('opcionesMixtas')); // Divide las opciones proporcionadas por el usuario en un array
+                $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMixtas'));
+                $opciones = array_map(function($opcion) {
+                    return str_replace(['(', ')'], '', $opcion);
+                }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -290,20 +307,20 @@ class PreguntasController extends Controller
         ]);
 
         $preguntaExistente = Preguntas::where('idEncuesta', $request->input('idEncuesta'))
-                                              ->where('contenidoPregunta', $request->input('contenidoPregunta'))
-                                              ->where('idPregunta', '!=', $id)
-                                              ->first();
-        
+            ->where('contenidoPregunta', $request->input('contenidoPregunta'))
+            ->where('idPregunta', '!=', $id)
+            ->first();
+
         if ($preguntaExistente) {
             return redirect()->route('preguntas.edit', ['id' => $id, 'idEncuesta' => $request->idEncuesta])
-                    ->with('error', 'La pregunta ya existe en esta encuesta.');
+                ->with('error', 'La pregunta ya existe en esta encuesta.');
         }
-        
+
         $pregunta = Preguntas::find($id);
-        
+
         if (!$pregunta) {
             return redirect()->route('preguntas.index', ['idEncuesta' => $request->idEncuesta])
-                    ->with('error', 'La pregunta no existe.');
+                ->with('error', 'La pregunta no existe.');
         }
 
         $tipoPregunta = TipoPregunta::where('nombreTipoPregunta', $request->input('idTipoPregunta'))->first();
@@ -351,7 +368,10 @@ class PreguntasController extends Controller
 
         // Si el tipo de pregunta es "Preguntas politómicas"
         if ($request->input('idTipoPregunta') == 'Preguntas politómicas') {
-            $opciones = explode(',', $request->input('opcionesPolitomicas')); // Divide las opciones proporcionadas por el usuario en un array
+            $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesPolitomicas'));
+            $opciones = array_map(function($opcion) {
+                return str_replace(['(', ')'], '', $opcion);
+            }, $opciones);
 
             // Elimina las opciones existentes
             Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
@@ -376,7 +396,10 @@ class PreguntasController extends Controller
             Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
 
             $posicion = 1; // Inicializa la posición de la opción
-            $opciones = explode(',', $request->input('opcionesMultiple')); // Divide las opciones proporcionadas por el usuario en un array
+            $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMultiple'));
+            $opciones = array_map(function($opcion) {
+                return str_replace(['(', ')'], '', $opcion);
+            }, $opciones);
 
             // Para cada opción proporcionada por el usuario
             foreach ($opciones as $contenidoOpcion) {
@@ -392,7 +415,10 @@ class PreguntasController extends Controller
 
         // Si el tipo de pregunta es "Preguntas de tipo ranking"
         if ($request->input('idTipoPregunta') == 'Preguntas de tipo ranking') {
-            $opciones = explode(',', $request->input('opcionesRanking')); // Divide las opciones proporcionadas por el usuario en un array
+            $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesRanking'));
+            $opciones = array_map(function($opcion) {
+                return str_replace(['(', ')'], '', $opcion);
+            }, $opciones);
 
             // Valida que solo se proporcionen 4 o 5 opciones
             if (count($opciones) < 4 || count($opciones) > 5) {
@@ -418,7 +444,10 @@ class PreguntasController extends Controller
 
         // Si el tipo de pregunta es "Escala de Likert"
         if ($request->input('idTipoPregunta') == 'Escala de Likert') {
-            $opciones = explode(',', $request->input('opcionesLikert')); // Divide las opciones proporcionadas por el usuario en un array
+            $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesLikert'));
+            $opciones = array_map(function($opcion) {
+                return str_replace(['(', ')'], '', $opcion);
+            }, $opciones);
 
             // Elimina las opciones existentes
             Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
@@ -466,7 +495,10 @@ class PreguntasController extends Controller
             Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
 
             $posicion = 1; // Inicializa la posición de la opción
-            $opciones = explode(',', $request->input('opcionesMixtas')); // Divide las opciones proporcionadas por el usuario en un array
+            $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMixtas'));
+            $opciones = array_map(function($opcion) {
+                return str_replace(['(', ')'], '', $opcion);
+            }, $opciones);
 
             // Para cada opción proporcionada por el usuario
             foreach ($opciones as $contenidoOpcion) {

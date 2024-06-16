@@ -27,9 +27,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Tipo de pregunta</th>
                     <th>Pregunta</th>
                     <th>Descripcion</th>
+                    <th>Tipo de pregunta</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -38,6 +38,8 @@
                     @if ($pregunta->idEncuesta == $idEncuesta)
                         <tr>
                             <td>{{ $pregunta->idPregunta}}</td>
+                            <td>{{ $pregunta->contenidoPregunta }}</td>
+                            <td>{{ $pregunta->descripcionPregunta }}</td>
                             <td>
                                 @if ($pregunta->idTipoPregunta)
                                     {{ $pregunta->tipoPregunta->nombreTipoPregunta }}
@@ -45,9 +47,6 @@
                                     <span class="text-danger">Sin tipo</span>
                                 @endif
                             </td>
-
-                            <td>{{ $pregunta->contenidoPregunta }}</td>
-                            <td>{{ $pregunta->descripcionPregunta }}</td>
                             <td>
                                 {{-- <a href="{{ route('preguntas.opciones.index', ['idEncuesta' => $encuesta->id, 'idPregunta' => $pregunta->idPregunta]) }}" class="btn btn-primary btn-sm">Opciones</a> --}}
                                 <a href="{{ route('preguntas.show', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" class="btn btn-sm btn-info">Ver</a>

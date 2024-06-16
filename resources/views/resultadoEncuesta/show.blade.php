@@ -109,23 +109,24 @@
                 <p><strong>Tipo de pregunta:</strong> {{ $pregunta->tipoPregunta->nombreTipoPregunta }}</p>
 
                 <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
-                    <div style="display: flex; justify-content: center; align-items: center; width: 500px; height: 200px;">
-                        <canvas id="chart{{ $key }}"></canvas>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 200px;">
+                        <canvas id="chart{{ $key }}" style="max-width: 500px; max-height: 200px;"></canvas>
                     </div>
                 </div>
 
                 <script>
                     var ctx = document.getElementById('chart{{ $key }}').getContext('2d');
-                    console.log({!! $pregunta->opciones->pluck('contenidoOpcion') !!});
-                    console.log({!! $pregunta->opciones->pluck('seleccion_count') !!});
+                    var labels = {!! $pregunta->opciones->pluck('contenidoOpcion') !!}.map(function(label) {
+                        return label.length > 25 ? label.substring(0, 25) + '...' : label; // Trunca el label si es más largo que 25 caracteres
+                    });
+                    var data = {!! $pregunta->opciones->pluck('seleccion_count') !!};
                     var myChart = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: {!! $pregunta->opciones->pluck('contenidoOpcion') !!},
+                            labels: labels,
                             datasets: [{
-                                data: {!! $pregunta->opciones->pluck('seleccion_count') !!},
+                                data: data,
                                 backgroundColor: [
-                                    // Agrega los colores que quieras para cada opción
                                     'rgba(255, 99, 132, 0.2)',
                                     'rgba(54, 162, 235, 0.2)',
                                     'rgba(255, 206, 86, 0.2)',
