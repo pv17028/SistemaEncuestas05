@@ -10,7 +10,7 @@ class EncuestaUsuario extends Model
     use HasFactory;
 
     protected $table = 'encuesta_usuario';
-
+    protected $primaryKey = 'id';
     protected $fillable = ['encuesta_id', 'usuario_id', 'respuesta_ids', 'preguntas_no_respondidas', 'completa'];
 
     public function encuesta()

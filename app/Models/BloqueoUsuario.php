@@ -9,6 +9,8 @@ class BloqueoUsuario extends Model
 {
     use HasFactory;
 
+    protected $table = 'bloqueo_usuarios';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'user_id',
         'blocked_at',
