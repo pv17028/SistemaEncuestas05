@@ -11,7 +11,11 @@ class ResultadoEncuestaController extends Controller
 {
     public function index()
     {
-        $encuestas = Encuesta::orderBy('titulo', 'asc')->get();
+        $userId = auth()->id(); // Obtén el ID del usuario actual
+    
+        $encuestas = Encuesta::where('idUsuario', $userId) // Filtra las encuestas por el ID del usuario
+            ->orderBy('titulo', 'asc')
+            ->get();
     
         foreach ($encuestas as $encuesta) {
             $encuesta->respuestas_agrupadas = $encuesta->encuesta_usuario()

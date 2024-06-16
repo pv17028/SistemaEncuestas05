@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'apellido' => ['required', 'string', 'max:100'],
             'correoElectronico' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'fechaNacimiento' => ['required', 'date'],
+            'imagenPerfil' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'username' => ['required', 'string', 'max:50', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -68,7 +69,17 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         // Obtén el ID del rol de usuario de la base de datos
-        $roleId = Rol::where('nombreRol', 'admin')->first()->idRol;
+        $roleId = Rol::where('nombreRol', 'usuario')->first()->idRol;
+
+        // Verifica si se ha subido un archivo para 'imagenPerfil'
+        $imagenPerfil = null;
+        if (isset($data['imagenPerfil'])) {
+            // Genera un nombre de archivo único para la imagen
+            $imagenPerfil = time() . '.' . $data['imagenPerfil']->getClientOriginalExtension();
+
+            // Mueve el archivo a la carpeta public/imagenPerfil
+            $data['imagenPerfil']->move(public_path('imagenPerfil'), $imagenPerfil);
+        }
 
         $user = User::create([
             'idRol' => $roleId,
@@ -76,6 +87,7 @@ class RegisterController extends Controller
             'apellido' => $data['apellido'],
             'correoElectronico' => $data['correoElectronico'],
             'fechaNacimiento' => $data['fechaNacimiento'],
+            'imagenPerfil' => $imagenPerfil, // Usa el nombre de archivo de la imagen
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
             'intentosFallidos' => 0,

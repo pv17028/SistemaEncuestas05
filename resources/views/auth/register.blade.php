@@ -6,10 +6,10 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Registro') }}</div>
+                        <div class="card-header text-center">{{ __('Registro') }}</div>
 
                         <div class="card-body">
-                            <form method="POST" action="{{ route('register') }}">
+                            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="row mb-3">
@@ -43,12 +43,13 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="fechaNacimiento" class="col-md-4 col-form-label text-md-end">{{ __('Fecha de Nacimiento') }}</label>
+                                    <label for="fechaNacimiento"
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Fecha de Nacimiento') }}</label>
                                     <div class="col-md-6">
-                                        <input id="fechaNacimiento" type="date" 
-                                            class="form-control @error('fechaNacimiento') is-invalid @enderror" 
-                                            name="fechaNacimiento" value="{{ old('fechaNacimiento') }}" required 
-                                            autocomplete="fechaNacimiento" autofocus 
+                                        <input id="fechaNacimiento" type="date"
+                                            class="form-control @error('fechaNacimiento') is-invalid @enderror"
+                                            name="fechaNacimiento" value="{{ old('fechaNacimiento') }}" required
+                                            autocomplete="fechaNacimiento" autofocus
                                             max="{{ date('Y-m-d', strtotime('-18 years')) }}">
                                         @error('fechaNacimiento')
                                             <span class="invalid-feedback" role="alert">
@@ -57,6 +58,35 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="row mb-3">
+                                    <label for="imagenPerfil"
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Imagen de Perfil') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="imagenPerfil" type="file"
+                                            class="form-control @error('imagenPerfil') is-invalid @enderror"
+                                            name="imagenPerfil" value="{{ old('imagenPerfil') }}" accept="image/*"
+                                            onchange="previewImage(event)">
+                                        @error('imagenPerfil')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <img id="preview" src="" alt="Imagen de Perfil"
+                                            style="max-width: 150px; margin-top: 10px;">
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function previewImage(event) {
+                                        var reader = new FileReader();
+                                        reader.onload = function() {
+                                            var output = document.getElementById('preview');
+                                            output.src = reader.result;
+                                        }
+                                        reader.readAsDataURL(event.target.files[0]);
+                                    }
+                                </script>
 
                                 <div class="row mb-3">
                                     <label for="correoElectronico"
@@ -118,11 +148,14 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-0">
-                                    <div class="col-md-6 offset-md-4">
+                                <div class="row mb-0 justify-content-center">
+                                    <div class="col-md-6 text-center">
                                         <button type="submit" class="btn btn-primary">
-                                            {{ __('Registrar') }}
+                                            {{ __('Crear Cuenta') }}
                                         </button>
+                                        <p class="mt-3">
+                                            ¿Ya tienes una cuenta? <a href="{{ route('login') }}">Inicia sesión aquí</a>
+                                        </p>
                                     </div>
                                 </div>
                             </form>
