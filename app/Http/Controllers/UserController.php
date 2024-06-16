@@ -150,20 +150,21 @@ class UserController extends Controller
         ]);
     
         $user = auth()->user();
- 
+    
         $user->fill($request->except('password'));
     
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-
+    
         if ($request->hasFile('imagenPerfil')) {
             $imagenPerfil = $request->file('imagenPerfil');
             $nombreImagen = time() . '.' . $imagenPerfil->getClientOriginalExtension();
             $imagenPerfil->move(public_path('imagenPerfil'), $nombreImagen);
             $user->imagenPerfil = $nombreImagen;
-            $user->save();
         }
+    
+        $user->save();
     
         return redirect()->route('profile.show')->with('success', 'Perfil actualizado con éxito');
     }
