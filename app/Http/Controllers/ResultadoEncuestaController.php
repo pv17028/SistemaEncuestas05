@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Encuesta;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ResultadoEncuestaController extends Controller
 {
@@ -47,7 +48,49 @@ class ResultadoEncuestaController extends Controller
                 ->get();
         }
 
-        // Retorna la vista de resultados de la encuesta con los datos de la encuesta
-        return view('resultadoEncuesta.show', ['encuesta' => $encuesta]);
+        // Obtiene el número de respuestas (completas o no) por fecha
+        $respuestasPorFecha = DB::table('encuesta_usuario')
+            ->where('encuesta_id', $idEncuesta)
+            ->select(DB::raw('DATE(created_at) as fecha'), DB::raw('count(*) as count'))
+            ->groupBy('fecha')
+            ->get()
+            ->keyBy('fecha')
+            ->transform(function ($item) {
+                return $item->count;
+            })
+            ->toArray();
+        
+        // Obtiene el número de respuestas completas e incompletas por fecha
+        $respuestasCompletasPorFecha = DB::table('encuesta_usuario')
+            ->where('encuesta_id', $idEncuesta)
+            ->where('completa', true)
+            ->select(DB::raw('DATE(created_at) as fecha'), DB::raw('count(*) as count'))
+            ->groupBy('fecha')
+            ->get()
+            ->keyBy('fecha')
+            ->transform(function ($item) {
+                return $item->count;
+            })
+            ->toArray();
+        
+        $respuestasIncompletasPorFecha = DB::table('encuesta_usuario')
+            ->where('encuesta_id', $idEncuesta)
+            ->where('completa', false)
+            ->select(DB::raw('DATE(created_at) as fecha'), DB::raw('count(*) as count'))
+            ->groupBy('fecha')
+            ->get()
+            ->keyBy('fecha')
+            ->transform(function ($item) {
+                return $item->count;
+            })
+            ->toArray();
+        
+        // Retorna la vista de resultados de la encuesta con los datos de la encuesta y el número de respuestas por fecha
+        return view('resultadoEncuesta.show', [
+            'encuesta' => $encuesta, 
+            'respuestasPorFecha' => $respuestasPorFecha,
+            'respuestasCompletasPorFecha' => $respuestasCompletasPorFecha,
+            'respuestasIncompletasPorFecha' => $respuestasIncompletasPorFecha
+        ]);
     }
 }

@@ -9,6 +9,8 @@ class Respuesta extends Model
 {
     use HasFactory;
 
+    protected $table = 'respuestas';
+    protected $primaryKey = 'id';
     protected $fillable = ['encuesta_id', 'pregunta_id', 'opcion_id', 'respuesta_abierta', 'usuario_id'];
 
     public function encuesta()

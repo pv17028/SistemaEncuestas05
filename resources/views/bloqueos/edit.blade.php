@@ -29,6 +29,7 @@
                     <option value="Spam">Spam</option>
                     <option value="Comportamiento abusivo">Comportamiento abusivo</option>
                     <option value="Cuenta falsa">Cuenta falsa</option>
+                    <option value="Cuenta desactivada">Cuenta desactivada</option>
                     @foreach($razones as $razon)
                         <option value="{{ $razon->reason }}" @if(old('reason', $bloqueo->reason) == $razon->reason) selected @endif>{{ $razon->reason }}</option>
                     @endforeach
