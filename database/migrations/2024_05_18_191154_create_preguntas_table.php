@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id("idPregunta");
             $table->unsignedBigInteger('idEncuesta');
             $table->unsignedBigInteger('idTipoPregunta');
-            $table-> string ('contenidoPregunta', 256);
-            $table->string ('descripcionPregunta', 256);
-            $table->string('criterioValidacion', 256);
-            $table->integer ('posicionPregunta');
+            $table->string('contenidoPregunta', 256);
+            $table->string('descripcionPregunta', 256);
+            $table->string('criterioValidacion', 256)->nullable();
+            $table->integer('posicionPregunta');
             $table->timestamps();
         });
     }

@@ -75,7 +75,9 @@
                     </div>
                     <div class="card-body">
                         <p><strong>Descripción:</strong> {{ $pregunta->descripcionPregunta }}</p>
-                        <p><strong>Criterio de Validación:</strong> {{ $pregunta->criterioValidacion }}</p>
+                        @if($pregunta->criterioValidacion)
+                            <p><strong>Criterio de Validación:</strong> {{ $pregunta->criterioValidacion }}</p>
+                        @endif
                         @switch($pregunta->tipoPregunta->nombreTipoPregunta)
                             @case('Preguntas dicotómicas')
                                 @foreach ($pregunta->opciones as $opcion)

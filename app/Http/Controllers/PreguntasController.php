@@ -41,7 +41,7 @@ class PreguntasController extends Controller
             'idTipoPregunta' => 'required|string|max:256',
             'contenidoPregunta' => 'required|string|max:256',
             'descripcionPregunta' => 'required|string|max:256',
-            'criterioValidacion' => 'required|string|max:256',
+            'criterioValidacion' => 'nullable|string|max:256',
             'posicionPregunta' => 'integer',
         ]);
 
@@ -285,14 +285,14 @@ class PreguntasController extends Controller
             'idTipoPregunta' => 'required|string|max:256',
             'contenidoPregunta' => 'required|string|max:256',
             'descripcionPregunta' => 'required|string|max:256',
-            'criterioValidacion' => 'required|string|max:256',
+            'criterioValidacion' => 'nullable|string|max:256',
             'posicionPregunta' => 'integer',
         ]);
 
         $preguntaExistente = Preguntas::where('idEncuesta', $request->input('idEncuesta'))
-                                      ->where('contenidoPregunta', $request->input('contenidoPregunta'))
-                                      ->where('id', '!=', $id)
-                                      ->first();
+                                              ->where('contenidoPregunta', $request->input('contenidoPregunta'))
+                                              ->where('idPregunta', '!=', $id)
+                                              ->first();
         
         if ($preguntaExistente) {
             return redirect()->route('preguntas.edit', ['id' => $id, 'idEncuesta' => $request->idEncuesta])

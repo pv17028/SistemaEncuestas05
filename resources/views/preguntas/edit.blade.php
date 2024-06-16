@@ -47,12 +47,12 @@
                         <select class="form-select" id="idTipoPregunta" name="idTipoPregunta" required onchange="updateMessage(this)">
                             <option value="">Seleccione un tipo de pregunta</option>
                             @foreach ($tiposPreguntas as $tipoPregunta)
-                                @if ($tipoPregunta->habilitado) <!-- Agrega esta línea -->
+                                @if ($tipoPregunta->habilitado || $preguntas->idTipoPregunta == $tipoPregunta->idTipoPregunta)
                                     <option value="{{ $tipoPregunta->nombreTipoPregunta }}" data-description="{{ $tipoPregunta->descripcionTipoPregunta }}"
                                         {{ $preguntas->idTipoPregunta == $tipoPregunta->idTipoPregunta ? 'selected' : '' }}>
                                         {{ $tipoPregunta->nombreTipoPregunta }}
                                     </option>
-                                @endif <!-- Agrega esta línea -->
+                                @endif
                             @endforeach
                         </select>
                         <p id="tipoPreguntaMessage"></p>
