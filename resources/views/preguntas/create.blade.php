@@ -35,13 +35,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="nombreRol">Contenido de la pregunta</label>
+                        <label for="nombreRol">Contenido de la pregunta <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="contenidoPregunta" name="contenidoPregunta"
                             placeholder="Ingrese el contenido de la pregunta" required>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="descripcionPregunta">Descripción de la pregunta</label>
+                        <label for="descripcionPregunta">Descripción de la pregunta <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="descripcionPregunta" name="descripcionPregunta"
                             placeholder="Ingrese la descripción de la pregunta" required>
                     </div>
@@ -55,7 +55,7 @@
 
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="idTipoPregunta">Tipo de pregunta</label>
+                        <label for="idTipoPregunta">Tipo de pregunta <span class="text-danger">*</span></label>
                         <select class="form-select" id="idTipoPregunta" name="idTipoPregunta" required
                             onchange="updateMessage(this)">
                             <option value="">Seleccione un tipo de pregunta</option>
@@ -92,18 +92,18 @@
 
                     <div id="Preguntas dicotómicas" style="display: none;">
                         <div class="form-group mb-3">
-                            <label for="opcion1">Opción 1</label>
+                            <label for="opcion1">Opción 1 <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="opcion1" name="opcionesDicotomicas[]">
                         </div>
                         <div class="form-group">
-                            <label for="opcion2">Opción 2</label>
+                            <label for="opcion2">Opción 2 <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="opcion2" name="opcionesDicotomicas[]">
                         </div>
                     </div>
 
                     <div id="Preguntas politómicas" style="display: none;">
                         <div class="form-group">
-                            <label for="opcionesPolitomicas">Opciones de respuesta</label>
+                            <label for="opcionesPolitomicas">Opciones de respuesta <span class="text-danger">*</span></label>
                             <textarea class="form-control" id="opcionesPolitomicas" name="opcionesPolitomicas" rows="3"
                                 placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3"></textarea>
                         </div>
@@ -111,7 +111,7 @@
 
                     <div id="Preguntas de elección múltiple" style="display: none;">
                         <div class="form-group mb-3">
-                            <label for="opciones">Opciones de respuesta</label>
+                            <label for="opciones">Opciones de respuesta <span class="text-danger">*</span></label>
                             <textarea class="form-control" id="opciones" name="opcionesMultiple" rows="3"
                                 placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3"></textarea>
                         </div>
@@ -119,7 +119,7 @@
 
                     <div id="Preguntas de tipo ranking" style="display: none;">
                         <div class="form-group">
-                            <label for="opcionesRanking">Opciones de respuesta</label>
+                            <label for="opcionesRanking">Opciones de respuesta <span class="text-danger">*</span></label>
                             <textarea class="form-control" id="opcionesRanking" name="opcionesRanking" rows="3"
                                 placeholder="Ingrese 4 o 5 opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3"></textarea>
                         </div>
@@ -127,7 +127,7 @@
 
                     <div id="Escala de Likert" style="display: none;">
                         <div class="form-group">
-                            <label for="opcionesLikert">Opciones de respuesta</label>
+                            <label for="opcionesLikert">Opciones de respuesta <span class="text-danger">*</span></label>
                             <textarea class="form-control" id="opcionesLikert" name="opcionesLikert" rows="3"
                                 placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3"></textarea>
                         </div>
@@ -135,7 +135,7 @@
 
                     <div id="Escala numérica" style="display: none;">
                         <div class="form-group">
-                            <label for="escalaNumerica">Rango máximo de la escala</label>
+                            <label for="escalaNumerica">Rango máximo de la escala <span class="text-danger">*</span></label>
                             <input type="number" min="1" max="100" class="form-control" id="escalaNumerica"
                                 name="escalaNumerica" placeholder="10" style="width: 80px;">
                         </div>
@@ -143,7 +143,7 @@
 
                     <div id="Preguntas mixtas" style="display: none;">
                         <div class="form-group mb-3">
-                            <label for="opcionesMixtas">Opciones de respuesta</label>
+                            <label for="opcionesMixtas">Opciones de respuesta <span class="text-danger">*</span></label>
                             <textarea class="form-control" id="opcionesMixtas" name="opcionesMixtas" rows="3"
                                 placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3"></textarea>
                             <small class="form-text text-muted">Añade "Otra" al final si quieres permitir una respuesta
@@ -169,6 +169,7 @@
                     </script>
                 </div>
             </div>
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center mt-3">
                 <button type="submit" class="btn btn-primary btn-sm">Guardar Pregunta y Añadir Otra</button>
                 <button type="submit" name="save_and_close" value="1" class="btn btn-success btn-sm">Guardar y
