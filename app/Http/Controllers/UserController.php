@@ -50,7 +50,7 @@ class UserController extends Controller
         $user->idBloqueUsuario = $request->idBloqueUsuario;
         $user->save();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'Usuario creado con éxito');
     }
 
     public function show(User $user)
@@ -91,7 +91,7 @@ class UserController extends Controller
         $user->idBloqueUsuario = $request->idBloqueUsuario;
         $user->save();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado con éxito');
     }
 
     // public function destroy(User $user)
