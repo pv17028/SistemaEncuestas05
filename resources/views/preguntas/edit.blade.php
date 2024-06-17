@@ -93,38 +93,38 @@
                     </div>
 
                     <div id="Preguntas politómicas"
-                        style="display: {{ $preguntas->idTipoPregunta == 'Preguntas politómicas' ? 'block' : 'none' }};">
+                         style="display: {{ $preguntas->idTipoPregunta == 'Preguntas politómicas' ? 'block' : 'none' }};">
                         <div class="form-group">
                             <label for="opcionesPolitomicas">Opciones de respuesta</label>
                             <textarea class="form-control" id="opcionesPolitomicas" name="opcionesPolitomicas" rows="3"
-                                placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                                      placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(', ', array_map(function($opcion) { return strpos($opcion->contenidoOpcion, ',') !== false ? '(' . $opcion->contenidoOpcion . ')' : $opcion->contenidoOpcion; }, $preguntas->opciones->all())) }}</textarea>
                         </div>
                     </div>
 
                     <div id="Preguntas de elección múltiple"
-                        style="display: {{ $preguntas->idTipoPregunta == 'Preguntas de elección múltiple' ? 'block' : 'none' }};">
+                         style="display: {{ $preguntas->idTipoPregunta == 'Preguntas de elección múltiple' ? 'block' : 'none' }};">
                         <div class="form-group mb-3">
                             <label for="opciones">Opciones de respuesta</label>
                             <textarea class="form-control" id="opciones" name="opcionesMultiple" rows="3"
-                                placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                                      placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(', ', array_map(function($opcion) { return strpos($opcion->contenidoOpcion, ',') !== false ? '(' . $opcion->contenidoOpcion . ')' : $opcion->contenidoOpcion; }, $preguntas->opciones->all())) }}</textarea>
                         </div>
                     </div>
 
                     <div id="Preguntas de tipo ranking"
-                        style="display: {{ $preguntas->idTipoPregunta == 'Preguntas de tipo ranking' ? 'block' : 'none' }};">
+                         style="display: {{ $preguntas->idTipoPregunta == 'Preguntas de tipo ranking' ? 'block' : 'none' }};">
                         <div class="form-group">
                             <label for="opcionesRanking">Opciones de respuesta</label>
                             <textarea class="form-control" id="opcionesRanking" name="opcionesRanking" rows="3"
-                                placeholder="Ingrese 4 o 5 opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                                      placeholder="Ingrese 4 o 5 opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(', ', array_map(function($opcion) { return strpos($opcion->contenidoOpcion, ',') !== false ? '(' . $opcion->contenidoOpcion . ')' : $opcion->contenidoOpcion; }, $preguntas->opciones->all())) }}</textarea>
                         </div>
                     </div>
 
                     <div id="Escala de Likert"
-                        style="display: {{ $preguntas->idTipoPregunta == 'Escala de Likert' ? 'block' : 'none' }};">
+                         style="display: {{ $preguntas->idTipoPregunta == 'Escala de Likert' ? 'block' : 'none' }};">
                         <div class="form-group">
                             <label for="opcionesLikert">Opciones de respuesta</label>
                             <textarea class="form-control" id="opcionesLikert" name="opcionesLikert" rows="3"
-                                placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                                      placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(', ', array_map(function($opcion) { return strpos($opcion->contenidoOpcion, ',') !== false ? '(' . $opcion->contenidoOpcion . ')' : $opcion->contenidoOpcion; }, $preguntas->opciones->all())) }}</textarea>
                         </div>
                     </div>
 
@@ -139,11 +139,11 @@
                     </div>
 
                     <div id="Preguntas mixtas"
-                        style="display: {{ $preguntas->tipoPregunta->nombreTipoPregunta == 'Preguntas mixtas' ? 'block' : 'none' }};">
+                         style="display: {{ $preguntas->tipoPregunta->nombreTipoPregunta == 'Preguntas mixtas' ? 'block' : 'none' }};">
                         <div class="form-group mb-3">
                             <label for="opcionesMixtas">Opciones de respuesta</label>
                             <textarea class="form-control" id="opcionesMixtas" name="opcionesMixtas" rows="3"
-                                placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(',', $preguntas->opciones->pluck('contenidoOpcion')->toArray()) }}</textarea>
+                                      placeholder="Ingrese las opciones de respuesta, separadas por comas. Si una opción contiene una coma, colóquela entre paréntesis. Ejemplo: Opción 1, (Opción 2, con una coma), Opción 3">{{ implode(', ', array_map(function($opcion) { return strpos($opcion->contenidoOpcion, ',') !== false ? '(' . $opcion->contenidoOpcion . ')' : $opcion->contenidoOpcion; }, $preguntas->opciones->all())) }}</textarea>
                             <small class="form-text text-muted">Añade "Otra" al final si quieres permitir una respuesta
                                 abierta.</small>
                         </div>

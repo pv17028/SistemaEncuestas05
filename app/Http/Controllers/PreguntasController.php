@@ -268,6 +268,7 @@ class PreguntasController extends Controller
      */
     public function show($idEncuesta, $idPregunta)
     {
+        $encuesta = Encuesta::find($idEncuesta);
         $preguntas = Preguntas::find($idPregunta);
         if (!$preguntas) {
             return redirect()->back()->with('error', 'Pregunta no encontrada.');
@@ -276,7 +277,7 @@ class PreguntasController extends Controller
         // Cargar las opciones para la pregunta
         $preguntas->load('opciones');
 
-        return view('preguntas.show', compact('preguntas'));
+        return view('preguntas.show', compact('preguntas', 'encuesta'));
     }
 
     /**
@@ -288,6 +289,12 @@ class PreguntasController extends Controller
         if (!$preguntas) {
             return redirect()->back()->with('error', 'Pregunta no encontrada.');
         }
+    
+        $encuesta = Encuesta::find($idEncuesta);
+        if ($encuesta->compartida) {
+            return redirect()->back()->with('error', 'La encuesta está compartida, por lo que no se puede editar.');
+        }
+    
         $tiposPreguntas = TipoPregunta::all();
         return view('preguntas.edit', compact('preguntas', 'tiposPreguntas'));
     }
@@ -497,7 +504,7 @@ class PreguntasController extends Controller
             $posicion = 1; // Inicializa la posición de la opción
             $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMixtas'));
             $opciones = array_map(function($opcion) {
-                return str_replace(['(', ')'], '', $opcion);
+                return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
 
             // Para cada opción proporcionada por el usuario
@@ -512,13 +519,19 @@ class PreguntasController extends Controller
             }
 
             // Verifica si la última opción ingresada por el usuario es "Otra"
-            if (end($opciones) != 'Otra') {
-                // Si no es "Otra", crea una opción adicional llamada "Otra"
-                Opcion::create([
-                    'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
-                    'contenidoOpcion' => 'Otra', // Establece el contenido de la opción
-                    'posicionOpcion' => $posicion, // Establece la posición de la opción
-                ]);
+            if (trim(end($opciones)) != 'Otra') {
+                // Si no es "Otra", verifica si ya existe una opción "Otra"
+                $otraOpcion = Opcion::where('idPregunta', $pregunta->idPregunta)
+                                     ->where('contenidoOpcion', 'Otra')
+                                     ->first();
+                // Si no existe, crea una opción adicional llamada "Otra"
+                if (!$otraOpcion) {
+                    Opcion::create([
+                        'idPregunta' => $pregunta->idPregunta, // Asocia la opción con la pregunta
+                        'contenidoOpcion' => 'Otra', // Establece el contenido de la opción
+                        'posicionOpcion' => $posicion, // Establece la posición de la opción
+                    ]);
+                }
             }
         }
 

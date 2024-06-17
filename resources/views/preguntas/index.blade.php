@@ -48,14 +48,22 @@
                                 @endif
                             </td>
                             <td>
-                                {{-- <a href="{{ route('preguntas.opciones.index', ['idEncuesta' => $encuesta->id, 'idPregunta' => $pregunta->idPregunta]) }}" class="btn btn-primary btn-sm">Opciones</a> --}}
-                                <a href="{{ route('preguntas.show', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" class="btn btn-sm btn-info">Ver</a>
-                                <a href="{{ route('preguntas.edit', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" class="btn btn-warning btn-sm">Editar</a>
-                                <form action="{{ route('preguntas.destroy', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta pregunta?')">Eliminar</button>
-                                </form>
+                                <div class="d-flex">
+                                    {{-- <a href="{{ route('preguntas.opciones.index', ['idEncuesta' => $encuesta->id, 'idPregunta' => $pregunta->idPregunta]) }}" class="btn btn-primary btn-sm">Opciones</a> --}}
+                                    <a href="{{ route('preguntas.show', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" class="btn btn-sm btn-info me-1">Ver</a>
+                                    @if($encuesta->compartida)
+                                        <div title="La encuesta está compartida, por lo que no se puede editar.">
+                                            <button class="btn btn-warning btn-sm me-1" disabled>Editar</button>
+                                        </div>
+                                    @else
+                                        <a href="{{ route('preguntas.edit', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" class="btn btn-warning btn-sm me-1">Editar</a>
+                                    @endif
+                                    <form action="{{ route('preguntas.destroy', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta pregunta?')">Eliminar</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endif

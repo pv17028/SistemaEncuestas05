@@ -5,8 +5,12 @@
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4">
     <div class="d-flex justify-content-between align-items-center">
         <h2>Detalles de la pregunta</h2>
-        <div>
-            <a href="{{ route('preguntas.edit', ['idEncuesta' => $preguntas->idEncuesta, 'preguntas' => $preguntas->idPregunta]) }}" class="btn btn-warning btn-sm">Editar pregunta</a>
+        <div title="{{ $encuesta->compartida ? 'La encuesta está compartida, por lo que no se puede editar.' : '' }}">
+            @if($encuesta->compartida)
+                <button class="btn btn-warning btn-sm" disabled>Editar pregunta</button>
+            @else
+                <a href="{{ route('preguntas.edit', ['idEncuesta' => $preguntas->idEncuesta, 'preguntas' => $preguntas->idPregunta]) }}" class="btn btn-warning btn-sm">Editar pregunta</a>
+            @endif
             <a href="{{ route('preguntas.index', ['idEncuesta' => $preguntas->idEncuesta]) }}" class="btn btn-secondary btn-sm">Volver al listado de preguntas</a>
         </div>
     </div>
