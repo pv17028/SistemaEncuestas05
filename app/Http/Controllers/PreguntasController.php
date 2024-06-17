@@ -320,7 +320,7 @@ class PreguntasController extends Controller
 
         if (!$pregunta) {
             return redirect()->route('preguntas.index', ['idEncuesta' => $request->idEncuesta])
-                ->with('error', 'La pregunta no existe.');
+                    ->with('error', 'La pregunta no existe.');
         }
 
         $tipoPregunta = TipoPregunta::where('nombreTipoPregunta', $request->input('idTipoPregunta'))->first();
