@@ -23,19 +23,19 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="nombreRol">Nombre del Rol</label>
+                        <label for="nombreRol">Nombre del Rol <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="nombreRol" name="nombreRol" placeholder="Ingresa el nombre del rol" required>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="descripcionRol">Descripción del Rol</label>
+                        <label for="descripcionRol">Descripción del Rol <span class="text-danger">*</span></label>
                         <textarea class="form-control" id="descripcionRol" name="descripcionRol" placeholder="Ingresa la descripción del rol"></textarea>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label>Privilegios</label>
+                        <label>Privilegios <span class="text-danger">*</span></label>
                         <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="selectAll">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
             </div>
-
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center">
                 <a href="{{ route('roles.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>

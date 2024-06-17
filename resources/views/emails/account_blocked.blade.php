@@ -2,7 +2,7 @@
 
 <h1>Tu cuenta ha sido bloqueada</h1>
 
-<p>Estimado(a) {{ $user->fnombre }} {{ $user->apellido }} ({{ $user->username }}),</p>
+<p>Estimado(a) {{ $user->nombre }} {{ $user->apellido }} ({{ $user->username }}),</p>
 
 <p>Lamentamos informarte que tu cuenta ha sido bloqueada debido a {{ $bloqueo->reason }}.</p>
 

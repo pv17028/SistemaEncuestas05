@@ -34,19 +34,19 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="tipoPregunta">Nombre del tipo de pregunta</label>
+                        <label for="tipoPregunta">Nombre del tipo de pregunta <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="tipoPregunta" name="tipoPregunta" placeholder="Ingresa el tipo de pregunta" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="descripcionTipo">Descripción del tipo de pregunta</label>
+                        <label for="descripcionTipo">Descripción del tipo de pregunta <span class="text-danger">*</span></label>
                         <textarea class="form-control" id="descripcionTipo" name="descripcionTipo" placeholder="Ingresa la descripción del tipo de pregunta"></textarea>
                     </div>
                 </div>
-                <div class="col-md-6"> <!-- Agrega este bloque -->
+                <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="habilitado">Habilitado</label>
+                        <label for="habilitado">Habilitado <span class="text-danger">*</span></label>
                         <select class="form-control" id="habilitado" name="habilitado">
                             <option value="1">Sí</option>
                             <option value="0">No</option>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center">
                 <a href="{{ route('tiposPreguntas.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>

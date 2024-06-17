@@ -24,18 +24,18 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="nombre">Nombre</label>
+                        <label for="nombre">Nombre <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="nombre" name="nombre" value="{{ auth()->user()->nombre }}">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="apellido">Apellido</label>
+                        <label for="apellido">Apellido <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="apellido" name="apellido"
                             value="{{ auth()->user()->apellido }}">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="fechaNacimiento">Fecha de nacimiento</label>
+                        <label for="fechaNacimiento">Fecha de nacimiento <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento"
                             value="{{ auth()->user()->fechaNacimiento }}">
                     </div>
@@ -60,13 +60,13 @@
 
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="username">Nombre de usuario</label>
+                        <label for="username">Nombre de usuario <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="username" name="username"
                             value="{{ auth()->user()->username }}">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="correoElectronico">Correo electrónico</label>
+                        <label for="correoElectronico">Correo electrónico <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="correoElectronico" name="correoElectronico"
                             value="{{ auth()->user()->correoElectronico }}">
                     </div>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </div>
-
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center">
                 <a href="{{ route('profile.show') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-sm">Guardar cambios</button>

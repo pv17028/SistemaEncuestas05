@@ -23,20 +23,20 @@
 
             <div class="row">
                 <div class="col-md-6 form-group mb-3">
-                    <label for="titulo">Título</label>
+                    <label for="titulo">Título <span class="text-danger">*</span></label>
                     <input type="text" name="titulo" id="titulo" class="form-control" value="{{ $encuesta->titulo }}"
                         placeholder="Ingresa el título de la encuesta" required>
                 </div>
 
                 <div class="col-md-6 form-group mb-3">
-                    <label for="objetivo">Objetivo</label>
+                    <label for="objetivo">Objetivo <span class="text-danger">*</span></label>
                     <textarea name="objetivo" id="objetivo" class="form-control" placeholder="Ingresa el objetivo de la encuesta" required>{{ $encuesta->objetivo }}</textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12 form-group mb-3">
-                    <label for="descripcion">Descripción</label>
+                    <label for="descripcion">Descripción <span class="text-danger">*</span></label>
                     <textarea name="descripcionEncuesta" id="descripcion" class="form-control"
                         placeholder="Ingresa la descripción de la encuesta" required>{{ $encuesta->descripcionEncuesta }}</textarea>
                 </div>
@@ -44,7 +44,7 @@
 
             <div class="row mb-2">
                 <div class="col-md-4 form-group mb-3">
-                    <label for="grupoMeta">Grupo Meta</label>
+                    <label for="grupoMeta">Grupo Meta <span class="text-danger">*</span></label>
                     <input type="text" name="grupoMeta" id="grupoMeta" class="form-control"
                         value="{{ $encuesta->grupoMeta }}" placeholder="Ingresa el grupo meta de la encuesta" required>
                 </div>
@@ -54,13 +54,13 @@
                 @endphp
 
                 <div class="col-md-4 form-group mb-3">
-                    <label for="fechaVencimiento">Fecha de Vencimiento</label>
+                    <label for="fechaVencimiento">Fecha de Vencimiento <span class="text-danger">*</span></label>
                     <input type="datetime-local" name="fechaVencimiento" id="fechaVencimiento" class="form-control"
                         value="{{ str_replace(' ', 'T', $encuesta->fechaVencimiento) }}" min="{{ $today }}" required>
                 </div>
 
                 <div class="col-md-4 form-group mb-3">
-                    <label for="es_anonima">¿Es una encuesta anónima?</label>
+                    <label for="es_anonima">¿Es una encuesta anónima? <span class="text-danger">*</span></label>
                     <select class="form-control" id="es_anonima" name="es_anonima" onchange="updateMessage(this)">
                         <option value="0" {{ $encuesta->es_anonima == 0 ? 'selected' : '' }}>No</option>
                         <option value="1" {{ $encuesta->es_anonima == 1 ? 'selected' : '' }}>Sí</option>
@@ -161,7 +161,7 @@
                     }
                 </script>
             </div>
-
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center">
                 <a href="{{ route('encuestas.show', ['encuesta' => $encuesta->idEncuesta]) }}"
                     class="btn btn-secondary btn-sm">Cancelar</a>

@@ -23,22 +23,22 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label for="nombre">Nombre</label>
+                        <label for="nombre">Nombre <span class="text-danger">*</span></label>
                         <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ingresa tu nombre">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="apellido">Apellido</label>
+                        <label for="apellido">Apellido <span class="text-danger">*</span></label>
                         <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Ingresa tu apellido">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="correoElectronico">Correo Electrónico</label>
+                        <label for="correoElectronico">Correo Electrónico <span class="text-danger">*</span></label>
                         <input type="email" id="correoElectronico" name="correoElectronico" class="form-control" placeholder="ejemplo@dominio.com">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="idRol">Rol</label>
+                        <label for="idRol">Rol <span class="text-danger">*</span></label>
                         <select id="idRol" name="idRol" class="form-control">
                             @foreach ($roles as $rol)
                                 <option value="{{ $rol->idRol }}">{{ $rol->nombreRol }}</option>
@@ -53,27 +53,27 @@
                     @endphp
                     
                     <div class="form-group mb-3">
-                        <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                        <label for="fechaNacimiento">Fecha de Nacimiento <span class="text-danger">*</span></label>
                         <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control" max="{{ $eighteenYearsAgo }}">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="username">Usuario</label>
+                        <label for="username">Usuario <span class="text-danger">*</span></label>
                         <input type="text" id="username" name="username" class="form-control" placeholder="Ingresa tu usuario">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="password">Contraseña</label>
+                        <label for="password">Contraseña <span class="text-danger">*</span></label>
                         <input type="password" id="password" name="password" class="form-control" placeholder="Ingresa tu contraseña">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="password_confirmation">Confirmar Contraseña</label>
+                        <label for="password_confirmation">Confirmar Contraseña <span class="text-danger">*</span></label>
                         <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirma tu contraseña">
                     </div>
                 </div>
             </div>
-
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center">
                 <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-sm">Crear Usuario</button>
