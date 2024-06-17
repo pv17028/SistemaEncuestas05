@@ -21,9 +21,14 @@
             @csrf
             @method('PUT')
 
+            <div class="form-group mb-3">
+                <label for="user_id">Usuario <span class="text-danger">*</span></label>
+                <input type="text" readonly class="form-control" id="user_id" name="user_id" value="{{ $bloqueo->user->username }}">
+                <input type="hidden" name="user_id" value="{{ $bloqueo->user_id }}">
+            </div>
 
             <div class="form-group mb-3">
-                <label for="reason">Motivo</label>
+                <label for="reason">Motivo <span class="text-danger">*</span></label>
                 <select class="form-control @error('reason') is-invalid @enderror" id="reason" name="reason" required>
                     <option value="">Selecciona un motivo</option>
                     <option value="Spam">Spam</option>
@@ -55,7 +60,7 @@
                     </span>
                 @enderror
             </div>
-
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center">
                 <a href="{{ route('bloqueos.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>

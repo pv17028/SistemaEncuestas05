@@ -21,7 +21,7 @@
             @csrf
 
             <div class="form-group mb-3">
-                <label for="user_id">Usuario</label>
+                <label for="user_id">Usuario <span class="text-danger">*</span></label>
                 <select class="form-control" id="user_id" name="user_id">
                     <option value="">Seleccione un usuario</option>
                     @foreach ($users as $user)
@@ -31,7 +31,7 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="reason">Motivo</label>
+                <label for="reason">Motivo <span class="text-danger">*</span></label>
                 <select class="form-control" id="reason" name="reason">
                     <option value="">Selecciona un motivo</option>
                     <option value="Spam">Spam</option>
@@ -40,7 +40,7 @@
                     <option value="Cuenta desactivada">Cuenta desactivada</option>
                 </select>
             </div>
-
+            <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
             <div class="text-center">
                 <a href="{{ route('bloqueos.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-sm">Bloquear</button>

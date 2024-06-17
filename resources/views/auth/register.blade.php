@@ -14,7 +14,7 @@
 
                                 <div class="row mb-3">
                                     <label for="nombre"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Nombre') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Nombre') }} <span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <input id="nombre" type="text"
                                             class="form-control @error('nombre') is-invalid @enderror" name="nombre"
@@ -29,7 +29,7 @@
 
                                 <div class="row mb-3">
                                     <label for="apellido"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Apellido') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Apellido') }} <span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <input id="apellido" type="text"
                                             class="form-control @error('apellido') is-invalid @enderror" name="apellido"
@@ -44,7 +44,7 @@
 
                                 <div class="row mb-3">
                                     <label for="fechaNacimiento"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Fecha de Nacimiento') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Fecha de Nacimiento') }} <span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <input id="fechaNacimiento" type="date"
                                             class="form-control @error('fechaNacimiento') is-invalid @enderror"
@@ -90,7 +90,7 @@
 
                                 <div class="row mb-3">
                                     <label for="correoElectronico"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Correo Electrónico') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Correo Electrónico') }} <span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <input id="correoElectronico" type="email"
                                             class="form-control @error('correoElectronico') is-invalid @enderror"
@@ -106,7 +106,7 @@
 
                                 <div class="row mb-3">
                                     <label for="username"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Nombre de Usuario') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Nombre de Usuario') }} <span class="text-danger">*</span></label>
 
                                     <div class="col-md-6">
                                         <input id="username" type="text"
@@ -123,7 +123,7 @@
 
                                 <div class="row mb-3">
                                     <label for="password"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Contraseña') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Contraseña') }} <span class="text-danger">*</span></label>
 
                                     <div class="col-md-6">
                                         <input id="password" type="password"
@@ -140,7 +140,7 @@
 
                                 <div class="row mb-3">
                                     <label for="password-confirm"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Confirmar Contraseña') }}</label>
+                                        class="col-md-4 col-form-label text-md-end">{{ __('Confirmar Contraseña') }} <span class="text-danger">*</span></label>
 
                                     <div class="col-md-6">
                                         <input id="password-confirm" type="password" class="form-control"
@@ -150,6 +150,7 @@
 
                                 <div class="row mb-0 justify-content-center">
                                     <div class="col-md-6 text-center">
+                                        <p><span class="text-danger">*</span> Indica un campo obligatorio</p>
                                         <button type="submit" class="btn btn-primary">
                                             {{ __('Crear Cuenta') }}
                                         </button>
