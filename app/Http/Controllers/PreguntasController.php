@@ -126,7 +126,7 @@ class PreguntasController extends Controller
                 $posicion = 1; // Inicializa la posición de la opción
                 $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesPolitomicas'));
                 $opciones = array_map(function($opcion) {
-                    return str_replace(['(', ')'], '', $opcion);
+                    return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
@@ -146,7 +146,7 @@ class PreguntasController extends Controller
                 $posicion = 1; // Inicializa la posición de la opción
                 $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMultiple'));
                 $opciones = array_map(function($opcion) {
-                    return str_replace(['(', ')'], '', $opcion);
+                    return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
@@ -166,7 +166,7 @@ class PreguntasController extends Controller
                 $posicion = 1; // Inicializa la posición de la opción
                 $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesRanking'));
                 $opciones = array_map(function($opcion) {
-                    return str_replace(['(', ')'], '', $opcion);
+                    return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
@@ -186,7 +186,7 @@ class PreguntasController extends Controller
                 $posicion = 1; // Inicializa la posición de la opción
                 $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesLikert'));
                 $opciones = array_map(function($opcion) {
-                    return str_replace(['(', ')'], '', $opcion);
+                    return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
@@ -221,7 +221,7 @@ class PreguntasController extends Controller
                 $posicion = 1; // Inicializa la posición de la opción
                 $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMixtas'));
                 $opciones = array_map(function($opcion) {
-                    return str_replace(['(', ')'], '', $opcion);
+                    return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
 
                 // Para cada opción proporcionada por el usuario
@@ -377,7 +377,7 @@ class PreguntasController extends Controller
         if ($request->input('idTipoPregunta') == 'Preguntas politómicas') {
             $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesPolitomicas'));
             $opciones = array_map(function($opcion) {
-                return str_replace(['(', ')'], '', $opcion);
+                return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
 
             // Elimina las opciones existentes
@@ -405,7 +405,7 @@ class PreguntasController extends Controller
             $posicion = 1; // Inicializa la posición de la opción
             $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesMultiple'));
             $opciones = array_map(function($opcion) {
-                return str_replace(['(', ')'], '', $opcion);
+                return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
 
             // Para cada opción proporcionada por el usuario
@@ -424,7 +424,7 @@ class PreguntasController extends Controller
         if ($request->input('idTipoPregunta') == 'Preguntas de tipo ranking') {
             $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesRanking'));
             $opciones = array_map(function($opcion) {
-                return str_replace(['(', ')'], '', $opcion);
+                return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
 
             // Valida que solo se proporcionen 4 o 5 opciones
@@ -453,7 +453,7 @@ class PreguntasController extends Controller
         if ($request->input('idTipoPregunta') == 'Escala de Likert') {
             $opciones = preg_split('/,(?![^\(]*\))/', $request->input('opcionesLikert'));
             $opciones = array_map(function($opcion) {
-                return str_replace(['(', ')'], '', $opcion);
+                return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
 
             // Elimina las opciones existentes

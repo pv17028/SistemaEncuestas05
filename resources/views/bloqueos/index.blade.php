@@ -48,8 +48,10 @@
                             <td>{{ $bloqueo->unblocked_at }}</td>
                             <td style="white-space: nowrap;">
                                 <!-- Botón de desbloqueo -->
-                                @if ($bloqueo->status == 'blocked') <!-- Verificar si la fecha de desbloqueo está establecida O el estado es 'blocked' -->
-                                    <form action="{{ route('bloqueos.desbloquear', $bloqueo->id) }}" method="POST" style="display: inline;">
+                                @if ($bloqueo->status == 'blocked')
+                                    <!-- Verificar si la fecha de desbloqueo está establecida O el estado es 'blocked' -->
+                                    <form action="{{ route('bloqueos.desbloquear', $bloqueo->id) }}" method="POST"
+                                        style="display: inline;">
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" class="btn btn-primary btn-sm">Desbloquear</button>
@@ -59,7 +61,8 @@
                                 <a href="{{ route('bloqueos.show', $bloqueo->id) }}" class="btn btn-info btn-sm">Ver</a>
                                 <!-- Botón de editar -->
                                 @if ($bloqueo->user)
-                                    <a href="{{ route('bloqueos.edit', $bloqueo->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="{{ route('bloqueos.edit', $bloqueo->id) }}"
+                                        class="btn btn-warning btn-sm">Editar</a>
                                 @endif
                             </td>
                         </tr>
@@ -68,10 +71,32 @@
             </table>
             <script>
                 $(document).ready(function() {
-                    $('#bloqueos').DataTable();
+                    $('#bloqueos').DataTable({
+                        language: {
+                            processing: "Procesando...",
+                            search: "Buscar:",
+                            lengthMenu: "Mostrar _MENU_ elementos",
+                            info: "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+                            infoEmpty: "Mostrando 0 de 0 de 0 elementos",
+                            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+                            infoPostFix: "",
+                            loadingRecords: "Cargando registros...",
+                            zeroRecords: "No se encontraron registros",
+                            emptyTable: "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first: "Primero",
+                                previous: "Anterior",
+                                next: "Siguiente",
+                                last: "Último"
+                            },
+                            aria: {
+                                sortAscending: ": activar para ordenar la columna de manera ascendente",
+                                sortDescending: ": activar para ordenar la columna de manera descendente"
+                            }
+                        }
+                    });
                 });
             </script>
-            
         @endif
     </main>
 @endsection

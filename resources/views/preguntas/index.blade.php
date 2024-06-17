@@ -5,8 +5,10 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2>Lista de preguntas - {{ $encuesta->titulo }}</h2>
             <div>
-                <a href="{{ route('preguntas.create', ['idEncuesta' => $idEncuesta]) }}" class="btn btn-primary btn-sm">Agregar Pregunta</a>
-                <a href="{{ route('encuestas.show', ['encuesta' => $idEncuesta]) }}" class="btn btn-secondary btn-sm">Volver a detalles de la Encuesta</a>
+                <a href="{{ route('preguntas.create', ['idEncuesta' => $idEncuesta]) }}"
+                    class="btn btn-primary btn-sm">Agregar Pregunta</a>
+                <a href="{{ route('encuestas.show', ['encuesta' => $idEncuesta]) }}" class="btn btn-secondary btn-sm">Volver a
+                    detalles de la Encuesta</a>
             </div>
         </div>
         <hr>
@@ -23,7 +25,7 @@
             </div>
         @endif
 
-        <table class="table table-striped table-hover">
+        <table class="table" id="preguntas">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -37,7 +39,7 @@
                 @foreach ($preguntas as $pregunta)
                     @if ($pregunta->idEncuesta == $idEncuesta)
                         <tr>
-                            <td>{{ $pregunta->idPregunta}}</td>
+                            <td>{{ $pregunta->idPregunta }}</td>
                             <td>{{ $pregunta->contenidoPregunta }}</td>
                             <td>{{ $pregunta->descripcionPregunta }}</td>
                             <td>
@@ -50,18 +52,23 @@
                             <td>
                                 <div class="d-flex">
                                     {{-- <a href="{{ route('preguntas.opciones.index', ['idEncuesta' => $encuesta->id, 'idPregunta' => $pregunta->idPregunta]) }}" class="btn btn-primary btn-sm">Opciones</a> --}}
-                                    <a href="{{ route('preguntas.show', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" class="btn btn-sm btn-info me-1">Ver</a>
-                                    @if($encuesta->compartida)
+                                    <a href="{{ route('preguntas.show', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}"
+                                        class="btn btn-sm btn-info me-1">Ver</a>
+                                    @if ($encuesta->compartida)
                                         <div title="La encuesta está compartida, por lo que no se puede editar.">
                                             <button class="btn btn-warning btn-sm me-1" disabled>Editar</button>
                                         </div>
                                     @else
-                                        <a href="{{ route('preguntas.edit', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" class="btn btn-warning btn-sm me-1">Editar</a>
+                                        <a href="{{ route('preguntas.edit', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}"
+                                            class="btn btn-warning btn-sm me-1">Editar</a>
                                     @endif
-                                    <form action="{{ route('preguntas.destroy', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}" method="POST" class="d-inline">
+                                    <form
+                                        action="{{ route('preguntas.destroy', ['idEncuesta' => $encuesta->idEncuesta, 'preguntas' => $pregunta->idPregunta]) }}"
+                                        method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta pregunta?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Estás seguro de eliminar esta pregunta?')">Eliminar</button>
                                     </form>
                                 </div>
                             </td>
@@ -70,5 +77,33 @@
                 @endforeach
             </tbody>
         </table>
+        <script>
+            $(document).ready(function() {
+                $('#preguntas').DataTable({
+                    language: {
+                        processing: "Procesando...",
+                        search: "Buscar:",
+                        lengthMenu: "Mostrar _MENU_ elementos",
+                        info: "Mostrando de _START_ a _END_ de _TOTAL_ elementos",
+                        infoEmpty: "Mostrando 0 de 0 de 0 elementos",
+                        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+                        infoPostFix: "",
+                        loadingRecords: "Cargando registros...",
+                        zeroRecords: "No se encontraron registros",
+                        emptyTable: "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "Último"
+                        },
+                        aria: {
+                            sortAscending: ": activar para ordenar la columna de manera ascendente",
+                            sortDescending: ": activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                });
+            });
+        </script>
     </main>
 @endsection
