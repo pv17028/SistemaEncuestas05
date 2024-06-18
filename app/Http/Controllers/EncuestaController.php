@@ -16,14 +16,10 @@ class EncuestaController extends Controller
     {
         $idUsuario = auth()->user()->id; // Obtener el ID del usuario autenticado
         $encuestas = Encuesta::where('idUsuario', $idUsuario)
+            ->withCount('encuesta_usuario as respuestas_agrupadas')
             ->orderBy('titulo')
             ->get();
-
-        foreach ($encuestas as $encuesta) {
-            $encuesta->respuestas_agrupadas = $encuesta->encuesta_usuario()
-                ->count();
-        }
-
+    
         return view('encuestas.index', compact('encuestas'));
     }
 
@@ -89,10 +85,15 @@ class EncuestaController extends Controller
     public function show(Encuesta $encuesta)
     {
         // Verificar si la encuesta pertenece al usuario autenticado
-        if ($encuesta->idUsuario != auth()->user()->id) {
+        $encuesta = Encuesta::where('idUsuario', auth()->user()->id)
+            ->where('idEncuesta', $encuesta->idEncuesta)
+            ->withCount('encuesta_usuario as respuestas_agrupadas')
+            ->first();
+    
+        if (!$encuesta) {
             abort(403, 'No tienes permiso para ver esta encuesta.');
         }
-
+    
         // Comprueba si la encuesta ha expirado
         $now = Carbon::now();
         $expirationDate = Carbon::parse($encuesta->fechaVencimiento);
@@ -101,12 +102,9 @@ class EncuestaController extends Controller
             $encuesta->compartida_con = null; // Borra los IDs de los usuarios a los que se les compartió la encuesta
             $encuesta->save();
         }
-
+    
         $usuarios = User::all(); // Obtén todos los usuarios
-
-        // Cargar la relación respuestasCount
-        $encuesta->load('respuestasCount');
-
+    
         return view('encuestas.show', compact('encuesta', 'usuarios')); // Pasa los usuarios a la vista
     }
 

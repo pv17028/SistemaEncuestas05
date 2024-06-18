@@ -122,7 +122,7 @@
                         <p><strong>Fecha de Vencimiento:</strong>
                             {{ \Carbon\Carbon::parse($encuesta->fechaVencimiento)->format('d-m-Y g:i:s A') }}</p>
                         <p><strong>Número de Preguntas:</strong> {{ $encuesta->preguntas->count() }}</p>
-                        <p><strong>Total de Respuestas:</strong> {{ $encuesta->respuestasCount->first()->total ?? '0' }}</p>
+                        <p><strong>Total de Respuestas:</strong> {{ $encuesta->respuestas_agrupadas ?? '0' }}</p>
                         {{-- Aquí puedes agregar cualquier otra información que desees mostrar --}}
                     </div>
                 </div>

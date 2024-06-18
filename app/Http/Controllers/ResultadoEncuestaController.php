@@ -14,16 +14,9 @@ class ResultadoEncuestaController extends Controller
         $userId = auth()->id(); // Obtén el ID del usuario actual
     
         $encuestas = Encuesta::where('idUsuario', $userId) // Filtra las encuestas por el ID del usuario
+            ->withCount('encuesta_usuario as respuestas_agrupadas')
             ->orderBy('titulo', 'asc')
             ->get();
-    
-        foreach ($encuestas as $encuesta) {
-            $encuesta->respuestas_agrupadas = $encuesta->encuesta_usuario()
-                ->selectRaw("DATE_TRUNC('second', created_at) as fecha_hora")
-                ->groupBy('fecha_hora')
-                ->get()
-                ->count();
-        }
     
         return view('resultadoEncuesta.index', ['encuestas' => $encuestas]);
     }
