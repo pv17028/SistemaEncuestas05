@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -7,17 +7,18 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'SurveyPro') }}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="{{ asset('dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -70,255 +71,42 @@
             /* Ajusta este valor según la altura de tu pie de página */
         }
     </style>
-
-    <!-- Estilos personalizados para esta plantilla -->
-    <link href="{{ asset('dashboard.css') }}" rel="stylesheet">
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
     <div id="app">
         @auth
-            <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="height: 49px">
-                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-4" href="/">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
-                    SurveyPro
-                </a>
-                <button class="navbar-toggler position-absolute d-md-none collapsed" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                {{-- <input class="form-control form-control-dark w-100" type="text" placeholder="Buscar" aria-label="Buscar"> --}}
-                {{-- <div class="container-fluid d-flex justify-content-center">
-                    <form class="d-flex" style="height: 40px">
-                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search"
-                            style="border-radius: 5px; width: 400px;">
-                        <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
-                    </form>
-                </div> --}}
-                <div class="dropdown" style="height: 49px;">
-                    <div class="nav-item dropdown text-nowrap h-100">
-                        <a class="nav-link dropdown-toggle px-3 text-light h-100 d-flex align-items-center" href="#"
-                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @if (Auth::user()->imagenPerfil)
-                                <img src="{{ asset('imagenPerfil/' . Auth::user()->imagenPerfil) }}"
-                                    style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                            @else
-                                <i class="fas fa-user-circle text-white" style="font-size: 30px; margin-right: 10px;"></i>
-                            @endif
-                            {{ Auth::user()->nombre }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ route('profile.show') }}">Perfil</a></li>
-                            {{-- <li><a class="dropdown-item" href="#">Configuración</a></li> --}}
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                                    {{ __('Cerrar sesión') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </header>
-
+            @include('includes.header') <!-- Incluir la cabecera -->
             <div class="container-fluid">
                 <div class="row">
-                    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                        <div class="position-sticky pt-3">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}"
-                                        aria-current="page" href="{{ route('home') }}">
-                                        <span data-feather="home"></span>
-                                        Panel
-                                    </a>
-                                </li>
-                                @if (Auth::user()->hasPrivilege('encuestas.index'))
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ Route::currentRouteName() == 'encuestas.index' ? 'active' : '' }}"
-                                            href="{{ route('encuestas.index') }}">
-                                            <span data-feather="file-text"></span>
-                                            Encuestas
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->hasPrivilege('ecompartidas.index'))
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ Route::currentRouteName() == 'ecompartidas.index' ? 'active' : '' }}"
-                                            href="{{ route('ecompartidas.index') }}">
-                                            <span data-feather="share-2"></span>
-                                            Encuestas Compartidas
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->hasPrivilege('resultadoEncuesta.index'))
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ Route::currentRouteName() == 'resultadoEncuesta.index' ? 'active' : '' }}"
-                                            href="{{ route('resultadoEncuesta.index') }}">
-                                            <span data-feather="bar-chart-2"></span>
-                                            Resultados
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->hasPrivilege('roles.index') || Auth::user()->hasPrivilege('privilegios.index') || Auth::user()->hasPrivilege('bloqueos.index') || Auth::user()->hasPrivilege('gestionEncuestas.index') || Auth::user()->hasPrivilege('users.index'))
-                                    <!-- Asegúrate de tener una función que verifique si el usuario es administrador -->
-                                    <li class="nav-item">
-                                        <button class="nav-link dropdown-btn">
-                                            <span data-feather="tool"></span>
-                                            Administración
-                                            <i class="fa fa-caret-down"></i>
-                                        </button>
-                                        <div class="dropdown-container">
-                                            @if (Auth::user()->hasPrivilege('users.index'))
-                                                <a class="nav-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}"
-                                                    href="{{ route('users.index') }}">
-                                                    <span data-feather="users"></span>
-                                                    Gestionar Usuarios
-                                                </a>
-                                            @endif
-                                            @if (Auth::user()->hasPrivilege('bloqueos.index'))
-                                                <a class="nav-link {{ Route::currentRouteName() == 'bloqueos.index' ? 'active' : '' }}"
-                                                    href="{{ route('bloqueos.index') }}">
-                                                    <span data-feather="lock"></span>
-                                                    Gestionar Bloqueos
-                                                </a>
-                                            @endif
-                                            @if (Auth::user()->hasPrivilege('gestionEncuestas.index'))
-                                                <a class="nav-link {{ Route::currentRouteName() == 'gestionEncuestas.index' ? 'active' : '' }}"
-                                                    href="{{ route('gestionEncuestas.index') }}">
-                                                    <span data-feather="file-text"></span>
-                                                    Gestionar Encuestas
-                                                </a>
-                                            @endif
-                                            @if (Auth::user()->hasPrivilege('roles.index'))
-                                                <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}"
-                                                    href="{{ route('roles.index') }}">
-                                                    <span data-feather="users"></span>
-                                                    Gestionar Roles
-                                                </a>
-                                            @endif
-                                            @if (Auth::user()->hasPrivilege('privilegios.index'))
-                                                <a class="nav-link {{ Route::currentRouteName() == 'privilegios.index' ? 'active' : '' }}"
-                                                    href="{{ route('privilegios.index') }}">
-                                                    <span data-feather="lock"></span>
-                                                    Gestionar Privilegios
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </li>
-                                @endif
-                                {{-- <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}"
-                                        href="">
-                                        <span data-feather="settings"></span>
-                                        Configuración
-                                    </a>
-                                </li> --}}
-                                {{-- <li class="nav-item">
-                                    <a class="nav-link {{ Route::currentRouteName() == 'usuarios.index' ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
-                                        <span data-feather="users"></span>
-                                        Usuarios
-                                    </a>
-                                </li> --}}
-                            </ul>
-
-                            {{-- <h6
-                                class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                                <span>Informes guardados</span>
-                                <a class="link-secondary" href="#" aria-label="Agregar un nuevo informe">
-                                    <span data-feather="plus-circle"></span>
-                                </a>
-                            </h6>
-                            <ul class="nav flex-column mb-2">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('exportacion.reporteGeneralPdf') }}">
-                                        <span data-feather="file-text"></span>
-                                        Mes actual
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span data-feather="file-text"></span>
-                                        Último trimestre
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span data-feather="file-text"></span>
-                                        Participación social
-                                    </a>
-                                </li>
-                            </ul> --}}
-                        </div>
-                    </nav>
+                    @include('includes.sidebar') <!-- Incluir la barra lateral -->
                 </div>
             </div>
         @endauth
         <div class="main-content">
-            @yield('content')
+            @yield('content') <!-- Contenido principal -->
         </div>
     </div>
 
+    <!-- JavaScript al final del cuerpo -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-zdZpZR/zdBkz7zZnj1Nhxx3Wfb1qCGF9JcfZJkTmIuZYkKhxM2+I2BXJmNVQDpr2" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
         integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('dashboard.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script>
-        var dropdown = document.getElementsByClassName("dropdown-btn");
-        var i;
-
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                }
-            });
-        }
-    </script>
-
-    <!-- JavaScript -->
+    <script src="{{ asset('dashboard.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    @auth
+        @include('includes.footer') <!-- Incluir el pie de página -->
+    @endauth
 </body>
-@auth
-    <footer class="bg-dark text-white text-center py-2 fixed-bottom">
-        Sistema de encuestas - SurveyPro - Grupo 05 &copy; {{ date('Y') }}
-        <div style="color: white;">
-            Hora del sistema: {{ now()->format('h:i A') }}
-        </div>
-    </footer>
-@endauth
 
 </html>
