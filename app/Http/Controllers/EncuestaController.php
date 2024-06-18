@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class EncuestaController extends Controller
 {
@@ -171,9 +172,9 @@ class EncuestaController extends Controller
             ->with('success', 'Encuesta actualizada correctamente.');
     }
 
-    // Eliminar una encuesta existente
     public function destroy(Encuesta $encuesta)
     {
+        DB::table('encuesta_usuario')->where('encuesta_id', $encuesta->idEncuesta)->delete();
         $encuesta->delete();
         return redirect()->route('encuestas.index')->with('success', 'Encuesta eliminada exitosamente.');
     }

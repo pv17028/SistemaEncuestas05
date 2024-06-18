@@ -49,7 +49,7 @@
                     <div class="form-group mb-3">
                         <label for="criterioValidacion">Criterio de validación</label>
                         <input type="text" class="form-control" id="criterioValidacion" name="criterioValidacion"
-                            placeholder="Ingrese el criterio de validación" required>
+                            placeholder="Ingrese el criterio de validación">
                     </div>
                 </div>
 

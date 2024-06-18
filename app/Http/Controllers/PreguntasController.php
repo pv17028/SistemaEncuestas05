@@ -128,6 +128,9 @@ class PreguntasController extends Controller
                 $opciones = array_map(function($opcion) {
                     return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
+                $opciones = array_filter($opciones, function($opcion) {
+                    return $opcion !== '';
+                });
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -148,6 +151,9 @@ class PreguntasController extends Controller
                 $opciones = array_map(function($opcion) {
                     return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
+                $opciones = array_filter($opciones, function($opcion) {
+                    return $opcion !== '';
+                });
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -168,6 +174,9 @@ class PreguntasController extends Controller
                 $opciones = array_map(function($opcion) {
                     return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
+                $opciones = array_filter($opciones, function($opcion) {
+                    return $opcion !== '';
+                });
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -188,6 +197,9 @@ class PreguntasController extends Controller
                 $opciones = array_map(function($opcion) {
                     return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
+                $opciones = array_filter($opciones, function($opcion) {
+                    return $opcion !== '';
+                });
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -223,6 +235,9 @@ class PreguntasController extends Controller
                 $opciones = array_map(function($opcion) {
                     return trim(str_replace(['(', ')'], '', $opcion));
                 }, $opciones);
+                $opciones = array_filter($opciones, function($opcion) {
+                    return $opcion !== '';
+                });
 
                 // Para cada opción proporcionada por el usuario
                 foreach ($opciones as $contenidoOpcion) {
@@ -379,6 +394,9 @@ class PreguntasController extends Controller
             $opciones = array_map(function($opcion) {
                 return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
+            $opciones = array_filter($opciones, function($opcion) {
+                return $opcion !== '';
+            });
 
             // Elimina las opciones existentes
             Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
@@ -407,6 +425,9 @@ class PreguntasController extends Controller
             $opciones = array_map(function($opcion) {
                 return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
+            $opciones = array_filter($opciones, function($opcion) {
+                return $opcion !== '';
+            });
 
             // Para cada opción proporcionada por el usuario
             foreach ($opciones as $contenidoOpcion) {
@@ -426,6 +447,9 @@ class PreguntasController extends Controller
             $opciones = array_map(function($opcion) {
                 return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
+            $opciones = array_filter($opciones, function($opcion) {
+                return $opcion !== '';
+            });
 
             // Valida que solo se proporcionen 4 o 5 opciones
             if (count($opciones) < 4 || count($opciones) > 5) {
@@ -455,6 +479,9 @@ class PreguntasController extends Controller
             $opciones = array_map(function($opcion) {
                 return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
+            $opciones = array_filter($opciones, function($opcion) {
+                return $opcion !== '';
+            });
 
             // Elimina las opciones existentes
             Opcion::where('idPregunta', $pregunta->idPregunta)->delete();
@@ -506,6 +533,9 @@ class PreguntasController extends Controller
             $opciones = array_map(function($opcion) {
                 return trim(str_replace(['(', ')'], '', $opcion));
             }, $opciones);
+            $opciones = array_filter($opciones, function($opcion) {
+                return $opcion !== '';
+            });
 
             // Para cada opción proporcionada por el usuario
             foreach ($opciones as $contenidoOpcion) {
