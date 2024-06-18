@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\SendSurveyEmail;
 
 class EncuestaController extends Controller
 {
@@ -17,12 +18,12 @@ class EncuestaController extends Controller
         $encuestas = Encuesta::where('idUsuario', $idUsuario)
             ->orderBy('titulo')
             ->get();
-    
+
         foreach ($encuestas as $encuesta) {
             $encuesta->respuestas_agrupadas = $encuesta->encuesta_usuario()
                 ->count();
         }
-    
+
         return view('encuestas.index', compact('encuestas'));
     }
 
@@ -188,31 +189,24 @@ class EncuestaController extends Controller
         $fechaVencimiento = Carbon::parse($encuesta->fechaVencimiento);
 
         if ($fechaVencimiento->isPast()) {
-            // La fecha de vencimiento ha pasado, redirige con un mensaje de error
             return redirect()->route('encuestas.show', $encuesta)->with('error', 'La encuesta ya venció.');
         }
 
         if ($compartirCon == 'todos') {
-            // Si la encuesta se comparte con todos los usuarios, envía un correo electrónico a todos los usuarios
             $usuarios = User::all();
             $encuesta->compartida = true;
-            $encuesta->compartida_con = $usuarios->pluck('id')->implode(','); // Almacena los IDs de los usuarios
+            $encuesta->compartida_con = $usuarios->pluck('id')->implode(',');
         } elseif ($compartirCon == 'algunos' && $usuariosSeleccionados) {
-            // Si la encuesta se comparte con algunos usuarios, envía un correo electrónico solo a los usuarios seleccionados
             $usuarios = User::whereIn('id', $usuariosSeleccionados)->get();
             $encuesta->compartida = true;
-            $encuesta->compartida_con = implode(',', $usuariosSeleccionados); // Almacena los IDs de los usuarios
+            $encuesta->compartida_con = implode(',', $usuariosSeleccionados);
         } else {
-            // Si no se seleccionó ninguna opción o no se seleccionó ningún usuario, redirige con un mensaje de error
             return redirect()->route('encuestas.show', $encuesta)->with('error', 'Debes seleccionar una opción de compartir y al menos un usuario.');
         }
         $encuesta->save();
 
         foreach ($usuarios as $usuario) {
-            Mail::send('emails.share', ['encuesta' => $encuesta], function ($message) use ($usuario) {
-                $message->to($usuario->correoElectronico)
-                    ->subject('Se ha compartido una encuesta contigo');
-            });
+            dispatch(new SendSurveyEmail($usuario, $encuesta));
         }
 
         return redirect()->route('encuestas.show', $encuesta)->with('success', 'Encuesta compartida correctamente.');
