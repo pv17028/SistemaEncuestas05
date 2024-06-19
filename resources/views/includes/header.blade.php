@@ -1,4 +1,4 @@
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="height: 49px">
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="height: 54px">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-4" href="{{ route('home') }}">
         <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
         SurveyPro
@@ -9,7 +9,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="dropdown" style="height: 49px;">
+    <div class="dropdown" style="height: 54px;">
         <div class="nav-item dropdown text-nowrap h-100">
             <a class="nav-link dropdown-toggle px-3 text-light h-100 d-flex align-items-center" href="#"
                id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
