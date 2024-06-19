@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\SendSurveyEmail;
+use Illuminate\Support\Facades\Redis;
 
 class EncuestaController extends Controller
 {
