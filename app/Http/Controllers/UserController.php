@@ -149,7 +149,7 @@ class UserController extends Controller
         // Ahora puedes eliminar el usuario
         $user->delete();
     
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado con éxito');
     }
 
     public function showProfile()
