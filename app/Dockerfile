@@ -10,6 +10,9 @@ COPY package*.json ./
 # Instala las dependencias del proyecto
 RUN npm install
 
+# Asegúrate de que los scripts en node_modules/.bin tengan permisos de ejecución
+RUN chmod -R +x /app/node_modules/.bin
+
 # Copia el resto de los archivos del proyecto
 COPY . .
 
