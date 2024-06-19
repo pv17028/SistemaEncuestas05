@@ -1,0 +1,8 @@
+[phases.setup]
+nixpkgs = [
+  "php",
+  "phpExtensions.redis"
+]
+
+[phases.build]
+builder = "nixpacks"
