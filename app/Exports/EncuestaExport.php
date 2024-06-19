@@ -28,18 +28,23 @@ class EncuestaExport implements FromCollection, WithHeadings
     public function collection()
     {
     //Consulta SQL personalizada
-        $encuestas = DB::table('encuestas')
+        $encuestas = DB::table('respuestas')
+        ->join('opcions', 'opcions.idOpcion', '=', 'respuestas.opcion_id')
+        ->join('preguntas', 'preguntas.idPregunta', '=', 'opcions.idPregunta')
+        ->join('encuestas', 'encuestas.idEncuesta', '=', 'preguntas.idEncuesta')
         ->join('users', 'users.id', '=', 'encuestas.idUsuario')
-        ->join('preguntas', 'preguntas.idEncuesta', '=', 'encuestas.idEncuesta')
-        ->join('opcions', 'opcions.idPregunta', '=', 'preguntas.idPregunta')
-        ->selectRaw('DISTINCT ON (preguntas."contenidoPregunta") 
-                     users."nombre", users."apellido", users."username", users."correoElectronico",
-                     encuestas."titulo", encuestas."descripcionEncuesta",
-                     preguntas."contenidoPregunta", opcions."contenidoOpcion"')
+        ->select(
+            'users.nombre',
+            'users.apellido',
+            'users.username',
+            'users.correoElectronico',
+            'encuestas.titulo',
+            'encuestas.descripcionEncuesta',
+            'preguntas.contenidoPregunta',
+            'opcions.contenidoOpcion'
+        )
         ->where('encuestas.idEncuesta', $this->idResultadoEncuesta)
-        ->orderBy('preguntas.contenidoPregunta')
         ->get();
-
         return $encuestas;
     }
     
@@ -59,18 +64,24 @@ class EncuestaExport implements FromCollection, WithHeadings
 
     public function pdf($idResultadoEncuesta)
     {
-    // Consulta SQL personalizada
-        $encuestas = DB::table('encuestas')
-        ->join('users', 'users.id', '=', 'encuestas.idUsuario')
-        ->join('preguntas', 'preguntas.idEncuesta', '=', 'encuestas.idEncuesta')
-        ->join('opcions', 'opcions.idPregunta', '=', 'preguntas.idPregunta')
-        ->selectRaw('DISTINCT ON (preguntas."contenidoPregunta") 
-                        users."nombre", users."apellido", users."username", users."correoElectronico",
-                        encuestas."titulo", encuestas."descripcionEncuesta",
-                        preguntas."contenidoPregunta", opcions."contenidoOpcion"')
-        ->where('encuestas.idEncuesta', $this->idResultadoEncuesta)
-        ->orderBy('preguntas.contenidoPregunta')
-        ->get();
+    //Consulta SQL personalizada
+    $encuestas = DB::table('respuestas')
+    ->join('opcions', 'opcions.idOpcion', '=', 'respuestas.opcion_id')
+    ->join('preguntas', 'preguntas.idPregunta', '=', 'opcions.idPregunta')
+    ->join('encuestas', 'encuestas.idEncuesta', '=', 'preguntas.idEncuesta')
+    ->join('users', 'users.id', '=', 'encuestas.idUsuario')
+    ->select(
+        'users.nombre',
+        'users.apellido',
+        'users.username',
+        'users.correoElectronico',
+        'encuestas.titulo',
+        'encuestas.descripcionEncuesta',
+        'preguntas.contenidoPregunta',
+        'opcions.contenidoOpcion'
+    )
+    ->where('encuestas.idEncuesta', $this->idResultadoEncuesta)
+    ->get();
     // Generar el PDF
     $pdf = Pdf::loadView('exportacion.pdf', ['encuestas' => $encuestas]);
 
