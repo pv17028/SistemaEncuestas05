@@ -32,7 +32,7 @@ class preguntas extends Model
 
     public function opciones()
     {
-        return $this->hasMany(opcion::class, 'idPregunta');
+        return $this->hasMany(Opcion::class, 'idPregunta');
     }
 
     public function respuestas()
