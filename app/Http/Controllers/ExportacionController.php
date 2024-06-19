@@ -76,7 +76,7 @@ class ExportacionController extends Controller
             'users.username',
             'encuestas.titulo',
             'encuestas.descripcionEncuesta',
-            DB::raw('count(preguntas."idPregunta") as total_preguntas'),
+            DB::raw('count(DISTINCT preguntas."idPregunta") as total_preguntas'),
             DB::raw('count(DISTINCT encuesta_usuario."id") as total_respuestas')
         )
         //Filtrar por encuestas creadas en los últimos 30 días
