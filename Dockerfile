@@ -16,6 +16,9 @@ RUN chmod -R +x /app/node_modules/.bin
 # Copia el resto de los archivos del proyecto
 COPY . .
 
+# Verifica el contenido del directorio y los permisos
+RUN ls -la /app && ls -la /app/node_modules/.bin
+
 # Construye la aplicación usando el script "build"
 RUN npm run build
 
