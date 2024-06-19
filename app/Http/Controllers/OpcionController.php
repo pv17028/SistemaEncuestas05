@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\opcion;
+use App\Models\Opcion;
 use Illuminate\Http\Request;
 use App\Models\preguntas;
 
@@ -19,7 +19,7 @@ class OpcionController extends Controller
         ]);
 
         //verificar si la opcion ya existe para la pregunta
-        $opcion = opcion::where('idPregunta', $preguntas->idPregunta)
+        $opcion = Opcion::where('idPregunta', $preguntas->idPregunta)
             ->where('contenidoOpcion', $request->input('contenidoOpcion'))
             ->first();
 
@@ -27,7 +27,7 @@ class OpcionController extends Controller
             return back()->with('error', 'La opción ya existe para la pregunta.');
         }
 
-        $opcion = new opcion();
+        $opcion = new Opcion();
         $opcion->idPregunta = $preguntas->idPregunta;
         $opcion->contenidoOpcion = $request->input('contenidoOpcion');
         $opcion->posicionOpcion = 1;
@@ -39,7 +39,7 @@ class OpcionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, preguntas $preguntas, opcion $opcion )
+    public function update(Request $request, preguntas $preguntas, Opcion $opcion )
     {
         $request->validate([
             'contenidoOpcion' => 'required|string|max:256',
@@ -55,7 +55,7 @@ class OpcionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(preguntas $preguntas, opcion $opcion )
+    public function destroy(preguntas $preguntas, Opcion $opcion )
     {
         $opcion->delete();
         return back()->with('success', 'Opción eliminada exitosamente.');

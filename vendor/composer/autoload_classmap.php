@@ -45,6 +45,7 @@ return array(
     'App\\Models\\EncuestaUsuario' => $baseDir . '/app/Models/EncuestaUsuario.php',
     'App\\Models\\Exportacion' => $baseDir . '/app/Models/Exportacion.php',
     'App\\Models\\Grafico' => $baseDir . '/app/Models/Grafico.php',
+    'App\\Models\\Opcion' => $baseDir . '/app/Models/Opcion.php',
     'App\\Models\\Privilegio' => $baseDir . '/app/Models/Privilegio.php',
     'App\\Models\\Respuesta' => $baseDir . '/app/Models/Respuesta.php',
     'App\\Models\\ResultadoEncuesta' => $baseDir . '/app/Models/ResultadoEncuesta.php',

@@ -658,6 +658,7 @@ class ComposerStaticInitda9b7a1dc1dd923105198c572cc7df8d
         'App\\Models\\EncuestaUsuario' => __DIR__ . '/../..' . '/app/Models/EncuestaUsuario.php',
         'App\\Models\\Exportacion' => __DIR__ . '/../..' . '/app/Models/Exportacion.php',
         'App\\Models\\Grafico' => __DIR__ . '/../..' . '/app/Models/Grafico.php',
+        'App\\Models\\Opcion' => __DIR__ . '/../..' . '/app/Models/Opcion.php',
         'App\\Models\\Privilegio' => __DIR__ . '/../..' . '/app/Models/Privilegio.php',
         'App\\Models\\Respuesta' => __DIR__ . '/../..' . '/app/Models/Respuesta.php',
         'App\\Models\\ResultadoEncuesta' => __DIR__ . '/../..' . '/app/Models/ResultadoEncuesta.php',

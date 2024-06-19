@@ -14,9 +14,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class EncuestaExport implements FromCollection, WithHeadings
 {
-    /**
+    /*
     * @return \Illuminate\Support\Collection
-        @return \Barryvdh\DomPDF\Facade\PDF
+      @return \Barryvdh\DomPDF\Facade\PDF
     */
     protected $idResultadoEncuesta;
 
