@@ -9,7 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\SendSurveyEmail;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Log;
 
 class EncuestaController extends Controller
 {
@@ -169,7 +169,7 @@ class EncuestaController extends Controller
             } catch (\Exception $e) {
                 // Aquí puedes manejar el error como quieras.
                 // Por ejemplo, puedes registrar el error en los logs:
-                \Log::error('No se pudo subir el logo: ' . $e->getMessage());
+                Log::error('No se pudo subir el logo: ' . $e->getMessage());
                 // Y/o puedes establecer un valor predeterminado para el logo:
                 $encuesta->logo = 'default_logo.png';
             }
