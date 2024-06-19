@@ -64,8 +64,17 @@ class EncuestaController extends Controller
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo');
             $logoNombre = time() . '.' . $logo->getClientOriginalExtension();
-            $logo->move(public_path('images'), $logoNombre);
-            $encuesta->logo = $logoNombre;
+        
+            try {
+                $logo->move(public_path('images'), $logoNombre);
+                $encuesta->logo = $logoNombre;
+            } catch (\Exception $e) {
+                // Aquí puedes manejar el error como quieras.
+                // Por ejemplo, puedes registrar el error en los logs:
+                Log::error('No se pudo subir el logo: ' . $e->getMessage());
+                // Y/o puedes establecer un valor predeterminado para el logo:
+                $encuesta->logo = 'default_logo.png';
+            }
         }
 
         // Asignar los colores de la encuesta

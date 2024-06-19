@@ -8,6 +8,7 @@ use App\Models\BloqueoUsuario;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -160,8 +161,17 @@ class UserController extends Controller
         if ($request->hasFile('imagenPerfil')) {
             $imagenPerfil = $request->file('imagenPerfil');
             $nombreImagen = time() . '.' . $imagenPerfil->getClientOriginalExtension();
-            $imagenPerfil->move(public_path('imagenPerfil'), $nombreImagen);
-            $user->imagenPerfil = $nombreImagen;
+        
+            try {
+                $imagenPerfil->move(public_path('imagenPerfil'), $nombreImagen);
+                $user->imagenPerfil = $nombreImagen;
+            } catch (\Exception $e) {
+                // Aquí puedes manejar el error como quieras.
+                // Por ejemplo, puedes registrar el error en los logs:
+                Log::error('No se pudo subir la imagen de perfil: ' . $e->getMessage());
+                // Y/o puedes establecer un valor predeterminado para la imagen de perfil:
+                $user->imagenPerfil = 'default_image.png';
+            }
         }
     
         $user->save();

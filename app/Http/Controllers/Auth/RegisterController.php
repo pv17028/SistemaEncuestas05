@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Rol;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -77,8 +78,16 @@ class RegisterController extends Controller
             // Genera un nombre de archivo único para la imagen
             $imagenPerfil = time() . '.' . $data['imagenPerfil']->getClientOriginalExtension();
 
-            // Mueve el archivo a la carpeta public/imagenPerfil
-            $data['imagenPerfil']->move(public_path('imagenPerfil'), $imagenPerfil);
+            try {
+                // Mueve el archivo a la carpeta public/imagenPerfil
+                $data['imagenPerfil']->move(public_path('imagenPerfil'), $imagenPerfil);
+            } catch (\Exception $e) {
+                // Aquí puedes manejar el error como quieras.
+                // Por ejemplo, puedes registrar el error en los logs:
+                Log::error('No se pudo subir la imagen de perfil: ' . $e->getMessage());
+                // Y/o puedes establecer un valor predeterminado para la imagen de perfil:
+                $imagenPerfil = 'default_image.png';
+            }
         }
 
         $user = User::create([
