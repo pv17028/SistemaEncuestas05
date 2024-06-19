@@ -119,10 +119,15 @@ class UserController extends Controller
             $bloqueo->user_id = null;
             $bloqueo->save();
         }
-
+    
+        // Elimina las encuestas del usuario
+        foreach ($user->encuestas as $encuesta) {
+            $encuesta->delete();
+        }
+    
         // Ahora puedes eliminar el usuario
         $user->delete();
-
+    
         return redirect()->route('users.index');
     }
 
