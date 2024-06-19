@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -122,6 +123,26 @@ class UserController extends Controller
     
         // Elimina las encuestas del usuario
         foreach ($user->encuestas as $encuesta) {
+            // Elimina las referencias a la encuesta en la tabla "encuesta_usuario"
+            DB::table('encuesta_usuario')->where('encuesta_id', $encuesta->idEncuesta)->delete();
+    
+            // Elimina las respuestas de la encuesta
+            foreach ($encuesta->respuestas as $respuesta) {
+                $respuesta->delete();
+            }
+    
+            // Elimina las preguntas de la encuesta
+            foreach ($encuesta->preguntas as $pregunta) {
+                // Elimina las opciones de la pregunta
+                foreach ($pregunta->opciones as $opcion) {
+                    $opcion->delete();
+                }
+    
+                // Elimina la pregunta
+                $pregunta->delete();
+            }
+    
+            // Ahora puedes eliminar la encuesta
             $encuesta->delete();
         }
     

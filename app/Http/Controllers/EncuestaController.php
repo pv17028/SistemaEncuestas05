@@ -193,8 +193,28 @@ class EncuestaController extends Controller
 
     public function destroy(Encuesta $encuesta)
     {
+        // Elimina las respuestas de la encuesta
+        foreach ($encuesta->respuestas as $respuesta) {
+            $respuesta->delete();
+        }
+    
+        // Elimina las preguntas de la encuesta
+        foreach ($encuesta->preguntas as $pregunta) {
+            // Elimina las opciones de la pregunta
+            foreach ($pregunta->opciones as $opcion) {
+                $opcion->delete();
+            }
+    
+            // Ahora puedes eliminar la pregunta
+            $pregunta->delete();
+        }
+    
+        // Elimina las asociaciones de la encuesta con los usuarios
         DB::table('encuesta_usuario')->where('encuesta_id', $encuesta->idEncuesta)->delete();
+    
+        // Ahora puedes eliminar la encuesta
         $encuesta->delete();
+    
         return redirect()->route('encuestas.index')->with('success', 'Encuesta eliminada exitosamente.');
     }
 
